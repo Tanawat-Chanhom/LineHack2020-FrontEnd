@@ -9,7 +9,7 @@ export default class createRoom extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pageState: 1,
+      pageState: 0,
     };
   }
 
@@ -41,7 +41,7 @@ export default class createRoom extends Component {
   secondPage = (
     <div className={"elements-container elements-container-2"}>
       <div className={"title-2"}>
-        <label>กรุณากรอกข้้อมูลวิชาเรียนของท่าน</label>
+        <label>กรุณากรอกข้อมูลวิชาเรียนของท่าน</label>
       </div>
       <div className={"input-container-2"}>
         <div className={"text-field-container"}>
@@ -49,7 +49,7 @@ export default class createRoom extends Component {
           <TextField
             id="outlined-full-width"
             label=""
-            placeholder="Placeholder"
+            fullWidth
             InputLabelProps={{
               shrink: true,
             }}
@@ -61,7 +61,8 @@ export default class createRoom extends Component {
           <TextField
             id="outlined-full-width"
             label=""
-            placeholder="Placeholder"
+            type="number"
+            fullWidth
             InputLabelProps={{
               shrink: true,
             }}
