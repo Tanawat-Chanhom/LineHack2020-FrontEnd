@@ -1,6 +1,5 @@
 body{
     background-color: #2C3E50;
-    
 }
 .container{
     color: aliceblue;
@@ -14,9 +13,4 @@ body{
     align-items: center;
     line-height: 3em;
 }
-.form-button{
-    
-}
-TextField{
-    background-color: aliceblue;
-}
+
