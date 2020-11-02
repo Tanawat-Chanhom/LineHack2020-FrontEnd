@@ -1,0 +1,58 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  min-height: 100vh;
+  overflow: scroll;
+  padding: 0px 20px;
+}
+
+.elements-container {
+  padding: 40px 0px;
+  height: 100%;
+  justify-content: flex-start;
+}
+
+.title-container {
+  width: 100%;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.text-field-container .MuiOutlinedInput-notchedOutline {
+  border-radius: 15px;
+}
+
+.timer-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.timer {
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: 1px solid #ffffff;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+}
+
+.timer label {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 5px 0px;
+  white-space: nowrap;
+}
+
+.timer img {
+  width: 37px;
+  height: 37px;
+}
+
+.timer-backgroud-color {
+  background-color: #e5a52d;
+}

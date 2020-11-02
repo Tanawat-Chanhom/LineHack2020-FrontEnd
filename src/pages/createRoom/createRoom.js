@@ -60,7 +60,7 @@ export default class createRoom extends Component {
 
   firstPage = (
     <div className={"elements-container"}>
-      <div className={'title-container'}>
+      <div className={"title-container"}>
         <img src={TA} alt="TA-LOGO" />
         <h1 className={"title-text"}>ผู้ช่วยสอน</h1>
       </div>
