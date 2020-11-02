@@ -7,7 +7,7 @@ export default class register extends Component {
         return (
             <div className={"container"}>
                 <div className={"title-2"}>
-                    <label>กรุณากรอกข้อมูลวิชาเรียนของท่าน</label>
+                    <label>กรุณากรอกข้อมูลนักเรียนของท่าน</label>
                 </div>
                 <div className={"form-container"}>
                     <div className={"text-field-container"}>
