@@ -1,0 +1,16 @@
+body{
+    background-color: #2C3E50;
+}
+.container{
+    color: aliceblue;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.form-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 3em;
+}
+
