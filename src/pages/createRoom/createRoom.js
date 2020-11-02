@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./styles.css";
 import { Button, TextField } from "@material-ui/core";
+import liff from "@line/liff";
 
 //Image
 import TA from "../../static/image/TA-LOGO.png";
@@ -59,7 +60,7 @@ export default class createRoom extends Component {
 
   firstPage = (
     <div className={"elements-container"}>
-      <div>
+      <div className={'title-container'}>
         <img src={TA} alt="TA-LOGO" />
         <h1 className={"title-text"}>ผู้ช่วยสอน</h1>
       </div>
@@ -231,9 +232,7 @@ export default class createRoom extends Component {
           variant="contained"
           color="primary"
           onClick={() => {
-            this.setState({
-              pageState: 0,
-            });
+            liff.closeWindow();
           }}
         >
           สร้างห้อง

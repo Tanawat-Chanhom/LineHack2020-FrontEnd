@@ -6,6 +6,7 @@ import liff from "@line/liff";
 import createRoom from "./pages/createRoom/createRoom.js";
 import notFound from "./pages/notFound/notFound";
 import register from "./pages/register/register";
+import createCheckIn from "./pages/createCheckIn/createCheckIn";
 
 function App() {
   liff.init({ liffId: "1655106533-ba7L0Rw0" });
@@ -15,6 +16,11 @@ function App() {
         <Switch>
           <Route exact path="/register" component={register}></Route>
           <Route exact path="/create-room" component={createRoom}></Route>
+          <Route
+            exact
+            path="/create-check-in"
+            component={createCheckIn}
+          ></Route>
           <Route component={notFound}></Route>
         </Switch>
       </Router>
