@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import "./styles.css";
+import style from "./styles.module.css";
 import { Button, TextField } from "@material-ui/core";
 import liff from "@line/liff";
+import cx from "classnames";
 
 //Image
 import TA from "../../static/image/TA-LOGO.png";
@@ -59,12 +60,12 @@ export default class createRoom extends Component {
   }
 
   firstPage = (
-    <div className={"elements-container"}>
-      <div className={"title-container"}>
+    <div className={style.elementsContainer}>
+      <div className={style.titleContainer}>
         <img src={TA} alt="TA-LOGO" />
-        <h1 className={"title-text"}>ผู้ช่วยสอน</h1>
+        <h1 className={style.titleText}>ผู้ช่วยสอน</h1>
       </div>
-      <div className={"button-container"}>
+      <div className={style.buttonContainer}>
         <Button
           variant="contained"
           color="primary"
@@ -84,38 +85,46 @@ export default class createRoom extends Component {
   );
 
   secondPage = (
-    <div className={"elements-container elements-container-2"}>
-      <div className={"title-2"}>
+    <div className={cx(style.elementsContainer, style.elementsContainer2)}>
+      <div className={style.title2}>
         <label>กรุณากรอกข้อมูลวิชาเรียนของท่าน</label>
       </div>
-      <div className={"input-container-2"}>
-        <div className={"text-field-container"}>
+      <div className={style.inputContainer2}>
+        <div className={style.textFieldContainer}>
           <label>ชื่อวิชา</label>
           <TextField
-            id="outlined-full-width"
-            label=""
+            id="standard-basic"
             fullWidth
             InputLabelProps={{
               shrink: true,
             }}
+            InputProps={{
+              classes: {
+                root: {
+                  
+                },
+              },
+            }}
             variant="outlined"
           />
         </div>
-        <div className={"text-field-container"}>
+        <div className={style.textFieldContainer}>
           <label>หน่วยกิจ</label>
           <TextField
-            id="outlined-full-width"
-            label=""
+            id="standard-basic"
             type="number"
             fullWidth
-            InputLabelProps={{
-              shrink: true,
+            // InputLabelProps={{
+            //   shrink: true,
+            // }}
+            InputProps={{
+              disableUnderline: true,
             }}
             variant="outlined"
           />
         </div>
       </div>
-      <div className={"button-container"}>
+      <div className={style.buttonContainer}>
         <Button
           variant="contained"
           color="primary"
@@ -132,21 +141,21 @@ export default class createRoom extends Component {
   );
 
   thirdPage = (state) => (
-    <div className={"elements-container elements-container-2"}>
-      <div className={"titile-container-3"}>
-        <label className={"title-label-3"}>กดเลือกวันและเวลาที่เรียน</label>
-        <label className={"title-label-3"}>
+    <div className={cx(style.elementsContainer, style.elementsContainer2)}>
+      <div className={style.titileContainer3}>
+        <label className={style.titleLabel3}>กดเลือกวันและเวลาที่เรียน</label>
+        <label className={style.titleLabel3}>
           (ท่านสามารถเลือกได้มากกว่า 1 วัน)
         </label>
       </div>
-      <div className={"days-container"}>
+      <div className={style.daysContainer}>
         {state.state.days.map((data, key) => {
           return (
             <div
               className={
                 data.isPress === false
-                  ? "day-container"
-                  : "day-container day-backgroud-container"
+                  ? style.dayContainer
+                  : cx(style.dayContainer, style.dayBackgroudContainer)
               }
               key={key}
               onClick={() => {
@@ -167,7 +176,7 @@ export default class createRoom extends Component {
           );
         })}
       </div>
-      <div className={"days-table-container"}>
+      <div className={style.daysTableContainer}>
         <table>
           <tr>
             <th>วันที่เรียน</th>
@@ -178,7 +187,7 @@ export default class createRoom extends Component {
               <tr key={key}>
                 <td>{data.name}</td>
                 <td>
-                  <div className={"text-field-time-container"}>
+                  <div className={style.textFieldTimeContainer}>
                     <TextField
                       id="time"
                       // fullWidth
@@ -227,7 +236,7 @@ export default class createRoom extends Component {
           })}
         </table>
       </div>
-      <div className={"button-container"}>
+      <div className={style.buttonContainer}>
         <Button
           variant="contained"
           color="primary"
@@ -258,6 +267,6 @@ export default class createRoom extends Component {
   };
 
   render() {
-    return <div className={"container"}>{this.pageState(this)}</div>;
+    return <div className={style.container}>{this.pageState(this)}</div>;
   }
 }

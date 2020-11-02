@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import "./styles.css";
+import style from "./styles.module.css";
 import { Button, TextField } from "@material-ui/core";
 
 import Timer from "../../static/image/Icon ionic-ios-timer.png";
 import liff from "@line/liff";
+import cx from "classnames";
 
 export default class createCheckIn extends Component {
   constructor(props) {
@@ -34,12 +35,12 @@ export default class createCheckIn extends Component {
   }
   render() {
     return (
-      <div className={"container"}>
-        <div className={"elements-container"}>
-          <div className={"title-container"}>
+      <div className={style.container}>
+        <div className={style.elementsContainer}>
+          <div className={style.titleContainer}>
             <label>กรุณาใส่โค้ดสำหรับการเช็คชื่อ</label>
           </div>
-          <div className={"text-field-container"}>
+          <div className={style.textFieldContainer}>
             <TextField
               id="outlined-full-width"
               label=""
@@ -56,14 +57,18 @@ export default class createCheckIn extends Component {
               }}
             />
           </div>
-          <div className={"timer-container"}>
+          <div className={style.timerContainer}>
             {this.state.timer.map((data, key) => {
               return (
                 <div
                   className={
                     data.isPress === false
-                      ? "timer-container timer"
-                      : "timer-container timer timer-backgroud-color"
+                      ? cx(style.timerContainer, style.timer)
+                      : cx(
+                          style.timerContainer,
+                          style.timer,
+                          style.timerBackgroudColor
+                        )
                   }
                   key={key}
                   onClick={() => {
@@ -89,7 +94,7 @@ export default class createCheckIn extends Component {
               );
             })}
           </div>
-          <div className={"button-container"}>
+          <div className={style.buttonContainer}>
             <Button
               variant="contained"
               color="primary"
