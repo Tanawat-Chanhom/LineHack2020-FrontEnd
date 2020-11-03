@@ -123,6 +123,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: all 0.3s ease;
 }
 
 .quizOption label {
@@ -130,3 +131,9 @@
   font-weight: bold;
   font-size: 15px;
 }
+
+.quizOptionPress {
+  background-color: #e5a52d;
+}
+
+/* thridpage */

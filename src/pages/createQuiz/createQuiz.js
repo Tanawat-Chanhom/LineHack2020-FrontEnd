@@ -3,12 +3,24 @@ import style from "./styles.module.css";
 import cx from "classnames";
 import { Button, TextField } from "@material-ui/core";
 
+import QuizChoice from "../../compoments/QuizChoice/QuizChoice";
+
 export default class createQuiz extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pageState: 1,
-      quizOption: {},
+      pageState: 2,
+      quizName: "",
+      quizOption: [
+        {
+          optionName: "เลือกตอบแบบปรนัย",
+          isPress: false,
+        },
+        {
+          optionName: "เลือกตอบถูก/ผิด",
+          isPress: false,
+        },
+      ],
       oldQuiz: [
         {
           quizName: "แบบฝึกหัดหลังเรียน บทที่ 1 และ 2",
@@ -17,6 +29,34 @@ export default class createQuiz extends Component {
         {
           quizName: "แบบฝึกหัดหลังเรียน บทที่ 3 และ 4",
           exp: "เหลืออีก 14 วัน",
+        },
+      ],
+      newQuiz: [
+        {
+          questionName: "ไอ้เจ 1",
+          choices: [
+            {
+              answerName: "1",
+              isAnswer: false,
+            },
+            {
+              answerName: "2",
+              isAnswer: false,
+            },
+          ],
+        },
+        {
+          questionName: "ไอ้เจ 2",
+          choices: [
+            {
+              answerName: "1",
+              isAnswer: false,
+            },
+            {
+              answerName: "2",
+              isAnswer: false,
+            },
+          ],
         },
       ],
     };
@@ -71,10 +111,10 @@ export default class createQuiz extends Component {
             shrink: true,
           }}
           variant="outlined"
-          value={this.state.passCode}
+          value={state.state.quizName}
           onChange={(event) => {
             this.setState({
-              passCode: event.target.value,
+              quizName: event.target.value,
             });
           }}
         />
@@ -83,19 +123,43 @@ export default class createQuiz extends Component {
         <label>ประเภทของควิซ</label>
       </div>
       <div className={style.quizOptionContainer}>
-        <div className={style.quizOption}>
-          <label>เลือกตอบแบบปรนัย</label>
-        </div>
-        <div className={style.quizOption}>
-          <label>เลือกตอบถูก/ผิด</label>
-        </div>
+        {state.state.quizOption.map((data, key) => {
+          return (
+            <div
+              className={
+                data.isPress === true
+                  ? cx(style.quizOption, style.quizOptionPress)
+                  : style.quizOption
+              }
+              key={key}
+              onClick={() => {
+                let updateArray = this.state.quizOption;
+                updateArray.map((data) => {
+                  data.isPress = false;
+                  return null;
+                });
+                let index = updateArray.findIndex(
+                  (obj) => obj.optionName === data.optionName
+                );
+                updateArray[index].isPress === true
+                  ? (updateArray[index].isPress = false)
+                  : (updateArray[index].isPress = true);
+                this.setState({
+                  quizOption: updateArray,
+                });
+              }}
+            >
+              <label>{data.optionName}</label>
+            </div>
+          );
+        })}
       </div>
       <div className={style.buttonContainer}>
         <Button
           variant="contained"
           color="primary"
           onClick={() => {
-            this.setState({ pageState: 1 });
+            this.setState({ pageState: 2 });
           }}
         >
           เริ่มสร้างควิซ
@@ -104,12 +168,70 @@ export default class createQuiz extends Component {
     </div>
   );
 
+  createQuestion = () => {
+    let updateArray = this.state.newQuiz;
+    let defaultData = {
+      questionName: "ไอ้เจ 55",
+      choices: [
+        {
+          answerName: "1",
+          isAnswer: false,
+        },
+        {
+          answerName: "2",
+          isAnswer: false,
+        },
+      ],
+    };
+    updateArray.push(defaultData);
+    this.setState({
+      newQuiz: updateArray,
+    });
+  };
+
+  deleteQuestion = (index) => () => {
+    // let updateArray = this.state.newQuiz;
+    // updateArray.slice(index, 1);
+    // this.setState({
+    //   newQuiz: updateArray,
+    // });
+    console.log("feeef");
+  };
+
+  thridPage = (state) => (
+    <>
+      {state.state.newQuiz.map((data, key) => {
+        return (
+          <QuizChoice
+            data={data}
+            key={key}
+            index={key}
+            deleteQuestion={this.deleteQuestion}
+          ></QuizChoice>
+        );
+      })}
+      <div className={style.buttonContainer}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            this.createQuestion();
+          }}
+        >
+          เพิ่ม
+        </Button>
+      </div>
+    </>
+  );
+
   pageState = (state) => {
     switch (this.state.pageState) {
       case 0:
         return this.firstPage(state);
       case 1:
         return this.secondPage(state);
+      case 2:
+        return this.thridPage(state);
       default:
         break;
     }
