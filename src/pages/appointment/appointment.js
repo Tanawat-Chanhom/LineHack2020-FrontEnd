@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import style from "./styles.module.css";
-import { Button, TextField } from "@material-ui/core";
+import { Button, TextField} from "@material-ui/core";
 import liff from "@line/liff";
 import cx from "classnames";
 
@@ -26,12 +26,12 @@ export default class appointment extends Component {
 
     firstPage = (
         <div className={cx(style.elementsContainer, style.elementsContainer2)}>
-            <div className={style.title}>
+            {/* <div className={style.title}>
                 <label>กรุณากรอกข้อมูลนักเรียนของท่าน</label>
-            </div>
+            </div> */}
             <div className={style.inputContainer}>
                 <div className={style.textFieldContainer}>
-                    <label>ชื่อ</label>
+                    <label>นัดหมายสำหรับ</label>
                     <TextField
                         id="standard-basic"
                         fullWidth
@@ -48,10 +48,11 @@ export default class appointment extends Component {
                         variant="outlined"
                     />
                 </div>
-                <div className={style.textFieldContainer}>
-                    <label>นามสกุล</label>
+                <div className={cx(style.textFieldContainer,style.textFieldContainer2)}>
+                    <label>วันที่</label>
                     <TextField
                         id="standard-basic"
+                        type="date"
                         fullWidth
                         InputLabelProps={{
                             shrink: true,
@@ -66,30 +67,53 @@ export default class appointment extends Component {
                         variant="outlined"
                     />
                 </div>
-                <div className={style.textFieldContainer}>
-                    <label>ชื่อเล่น</label>
-                    <TextField
-                        id="standard-basic"
-                        fullWidth
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        InputProps={{
-                            classes: {
-                                root: {
+                <div className={cx(style.textFieldContainer,style.textFieldContainer2)}>
+                    <label>เวลา</label>
+                    <div className={style.timeContainer}>
+                        <TextField
+                            id="standard-basic"
+                            type="time"
+                            fullWidth
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            InputProps={{
+                                classes: {
+                                    root: {
 
+                                    },
                                 },
-                            },
-                        }}
-                        variant="outlined"
-                    />
+                            }}
+                            variant="outlined"
+                        />
+                        <div>
+                            <label>ถึง</label>
+                        </div>
+                        <TextField
+                            id="standard-basic"
+                            type="time"
+                            fullWidth
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            InputProps={{
+                                classes: {
+                                    root: {
+
+                                    },
+                                },
+                            }}
+                            variant="outlined"
+                        />
+                    </div>
+
                 </div>
                 <div className={style.textFieldContainer}>
-                    <label>เลขที่</label>
+                    <label>คำอธิบายเพิ่มเติม</label>
                     <TextField
                         id="standard-basic"
-                        type="number"
                         fullWidth
+
                         // InputLabelProps={{
                         //   shrink: true,
                         // }}
@@ -104,11 +128,9 @@ export default class appointment extends Component {
                 <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => {
-                        this.setState({
-                            pageState: 1,
-                        });
-                    }}
+                    oonClick={() => {
+                        liff.closeWindow();
+                      }}
                 >
                     ถัดไป
         </Button>

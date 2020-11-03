@@ -70,10 +70,11 @@ img {
 .textFieldContainer {
     display: flex;
     width: 100%;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    justify-content: space-evenly;
+    /* align-items: center; */
     margin: 20px 0px;
+    /* background-color: red; */
 }
 
 .textFieldContainer label {
@@ -89,6 +90,13 @@ img {
     border: 1px solid #ffffff;
     border-radius: 100em;
     color: white;
+    
+}
+.textFieldContainer2 input {
+    border: 1px solid #ffffff;
+    color: #2C3E50;
+    background-color: #ffffff;
+    
 }
 
 .textFieldContainer fieldset {
@@ -122,3 +130,18 @@ img {
     font-weight: bold;
     font-size: 23px;
 }
+
+.timeContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+/* .textBetweenInput{
+   display: flex;
+   flex-direction: row;
+   justify-content: center;
+   align-items: center;
+   margin: 20px 0px;
+   background-color: red;
+} */
