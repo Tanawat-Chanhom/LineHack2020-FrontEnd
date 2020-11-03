@@ -3,14 +3,19 @@ import style from "./styles.module.css";
 import cx from "classnames";
 import { Button, TextField } from "@material-ui/core";
 
-import QuizChoice from "../../compoments/QuizChoice/QuizChoice";
+import AddIcon from "../../static/image/Icon awesome-plus-circle.png";
+import AddChoies from "../../static/image/Icon awesome-plus-circle-2.png";
+import DeleteIcon from "../../static/image/Group 35.png";
+import Choice from "../../static/image/choice.png";
+import Vote from "../../static/image/vote.png";
 
 export default class createQuiz extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pageState: 2,
+      pageState: 0,
       quizName: "",
+      fullPoint: 0,
       quizOption: [
         {
           optionName: "เลือกตอบแบบปรนัย",
@@ -31,34 +36,7 @@ export default class createQuiz extends Component {
           exp: "เหลืออีก 14 วัน",
         },
       ],
-      newQuiz: [
-        {
-          questionName: "ไอ้เจ 1",
-          choices: [
-            {
-              answerName: "1",
-              isAnswer: false,
-            },
-            {
-              answerName: "2",
-              isAnswer: false,
-            },
-          ],
-        },
-        {
-          questionName: "ไอ้เจ 2",
-          choices: [
-            {
-              answerName: "1",
-              isAnswer: false,
-            },
-            {
-              answerName: "2",
-              isAnswer: false,
-            },
-          ],
-        },
-      ],
+      newQuiz: [],
     };
   }
 
@@ -77,13 +55,12 @@ export default class createQuiz extends Component {
             return (
               <div className={style.quizContainer} key={key}>
                 <label>{data.quizName}</label>
-                <small>{data.exp}</small>
               </div>
             );
           })
         )}
       </div>
-      <div className={style.buttonContainer}>
+      {/* <div className={style.buttonContainer}>
         <Button
           variant="contained"
           color="primary"
@@ -93,6 +70,16 @@ export default class createQuiz extends Component {
         >
           เริ่มสร้างควิซ
         </Button>
+      </div> */}
+      <div className={style.buttonContainer}>
+        <div
+          style={{ backgroundColor: "#E5A52D" }}
+          onClick={() => {
+            this.setState({ pageState: 1 });
+          }}
+        >
+          <label style={{ color: "#ffffff" }}>เริ่มสร้างควิซ</label>
+        </div>
       </div>
     </div>
   );
@@ -115,6 +102,27 @@ export default class createQuiz extends Component {
           onChange={(event) => {
             this.setState({
               quizName: event.target.value,
+            });
+          }}
+        />
+      </div>
+      <div className={cx(style.titleContainer, style.titleAlignLift)}>
+        <label>คะแนนเต็ม</label>
+      </div>
+      <div className={style.textFieldContainer}>
+        <TextField
+          id="outlined-full-width"
+          type="number"
+          label=""
+          fullWidth
+          InputLabelProps={{
+            shrink: true,
+          }}
+          variant="outlined"
+          value={state.state.fullPoint}
+          onChange={(event) => {
+            this.setState({
+              fullPoint: event.target.value,
             });
           }}
         />
@@ -149,12 +157,17 @@ export default class createQuiz extends Component {
                 });
               }}
             >
+              {data.optionName === "เลือกตอบแบบปรนัย" ? (
+                <img src={Choice} alt="Choice" />
+              ) : (
+                <img src={Vote} alt="Vote" />
+              )}
               <label>{data.optionName}</label>
             </div>
           );
         })}
       </div>
-      <div className={style.buttonContainer}>
+      {/* <div className={style.buttonContainer}>
         <Button
           variant="contained"
           color="primary"
@@ -164,6 +177,22 @@ export default class createQuiz extends Component {
         >
           เริ่มสร้างควิซ
         </Button>
+      </div> */}
+      <div
+        className={style.buttonContainer}
+        style={{ justifyContent: "center" }}
+      >
+        <div
+          style={{
+            backgroundColor: "#E5A52D",
+            maxWidth: 220,
+          }}
+          onClick={() => {
+            this.setState({ pageState: 2 });
+          }}
+        >
+          <label style={{ color: "#ffffff" }}>ถัดไป</label>
+        </div>
       </div>
     </div>
   );
@@ -172,16 +201,8 @@ export default class createQuiz extends Component {
     let updateArray = this.state.newQuiz;
     let defaultData = {
       questionName: "ไอ้เจ 55",
-      choices: [
-        {
-          answerName: "1",
-          isAnswer: false,
-        },
-        {
-          answerName: "2",
-          isAnswer: false,
-        },
-      ],
+      answerName: "ggth",
+      choices: ["1", "2", "3"],
     };
     updateArray.push(defaultData);
     this.setState({
@@ -189,37 +210,148 @@ export default class createQuiz extends Component {
     });
   };
 
-  deleteQuestion = (index) => () => {
-    // let updateArray = this.state.newQuiz;
-    // updateArray.slice(index, 1);
-    // this.setState({
-    //   newQuiz: updateArray,
-    // });
-    console.log("feeef");
-  };
-
   thridPage = (state) => (
     <>
       {state.state.newQuiz.map((data, key) => {
         return (
-          <QuizChoice
-            data={data}
-            key={key}
-            index={key}
-            deleteQuestion={this.deleteQuestion}
-          ></QuizChoice>
+          <div className={style.questionContainer} key={key}>
+            <div
+              className={cx(
+                style.titleContainer,
+                style.titleAlignLift,
+                style.titleQuestionColor
+              )}
+            >
+              <label>ข้อที่ {key + 1}</label>
+            </div>
+            <div className={style.textFieldContainer}>
+              <TextField
+                label=""
+                fullWidth
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                value={data.questionName}
+                onChange={(event) => {
+                  let updateArray = this.state.newQuiz;
+                  updateArray[key].questionName = event.target.value;
+                  this.setState({
+                    newQuiz: updateArray,
+                  });
+                }}
+              />
+            </div>
+            <div
+              className={cx(
+                style.titleContainer,
+                style.titleAlignLift,
+                style.titleQuestionColor
+              )}
+            >
+              <label>ข้อถูก</label>
+            </div>
+            <div className={style.textFieldContainer}>
+              <TextField
+                label=""
+                fullWidth
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                value={data.answerName}
+                onChange={(event) => {
+                  let updateArray = this.state.newQuiz;
+                  updateArray[key].answerName = event.target.value;
+                  this.setState({
+                    newQuiz: updateArray,
+                  });
+                }}
+              />
+            </div>
+            <div className={style.underLine}></div>
+            <div
+              className={cx(
+                style.titleContainer,
+                style.titleAlignLift,
+                style.titleQuestionColor
+              )}
+            >
+              <label>ข้อผิด</label>
+            </div>
+            {data.choices.map((data, index) => {
+              return (
+                <div className={style.choicesContainer}>
+                  <div className={style.textFieldContainer} key={index}>
+                    <TextField
+                      label=""
+                      fullWidth
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      variant="outlined"
+                      value={data}
+                      onChange={(event) => {
+                        let updateArray = this.state.newQuiz;
+                        updateArray[key].choices[index] = event.target.value;
+                        this.setState({
+                          newQuiz: updateArray,
+                        });
+                      }}
+                    />
+                  </div>
+                  {index > 0 ? (
+                    <img
+                      src={DeleteIcon}
+                      alt="DeleteIcon"
+                      className={style.deleteIcon}
+                      onClick={() => {
+                        let updateArray = this.state.newQuiz;
+                        updateArray[key].choices.splice(index, 1);
+                        this.setState({
+                          newQuiz: updateArray,
+                        });
+                      }}
+                    />
+                  ) : (
+                    <></>
+                  )}
+                </div>
+              );
+            })}
+            {this.state.newQuiz[key].choices.length < 3 ? (
+              <div className={style.addChoiesButton}>
+                <img
+                  src={AddChoies}
+                  alt="AddChoies"
+                  onClick={() => {
+                    let updateArray = this.state.newQuiz;
+                    updateArray[key].choices.push("");
+                    this.setState({
+                      newQuiz: updateArray,
+                    });
+                  }}
+                />
+              </div>
+            ) : (
+              <></>
+            )}
+          </div>
         );
       })}
+
       <div className={style.buttonContainer}>
-        <Button
-          variant="contained"
-          color="primary"
+        <div
           onClick={() => {
             this.createQuestion();
           }}
         >
-          เพิ่ม
-        </Button>
+          <label>เพิ่ม</label>
+          <img src={AddIcon} alt="AddIcon" />
+        </div>
+        <div>
+          <label>บันทึก</label>
+        </div>
       </div>
     </>
   );
