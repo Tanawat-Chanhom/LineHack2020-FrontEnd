@@ -14,8 +14,7 @@
 }
 
 .titleContainer {
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 47px;
   color: #ffffff;
   text-align: center;
   margin: 20px;
@@ -55,8 +54,7 @@
 }
 
 .timer label {
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 35px;
   margin: 5px 0px;
   white-space: nowrap;
 }
@@ -85,7 +83,6 @@
 
 .buttonContainer button:nth-child(1) {
   background-color: #e5a52d;
-  font-weight: bold;
   font-size: 23px;
   width: fit-content;
 }

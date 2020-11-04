@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import style from "./styles.module.css";
 import { Button, TextField } from "@material-ui/core";
+import MyButton from "../../compoments/button/Button";
 
 import Timer from "../../static/image/Icon ionic-ios-timer.png";
 import liff from "@line/liff";
@@ -95,15 +96,13 @@ export default class createCheckIn extends Component {
             })}
           </div>
           <div className={style.buttonContainer}>
-            <Button
-              variant="contained"
-              color="primary"
+            <MyButton
+              label={"เริ่มการเช็คชื่อ"}
+              fontSize={49}
               onClick={() => {
                 liff.closeWindow();
               }}
-            >
-              เริ่มการเช็คชื่อ
-            </Button>
+            ></MyButton>
           </div>
         </div>
       </div>

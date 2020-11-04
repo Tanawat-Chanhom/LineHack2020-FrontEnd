@@ -14,8 +14,7 @@
 }
 
 .titleContainer {
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 47px;
   color: #ffffff;
   text-align: center;
   margin: 20px;
@@ -50,7 +49,28 @@
 
 .buttonContainer button:nth-child(1) {
   background-color: #e5a52d;
-  font-weight: bold;
   font-size: 23px;
   width: fit-content;
+}
+
+/* second Page */
+
+.successContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.successContainer img {
+  width: 132px;
+  height: 132px;
+  margin: 20px 0px;
+}
+
+.successContainer label {
+  font-size: 47px;
+  color: #ffffff;
+  text-align: center;
+  margin: 10px 0px;
 }

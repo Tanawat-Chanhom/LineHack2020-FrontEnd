@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import style from "./styles.module.css";
-import { Button, TextField } from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 import liff from "@line/liff";
 import cx from "classnames";
 import MyButton from "../../compoments/button/Button";
@@ -14,7 +14,7 @@ export default class createRoom extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pageState: 2,
+      pageState: 0,
       days: [
         {
           name: "จันทร์",
@@ -242,15 +242,13 @@ export default class createRoom extends Component {
         </table>
       </div>
       <div className={style.buttonContainer}>
-        <Button
-          variant="contained"
-          color="primary"
+        <MyButton
+          label={"สร้างห้อง"}
           onClick={() => {
             liff.closeWindow();
           }}
-        >
-          สร้างห้อง
-        </Button>
+          fontSize={49}
+        ></MyButton>
       </div>
     </div>
   );
