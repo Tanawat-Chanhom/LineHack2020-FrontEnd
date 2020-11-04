@@ -1,0 +1,65 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  min-height: 100vh;
+  overflow: scroll;
+  padding: 0px 20px;
+}
+
+.elementContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 0px;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.titleContainer {
+  font-size: 47px;
+  color: #ffffff;
+  text-align: center;
+  margin: 10px;
+}
+
+.titleContainer label {
+  transform: translateY(3px);
+}
+
+.quizzes {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.quizContainer {
+  background-color: #ffffff1c;
+  border: 2px solid #ffffff;
+  padding: 8px 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.quizContainer label {
+  font-size: 30px;
+  transform: translateY(3px);
+}
+
+.selectQuiz {
+  border: 2px solid #e5a52d;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.buttonContainer div {
+  width: 40%;
+  max-width: unset;
+  min-width: unset;
+}

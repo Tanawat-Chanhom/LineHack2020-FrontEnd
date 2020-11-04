@@ -8,6 +8,7 @@ export default class Button extends Component {
         className={style.buttonContainer}
         style={{
           backgroundColor: this.props.backgroundColor,
+          width: "",
         }}
         onClick={this.props.onClick}
       >
