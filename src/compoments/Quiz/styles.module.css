@@ -1,0 +1,73 @@
+.elementContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 0px;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.titleContainer {
+  font-size: 47px;
+  color: #fcc55d;
+  text-align: left;
+  margin: 10px;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.buttonContainer div {
+  width: 40%;
+  max-width: unset;
+  min-width: unset;
+}
+
+.textFieldContainer {
+  margin: 10px 0px;
+}
+
+.textFieldContainer div {
+  padding: unset;
+}
+
+.textFieldContainer textarea {
+  border: 1px solid #ffffff;
+  border-radius: 15px;
+  padding: 10px;
+  color: #ffffff;
+}
+
+.textFieldContainer input {
+  border: 1px solid #ffffff;
+  border-radius: 15px;
+  color: #ffffff;
+}
+
+.textFieldContainer fieldset {
+  border: 0;
+}
+
+.textFieldSelected input {
+  border-color: #2dc300;
+  color: #2dc300;
+}
+
+.paginationDotContainer {
+  width: 100%;
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.paginationDot {
+  width: 17px;
+  height: 17px;
+  border-radius: 100em;
+  margin: 0px 5px;
+}

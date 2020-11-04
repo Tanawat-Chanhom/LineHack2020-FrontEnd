@@ -65,17 +65,6 @@ export default class createQuiz extends Component {
           })
         )}
       </div>
-      {/* <div className={style.buttonContainer}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            this.setState({ pageState: 1 });
-          }}
-        >
-          เริ่มสร้างควิซ
-        </Button>
-      </div> */}
       <div className={style.buttonContainer}>
         <div
           style={{ backgroundColor: "#E5A52D" }}
@@ -172,17 +161,6 @@ export default class createQuiz extends Component {
           );
         })}
       </div>
-      {/* <div className={style.buttonContainer}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            this.setState({ pageState: 2 });
-          }}
-        >
-          เริ่มสร้างควิซ
-        </Button>
-      </div> */}
       <div
         className={style.buttonContainer}
         style={{ justifyContent: "center" }}
