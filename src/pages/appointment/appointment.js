@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import style from "./styles.module.css";
-import { Button, TextField} from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
 import liff from "@line/liff";
 import cx from "classnames";
+import MyButton from "../../compoments/button/Button";
 
 //Image
 import TA from "../../static/image/TA-LOGO.png";
@@ -48,7 +49,7 @@ export default class appointment extends Component {
                         variant="outlined"
                     />
                 </div>
-                <div className={cx(style.textFieldContainer,style.textFieldContainer2)}>
+                <div className={cx(style.textFieldContainer, style.textFieldContainer2)}>
                     <label>วันที่</label>
                     <TextField
                         id="standard-basic"
@@ -67,7 +68,7 @@ export default class appointment extends Component {
                         variant="outlined"
                     />
                 </div>
-                <div className={cx(style.textFieldContainer,style.textFieldContainer2)}>
+                <div className={cx(style.textFieldContainer, style.textFieldContainer2)}>
                     <label>เวลา</label>
                     <div className={style.timeContainer}>
                         <TextField
@@ -108,32 +109,42 @@ export default class appointment extends Component {
                     </div>
 
                 </div>
-                <div className={style.textFieldContainer}>
+                <div className={style.textAreaContainer}>
                     <label>คำอธิบายเพิ่มเติม</label>
                     <TextField
                         id="standard-basic"
-                        fullWidth
+                        multiline
+                        rows={6}
+                        // fullWidth
 
                         // InputLabelProps={{
                         //   shrink: true,
                         // }}
+                        // InputProps={{
+                        //     disableUnderline: true,
+                        // }}
                         InputProps={{
-                            disableUnderline: true,
+                            classes: {
+                                root: {
+                                    "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+                                        borderColor: "red"
+                                      },
+                                },
+                            },
                         }}
                         variant="outlined"
                     />
                 </div>
             </div>
             <div className={style.buttonContainer}>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    oonClick={() => {
+                <MyButton
+                    label={"ถัดไป"}
+                    color={"#ffffff"}
+                    backgroundColor={"#e5a52d"}
+                    onClick={() => {
                         liff.closeWindow();
-                      }}
-                >
-                    ถัดไป
-        </Button>
+                    }}
+                ></MyButton>
             </div>
         </div>
     );

@@ -82,21 +82,20 @@ img {
     white-space: nowrap;
     margin: 5px 10px;
     color: #ffffff;
-    font-weight: bolder;
-    font-size: 25px;
+    /* font-weight: bolder; */
+    font-size: 47px;
 }
 
 .textFieldContainer input {
     border: 1px solid #ffffff;
-    border-radius: 100em;
+    border-radius: 1em;
     color: white;
-    
 }
+
 .textFieldContainer2 input {
     border: 1px solid #ffffff;
     color: #2C3E50;
     background-color: #ffffff;
-    
 }
 
 .textFieldContainer fieldset {
@@ -110,18 +109,19 @@ img {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 10px;
 }
 
 .buttonContainer button {
-    margin: 10px;
-    border-radius: 100em;
+    /* margin: 5px; */
+    border-radius: 1em;
     width: 100%;
 }
 
 .buttonContainer button:nth-child(1) {
     background-color: #e5a52d;
-    font-weight: bold;
-    font-size: 23px;
+    /* font-weight: bold; */
+    font-size: 30px;
 }
 
 .buttonContainer button:nth-child(2) {
@@ -145,3 +145,33 @@ img {
    margin: 20px 0px;
    background-color: red;
 } */
+
+.textAreaContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.textAreaContainer label {
+    width: 40%;
+    white-space: nowrap;
+    margin: 5px 10px;
+    color: #ffffff;
+    /* font-weight: bolder; */
+    font-size: 47px;
+}
+
+.textAreaContainer input {
+    border: 1px solid #ffffff;
+    border-radius: 1em;
+    color: #ffffff !important;
+}
+
+.textAreaContainer fieldset {
+    border: 1;
+    border-color: #ffffff;
+    border-radius: 1em;
+}
+Textarea{
+    color:#ffffff !important;
+    border: 1px solid #ffffff;
+}
