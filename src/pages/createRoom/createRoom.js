@@ -3,54 +3,57 @@ import style from "./styles.module.css";
 import { Button, TextField } from "@material-ui/core";
 import liff from "@line/liff";
 import cx from "classnames";
+import MyButton from "../../compoments/button/Button";
 
 //Image
 import TA from "../../static/image/TA-LOGO.png";
+import Calendar from "../../static/image/Icon awesome-calendar-alt.png";
+import Clock from "../../static/image/Icon material-access-time.png";
 
 export default class createRoom extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pageState: 0,
+      pageState: 2,
       days: [
         {
-          name: "Monday",
+          name: "จันทร์",
           isPress: false,
           openClass: "07:00",
           closeClass: "15:00",
         },
         {
-          name: "Tuesday",
+          name: "อังคาร",
           isPress: false,
           openClass: "07:00",
           closeClass: "15:00",
         },
         {
-          name: "Wednesday",
+          name: "พุธ",
           isPress: false,
           openClass: "07:00",
           closeClass: "15:00",
         },
         {
-          name: "Thursday",
+          name: "พฤหัส",
           isPress: false,
           openClass: "07:00",
           closeClass: "15:00",
         },
         {
-          name: "Friday",
+          name: "ศุกร์",
           isPress: false,
           openClass: "07:00",
           closeClass: "15:00",
         },
         {
-          name: "Saturday",
+          name: "เสาร์",
           isPress: false,
           openClass: "07:00",
           closeClass: "15:00",
         },
         {
-          name: "Sunday",
+          name: "อาทิตย์",
           isPress: false,
           openClass: "07:00",
           closeClass: "15:00",
@@ -66,20 +69,21 @@ export default class createRoom extends Component {
         <h1 className={style.titleText}>ผู้ช่วยสอน</h1>
       </div>
       <div className={style.buttonContainer}>
-        <Button
-          variant="contained"
-          color="primary"
+        <MyButton
+          label={"เปิดห้องเรียน"}
+          color={"#ffffff"}
+          backgroundColor={"#E5A52D"}
           onClick={() => {
             this.setState({
               pageState: 1,
             });
           }}
-        >
-          เปิดห้องเรียน
-        </Button>
-        <Button variant="contained" color="primary">
-          วิธีใช้
-        </Button>
+        ></MyButton>
+        <MyButton
+          label={"วิธีใช้"}
+          color={"#111111"}
+          backgroundColor={"#ffffff"}
+        ></MyButton>
       </div>
     </div>
   );
@@ -100,9 +104,7 @@ export default class createRoom extends Component {
             }}
             InputProps={{
               classes: {
-                root: {
-                  
-                },
+                root: {},
               },
             }}
             variant="outlined"
@@ -114,9 +116,6 @@ export default class createRoom extends Component {
             id="standard-basic"
             type="number"
             fullWidth
-            // InputLabelProps={{
-            //   shrink: true,
-            // }}
             InputProps={{
               disableUnderline: true,
             }}
@@ -125,17 +124,17 @@ export default class createRoom extends Component {
         </div>
       </div>
       <div className={style.buttonContainer}>
-        <Button
-          variant="contained"
-          color="primary"
+        <MyButton
+          label={"ถัดไป"}
+          backgroundColor={"#E5A52D"}
+          color={"#ffffff"}
+          fontSize={49}
           onClick={() => {
             this.setState({
               pageState: 2,
             });
           }}
-        >
-          ถัดไป
-        </Button>
+        ></MyButton>
       </div>
     </div>
   );
@@ -179,8 +178,14 @@ export default class createRoom extends Component {
       <div className={style.daysTableContainer}>
         <table>
           <tr>
-            <th>วันที่เรียน</th>
-            <th>เวลาเรียน</th>
+            <th>
+              <img src={Calendar} alt="Calendar" />
+              <label>วันที่เรียน</label>
+            </th>
+            <th>
+              <img src={Clock} alt="Clock" />
+              <label>เวลาเรียน</label>
+            </th>
           </tr>
           {state.state.days.map((data, key) => {
             return data.isPress === true ? (

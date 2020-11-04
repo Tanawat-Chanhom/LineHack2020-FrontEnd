@@ -29,8 +29,8 @@
 .titleText {
   margin: 20px;
   color: #ffffff;
-  font-weight: bold;
-  font-size: 40px;
+  font-size: 97px;
+  font-weight: 100;
 }
 
 .buttonContainer {
@@ -48,14 +48,12 @@
 
 .buttonContainer button:nth-child(1) {
   background-color: #e5a52d;
-  font-weight: bold;
   font-size: 23px;
 }
 
 .buttonContainer button:nth-child(2) {
   background-color: #ecf0f1;
   color: #2c3e50;
-  font-weight: bold;
   font-size: 23px;
 }
 
@@ -74,8 +72,7 @@ img {
 }
 
 .title2 label {
-  font-weight: bold;
-  font-size: 20px;
+  font-size: 40px;
   color: #ffffff;
   margin: 20px 0px;
 }
@@ -86,7 +83,7 @@ img {
 
 .inputContainer2 {
   width: 100%;
-  margin: 10px 0px;
+  margin: 20px 0px;
 }
 
 .textFieldContainer {
@@ -103,8 +100,7 @@ img {
   white-space: nowrap;
   margin: 5px 10px;
   color: #ffffff;
-  font-weight: bolder;
-  font-size: 25px;
+  font-size: 52px;
 }
 
 .textFieldContainer input {
@@ -127,8 +123,7 @@ img {
 }
 
 .titleLabel3 {
-  font-weight: bold;
-  font-size: 20px;
+  font-size: 33px;
   color: #ffffff;
   margin: 0px 0px 10px 0px;
 }
@@ -144,13 +139,17 @@ img {
   border: 1px #ffffff solid;
   padding: 10px;
   margin: 5px;
-  border-radius: 0.5em;
+  border-radius: 18px;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #ffffff 0%;
   transition: all 0.2s ease;
   color: white;
+}
+
+.dayContainer label {
+  font-size: 42px;
 }
 
 .dayBackgroudContainer {
@@ -167,7 +166,6 @@ img {
 }
 
 table {
-  font-family: arial, sans-serif;
   border-collapse: collapse;
   width: 100%;
   color: #ffffff;
@@ -178,6 +176,24 @@ th {
   border: 1px solid #707070;
   text-align: center;
   padding: 8px;
+  font-size: 38px;
+  font-weight: 100;
+}
+
+th {
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+th img {
+  width: 25px;
+  height: 25px;
+  margin: 0px 10px;
+}
+
+th label {
+  transform: translateY(3px);
 }
 
 .textFieldTimeContainer {
@@ -191,7 +207,6 @@ th {
 
 .textFieldTimeContainer label {
   margin: 0px 10px;
-  font-weight: bold;
 }
 
 .textFieldTimeContainer input {

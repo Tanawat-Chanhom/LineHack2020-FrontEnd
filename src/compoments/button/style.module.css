@@ -1,0 +1,30 @@
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  max-width: 230px;
+  min-width: 230px;
+  bottom: 0%;
+  margin: 10px 0px;
+  background-color: #e5a52d;
+  padding: 6px 10px;
+  border-radius: 100em;
+}
+
+.buttonContainer label {
+  transform: translateY(3px);
+  font-size: 54px;
+  color: #ffffff;
+}
+
+.imgContainer {
+  height: 50px;
+  width: 50px;
+  margin: 0px 10px;
+}
+
+.imgContainer img {
+  height: 50px;
+  width: 50px;
+}
