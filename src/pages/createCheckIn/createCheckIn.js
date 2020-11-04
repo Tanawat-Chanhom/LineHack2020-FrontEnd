@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import style from "./styles.module.css";
-import { Button, TextField } from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 import MyButton from "../../compoments/button/Button";
 
 import Timer from "../../static/image/Icon ionic-ios-timer.png";

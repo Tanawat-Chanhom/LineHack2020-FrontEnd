@@ -10,6 +10,7 @@ import createCheckIn from "./pages/createCheckIn/createCheckIn";
 import appointment from "./pages/appointment/appointment";
 import checkIn from "./pages/checkIn/checkIn";
 import createQuiz from "./pages/createQuiz/createQuiz";
+import quizzes from "./pages/quizzes/quizzes";
 
 function App() {
   liff.init({ liffId: "1655106533-ba7L0Rw0" });
@@ -27,6 +28,7 @@ function App() {
           ></Route>
           <Route exact path="/check-in" component={checkIn}></Route>
           <Route exact path="/create-quiz" component={createQuiz}></Route>
+          <Route exact path="/quizzes" component={quizzes}></Route>
           <Route component={notFound}></Route>
         </Switch>
       </Router>
