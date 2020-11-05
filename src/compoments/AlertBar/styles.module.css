@@ -1,5 +1,5 @@
 .container {
-  position: absolute;
+  position: fixed;
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.205);
@@ -9,13 +9,13 @@
 }
 
 .barContainer {
-  position: fixed;
   max-width: 86vw;
   background-color: white;
   padding: 10px 10px;
   margin: 20px 10px;
   border-radius: 0.5em;
   text-align: center;
+
   animation-name: bar;
   animation-duration: 0.4s;
   animation-fill-mode: forwards;
