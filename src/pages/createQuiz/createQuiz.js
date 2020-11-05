@@ -4,6 +4,7 @@ import cx from "classnames";
 import { TextField } from "@material-ui/core";
 import liff from "@line/liff";
 import MyButton from "../../compoments/button/Button";
+import AlertBar from "../../compoments/AlertBar/AlertBar";
 
 import AddIcon from "../../static/image/Icon awesome-plus-circle.png";
 import AddChoies from "../../static/image/Icon awesome-plus-circle-2.png";
@@ -18,11 +19,12 @@ export default class createQuiz extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pageState: 2,
+      pageState: 0,
       quizName: "",
       fullPoint: 1,
       currentQuestion: 0,
       errorMessage: "",
+      alretState: false,
       quizOption: [
         {
           optionName: "เลือกตอบแบบปรนัย",
@@ -92,6 +94,7 @@ export default class createQuiz extends Component {
     } else {
       this.setState({
         errorMessage: errorMesage,
+        alretState: true,
       });
     }
   };
@@ -489,6 +492,11 @@ export default class createQuiz extends Component {
             console.log(quizOption);
             if (quizName !== "" && Number(fullPoint) !== 0 && quizOption) {
               this.setState({ pageState: 2 });
+            } else {
+              this.setState({
+                errorMessage: "Enter your information!!",
+                alretState: true,
+              });
             }
           }}
         ></MyButton>
@@ -580,6 +588,21 @@ export default class createQuiz extends Component {
   };
 
   render() {
-    return <div className={style.container}>{this.pageState()}</div>;
+    return (
+      <div className={style.container}>
+        {this.pageState()}
+        <AlertBar
+          open={this.state.alretState}
+          label={this.state.errorMessage}
+          backgroundColor={"#f44336"}
+          color={"#ffffff"}
+          onClose={() => {
+            this.setState({
+              alretState: false,
+            });
+          }}
+        />
+      </div>
+    );
   }
 }
