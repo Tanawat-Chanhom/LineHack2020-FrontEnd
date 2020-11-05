@@ -13,10 +13,70 @@ export default class createHomework extends Component {
         super(props);
         this.state = {
             pageState: 0,
+            // quizName: "",
+            // fullPoint: 0,
+            // currentQuestion: 0,
+            // quizOption: [
+            //     {
+            //         optionName: "เลือกตอบแบบปรนัย",
+            //         isPress: false,
+            //     },
+            //     {
+            //         optionName: "เลือกตอบถูก/ผิด",
+            //         isPress: false,
+            //     },
+            // ],
+            oldHomework: [
+                {
+                    homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 1 และ 2",
+                    exp: "ส่งพรุ่งนี้",
+                },
+                {
+                    homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 3 และ 4",
+                    exp: "เหลืออีก 14 วัน",
+                },
+                {
+                    homeworkName: "บันทึกการอ่าน",
+                    exp: "เหลืออีก 28 วัน",
+                },
+            ],
+            // newQuiz: [],
         };
     }
-
-    secondPage = (
+    firstPage = (state) => (
+        <div className={style.elementsContainer2}>
+            <div className={style.titleContainer}>
+                {/* <img src={TA} alt="TA-LOGO" /> */}
+                <h1 className={style.titleText}>การบ้านทั้งหมดในขณะนี้</h1>
+            </div>
+            <div className={style.quizListContainer}>
+                {state.state.oldHomework.length === 0 ? (
+                    <label style={{ color: "gray" }}>
+                        - ท่านยังไม่ได้สั่งการบ้านใดๆ -
+                    </label>
+                ) : (
+                        state.state.oldHomework.map((data, key) => {
+                            return (
+                                <div className={style.quizContainer} key={key}>
+                                    <label>{data.homeworkName}</label>
+                                </div>
+                            );
+                        })
+                    )}
+            </div>
+            <div className={style.buttonContainer}>
+                <MyButton
+                    label={"สั่งการบ้านเพิ่ม"}
+                    color={"#ffffff"}
+                    backgroundColor={"#e5a52d"}
+                    onClick={() => {
+                        this.setState({ pageState: 1 });
+                    }}
+                ></MyButton>
+            </div>
+        </div>
+    );
+    thirdPage = (
         <div className={style.elementsContainer2}>
             <div className={style.titleContainer}>
                 <img src={TA} alt="TA-LOGO" />
@@ -25,124 +85,51 @@ export default class createHomework extends Component {
         </div>
     );
 
-    firstPage = (
+    secondPage = (
         <div className={cx(style.elementsContainer, style.elementsContainer2)}>
-            {/* <div className={style.title}>
-                <label>กรุณากรอกข้อมูลนักเรียนของท่าน</label>
-            </div> */}
             <div className={style.inputContainer}>
                 <div className={style.textFieldContainer}>
-                    <label>นัดหมายสำหรับ</label>
+                    <label>ระบุชื่อการบ้าน</label>
                     <TextField
-                        id="standard-basic"
                         fullWidth
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        InputProps={{
-                            classes: {
-                                root: {
-
-                                },
-                            },
-                        }}
                         variant="outlined"
                     />
                 </div>
                 <div className={cx(style.textFieldContainer, style.textFieldContainer2)}>
-                    <label>วันที่</label>
+                    <label>วันที่และเวลาส่ง</label>
                     <TextField
-                        id="standard-basic"
                         type="date"
                         fullWidth
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        InputProps={{
-                            classes: {
-                                root: {
-
-                                },
-                            },
-                        }}
                         variant="outlined"
                     />
                 </div>
                 <div className={cx(style.textFieldContainer, style.textFieldContainer2)}>
-                    <label>เวลา</label>
+                    <label>ก่อนเวลา</label>
                     <div className={style.timeContainer}>
                         <TextField
-                            id="standard-basic"
                             type="time"
-                            fullWidth
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            InputProps={{
-                                classes: {
-                                    root: {
-
-                                    },
-                                },
-                            }}
                             variant="outlined"
-                        />
-                        <div>
-                            <label>ถึง</label>
-                        </div>
-                        <TextField
-                            id="standard-basic"
-                            type="time"
-                            fullWidth
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            InputProps={{
-                                classes: {
-                                    root: {
-
-                                    },
-                                },
-                            }}
-                            variant="outlined"
+                            
                         />
                     </div>
-
                 </div>
                 <div className={style.textAreaContainer}>
                     <label>คำอธิบายเพิ่มเติม</label>
                     <TextField
-                        id="standard-basic"
                         multiline
                         rows={6}
                         // fullWidth
-
-                        // InputLabelProps={{
-                        //   shrink: true,
-                        // }}
-                        // InputProps={{
-                        //     disableUnderline: true,
-                        // }}
-                        InputProps={{
-                            classes: {
-                                root: {
-                                    "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-                                        borderColor: "red"
-                                      },
-                                },
-                            },
-                        }}
                         variant="outlined"
                     />
                 </div>
             </div>
             <div className={style.buttonContainer}>
                 <MyButton
-                    label={"ถัดไป"}
+                    label={"สั่งการบ้าน"}
                     color={"#ffffff"}
                     backgroundColor={"#e5a52d"}
                     onClick={() => {
-                        liff.closeWindow();
+                        this.setState({ pageState: 0 });
                     }}
                 ></MyButton>
             </div>
@@ -152,13 +139,13 @@ export default class createHomework extends Component {
     pageState = (state) => {
         switch (this.state.pageState) {
             case 0:
-                return this.firstPage;
+                return this.firstPage(state);
 
             case 1:
                 return this.secondPage;
 
-            //   case 2:
-            //     return this.thirdPage(state);
+            case 2:
+                return this.thirdPage;
 
             default:
                 break;

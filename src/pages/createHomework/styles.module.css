@@ -12,7 +12,7 @@
 /* secondPage styles */
 
 .elementsContainer2 {
-    padding: 40px 0px;
+    /* padding: 40px 0px; */
     width: 100%;
     max-width: 500px;
     /* height: 100%; */
@@ -37,7 +37,7 @@ img {
 .titleText {
     margin: 20px;
     color: #ffffff;
-    font-weight: bold;
+    /* font-weight: bold; */
     font-size: 40px;
 }
 
@@ -50,7 +50,7 @@ img {
 }
 
 .title label {
-    font-weight: bold;
+    /* font-weight: bold; */
     font-size: 20px;
     color: #ffffff;
     margin: 20px 0px;
@@ -171,7 +171,37 @@ img {
     border-color: #ffffff;
     border-radius: 1em;
 }
-Textarea{
-    color:#ffffff !important;
+
+Textarea {
+    color: #ffffff !important;
     border: 1px solid #ffffff;
+}
+
+.quizContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    border: 1px solid #ffffff;
+    border-radius: 15px;
+    padding: 0px 10px;
+    margin: 6px 0px;
+    width: 100%;
+    height: 40px;
+}
+
+.quizListContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.quizContainer label {
+    font-size: 30px;
+    color: #ffffff;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    margin: 0px 5px;
 }
