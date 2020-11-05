@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import style from "./styles.module.css";
-import { Button, TextField } from "@material-ui/core";
-import liff from "@line/liff";
+import { TextField } from "@material-ui/core";
+// import liff from "@line/liff";
 import cx from "classnames";
 import MyButton from "../../compoments/button/Button";
 
@@ -34,69 +34,65 @@ export default class appointment extends Component {
                 <div className={style.textFieldContainer}>
                     <label>ชื่อ</label>
                     <TextField
-                        id="standard-basic"
                         fullWidth
                         InputLabelProps={{
                             shrink: true,
                         }}
-                        InputProps={{
-                            classes: {
-                                root: {
+                        // InputProps={{
+                        //     classes: {
+                        //         root: {
 
-                                },
-                            },
-                        }}
+                        //         },
+                        //     },
+                        // }}
                         variant="outlined"
                     />
                 </div>
                 <div className={style.textFieldContainer}>
                     <label>นามสกุล</label>
                     <TextField
-                        id="standard-basic"
                         fullWidth
                         InputLabelProps={{
                             shrink: true,
                         }}
-                        InputProps={{
-                            classes: {
-                                root: {
+                        // InputProps={{
+                        //     classes: {
+                        //         root: {
 
-                                },
-                            },
-                        }}
+                        //         },
+                        //     },
+                        // }}
                         variant="outlined"
                     />
                 </div>
                 <div className={style.textFieldContainer}>
                     <label>ชื่อเล่น</label>
                     <TextField
-                        id="standard-basic"
                         fullWidth
                         InputLabelProps={{
                             shrink: true,
                         }}
-                        InputProps={{
-                            classes: {
-                                root: {
+                        // InputProps={{
+                        //     classes: {
+                        //         root: {
 
-                                },
-                            },
-                        }}
+                        //         },
+                        //     },
+                        // }}
                         variant="outlined"
                     />
                 </div>
                 <div className={style.textFieldContainer}>
                     <label>เลขที่</label>
                     <TextField
-                        id="standard-basic"
                         type="number"
                         fullWidth
                         // InputLabelProps={{
                         //   shrink: true,
                         // }}
-                        InputProps={{
-                            disableUnderline: true,
-                        }}
+                        // InputProps={{
+                        //     disableUnderline: true,
+                        // }}
                         variant="outlined"
                     />
                 </div>

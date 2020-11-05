@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import style from "./styles.module.css";
-import { Button, TextField } from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 import liff from "@line/liff";
 import cx from "classnames";
 import MyButton from "../../compoments/button/Button";
@@ -34,37 +34,35 @@ export default class appointment extends Component {
                 <div className={style.textFieldContainer}>
                     <label>นัดหมายสำหรับ</label>
                     <TextField
-                        id="standard-basic"
                         fullWidth
                         InputLabelProps={{
                             shrink: true,
                         }}
-                        InputProps={{
-                            classes: {
-                                root: {
+                        // InputProps={{
+                        //     classes: {
+                        //         root: {
 
-                                },
-                            },
-                        }}
+                        //         },
+                        //     },
+                        // }}
                         variant="outlined"
                     />
                 </div>
                 <div className={cx(style.textFieldContainer, style.textFieldContainer2)}>
                     <label>วันที่</label>
                     <TextField
-                        id="standard-basic"
                         type="date"
                         fullWidth
                         InputLabelProps={{
                             shrink: true,
                         }}
-                        InputProps={{
-                            classes: {
-                                root: {
+                        // InputProps={{
+                        //     classes: {
+                        //         root: {
 
-                                },
-                            },
-                        }}
+                        //         },
+                        //     },
+                        // }}
                         variant="outlined"
                     />
                 </div>
@@ -72,38 +70,38 @@ export default class appointment extends Component {
                     <label>เวลา</label>
                     <div className={style.timeContainer}>
                         <TextField
-                            id="standard-basic"
+
                             type="time"
                             fullWidth
                             InputLabelProps={{
                                 shrink: true,
                             }}
-                            InputProps={{
-                                classes: {
-                                    root: {
+                            // InputProps={{
+                            //     classes: {
+                            //         root: {
 
-                                    },
-                                },
-                            }}
+                            //         },
+                            //     },
+                            // }}
                             variant="outlined"
                         />
                         <div>
                             <label>ถึง</label>
                         </div>
                         <TextField
-                            id="standard-basic"
+
                             type="time"
                             fullWidth
                             InputLabelProps={{
                                 shrink: true,
                             }}
-                            InputProps={{
-                                classes: {
-                                    root: {
+                            // InputProps={{
+                            //     classes: {
+                            //         root: {
 
-                                    },
-                                },
-                            }}
+                            //         },
+                            //     },
+                            // }}
                             variant="outlined"
                         />
                     </div>
@@ -112,7 +110,6 @@ export default class appointment extends Component {
                 <div className={style.textAreaContainer}>
                     <label>คำอธิบายเพิ่มเติม</label>
                     <TextField
-                        id="standard-basic"
                         multiline
                         rows={6}
                         // fullWidth
@@ -123,15 +120,15 @@ export default class appointment extends Component {
                         // InputProps={{
                         //     disableUnderline: true,
                         // }}
-                        InputProps={{
-                            classes: {
-                                root: {
-                                    "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-                                        borderColor: "red"
-                                      },
-                                },
-                            },
-                        }}
+                        // InputProps={{
+                        //     classes: {
+                        //         root: {
+                        //             "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+                        //                 borderColor: "red"
+                        //               },
+                        //         },
+                        //     },
+                        // }}
                         variant="outlined"
                     />
                 </div>
