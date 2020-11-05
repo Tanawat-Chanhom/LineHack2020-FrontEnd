@@ -4,9 +4,9 @@
   justify-content: center;
   align-items: center;
   max-width: 230px;
-  min-width: 230px;
+  width: 100%;
   bottom: 0%;
-  margin: 10px 0px;
+  margin: 10px 5px;
   background-color: #e5a52d;
   padding: 6px 10px;
   border-radius: 100em;

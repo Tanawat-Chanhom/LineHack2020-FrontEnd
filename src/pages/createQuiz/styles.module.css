@@ -19,16 +19,23 @@
 }
 
 .titleContainer {
+  width: 100%;
   font-size: 45px;
   color: #ffffff;
-  text-align: center;
-  margin: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.titleContainer label {
+  transform: translateY(3px);
 }
 
 .buttonContainer {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   width: 100%;
   bottom: 0%;
@@ -47,32 +54,8 @@
   margin-left: 10px;
 }
 
-.buttonContainer div:nth-child(1) {
-  background-color: #ffffff;
-  color: black;
-  font-size: 48px;
-  text-align: center;
-  padding: 10px 0px;
-  margin: 0px 10px;
-  width: 100%;
-  border-radius: 1em;
-  vertical-align: sup;
-}
-
 .buttonContainer div label {
   transform: translateY(3px);
-}
-
-.buttonContainer div:nth-child(2) {
-  background-color: #e5a52d;
-  font-size: 48px;
-  padding: 0px;
-  margin: 0px;
-  text-align: center;
-  padding: 10px 0px;
-  margin: 0px 10px;
-  width: 100%;
-  border-radius: 1em;
 }
 
 .quizListContainer {
@@ -126,11 +109,6 @@
   width: 100%;
 }
 
-.titleAlignLift {
-  text-align: left;
-  margin: 20px 0px 0px 0px;
-}
-
 .quizOptionContainer {
   width: 100%;
   display: flex;
@@ -169,6 +147,7 @@
 
 .questionContainer {
   width: 100%;
+  margin: 10px 0px;
 }
 
 .titleQuestionColor {
@@ -242,10 +221,6 @@
   width: 20px;
   height: 20px;
   margin: 0px 5px;
-}
-
-.paginationDotIsShow {
-  background-color: #e5a52d;
 }
 
 .trueFalseSelectChoiceContainer {
