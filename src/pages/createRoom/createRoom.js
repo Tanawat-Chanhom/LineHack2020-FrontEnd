@@ -5,6 +5,7 @@ import liff from "@line/liff";
 import cx from "classnames";
 import MyButton from "../../compoments/button/Button";
 import AlertBar from "../../compoments/AlertBar/AlertBar";
+import FinalPage from "../../compoments/FinalPage/FinalPage";
 
 //Image
 import TA from "../../static/image/TA-LOGO.png";
@@ -15,7 +16,7 @@ export default class createRoom extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pageState: 0,
+      pageState: 3,
       subjectName: "",
       credit: 0,
       days: [
@@ -275,6 +276,8 @@ export default class createRoom extends Component {
 
       case 2:
         return this.thirdPage(state);
+      case 3:
+        return <FinalPage></FinalPage>;
 
       default:
         break;

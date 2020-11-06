@@ -1,0 +1,20 @@
+.component {
+  width: 100%;
+  margin: 10px 0px;
+  border: 1px solid #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.component label {
+  font-size: 62px;
+  color: #ffffff;
+}
+
+.component img {
+  width: 132px;
+  height: 132px;
+  margin: 30px 0px;
+}
