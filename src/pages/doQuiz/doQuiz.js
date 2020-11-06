@@ -4,6 +4,7 @@ import cx from "classnames";
 import liff from "@line/liff";
 import MyButton from "../../compoments/button/Button";
 import Quiz from "../../compoments/Quiz/Quiz";
+import AlertBar from "../../compoments/AlertBar/AlertBar";
 
 export default class doQuiz extends Component {
   constructor(props) {
@@ -11,6 +12,8 @@ export default class doQuiz extends Component {
     this.state = {
       canStart: false,
       pageState: 0,
+      errorMessage: "",
+      alertBar: false,
       quizzes: [
         {
           quizName: "ควิซคณิตศาสตร์ ครั้งที่ 1",
@@ -93,20 +96,40 @@ export default class doQuiz extends Component {
     );
   };
 
-  secondPage = (<Quiz></Quiz>);
-
   pageState = (state) => {
     switch (this.state.pageState) {
       case 0:
         return this.firstPage();
       case 1:
-        return this.secondPage;
+        return (
+          <Quiz
+            onError={(errorMessage) => {
+              this.setState({
+                alertBar: true,
+                errorMessage: errorMessage,
+              });
+            }}
+          ></Quiz>
+        );
       default:
         break;
     }
   };
 
   render() {
-    return <div className={style.container}>{this.pageState(this)}</div>;
+    return (
+      <>
+        <AlertBar
+          label={this.state.errorMessage}
+          open={this.state.alertBar}
+          onClose={() => {
+            this.setState({
+              alertBar: false,
+            });
+          }}
+        ></AlertBar>
+        <div className={style.container}>{this.pageState(this)}</div>
+      </>
+    );
   }
 }

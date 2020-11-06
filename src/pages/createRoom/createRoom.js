@@ -4,6 +4,7 @@ import { TextField } from "@material-ui/core";
 import liff from "@line/liff";
 import cx from "classnames";
 import MyButton from "../../compoments/button/Button";
+import AlertBar from "../../compoments/AlertBar/AlertBar";
 
 //Image
 import TA from "../../static/image/TA-LOGO.png";
@@ -15,6 +16,8 @@ export default class createRoom extends Component {
     super(props);
     this.state = {
       pageState: 0,
+      subjectName: "",
+      credit: 0,
       days: [
         {
           name: "จันทร์",
@@ -88,7 +91,7 @@ export default class createRoom extends Component {
     </div>
   );
 
-  secondPage = (
+  secondPage = () => (
     <div className={cx(style.elementsContainer, style.elementsContainer2)}>
       <div className={style.title2}>
         <label>กรุณากรอกข้อมูลวิชาเรียนของท่าน</label>
@@ -99,15 +102,13 @@ export default class createRoom extends Component {
           <TextField
             id="standard-basic"
             fullWidth
-            InputLabelProps={{
-              shrink: true,
-            }}
-            InputProps={{
-              classes: {
-                root: {},
-              },
-            }}
             variant="outlined"
+            value={this.state.subjectName}
+            onChange={(event) => {
+              this.setState({
+                subjectName: event.target.value,
+              });
+            }}
           />
         </div>
         <div className={style.textFieldContainer}>
@@ -116,10 +117,13 @@ export default class createRoom extends Component {
             id="standard-basic"
             type="number"
             fullWidth
-            InputProps={{
-              disableUnderline: true,
-            }}
             variant="outlined"
+            value={this.state.credit}
+            onChange={(event) => {
+              this.setState({
+                credit: event.target.value,
+              });
+            }}
           />
         </div>
       </div>
@@ -130,16 +134,26 @@ export default class createRoom extends Component {
           color={"#ffffff"}
           fontSize={49}
           onClick={() => {
-            this.setState({
-              pageState: 2,
-            });
+            if (
+              Number(this.state.credit) !== 0 &&
+              this.state.subjectName !== ""
+            ) {
+              this.setState({
+                pageState: 2,
+              });
+            } else {
+              this.setState({
+                alertBar: true,
+                errorMessage: "Please enter your information!!",
+              });
+            }
           }}
         ></MyButton>
       </div>
     </div>
   );
 
-  thirdPage = (state) => (
+  thirdPage = () => (
     <div className={cx(style.elementsContainer, style.elementsContainer2)}>
       <div className={style.titileContainer3}>
         <label className={style.titleLabel3}>กดเลือกวันและเวลาที่เรียน</label>
@@ -148,7 +162,7 @@ export default class createRoom extends Component {
         </label>
       </div>
       <div className={style.daysContainer}>
-        {state.state.days.map((data, key) => {
+        {this.state.days.map((data, key) => {
           return (
             <div
               className={
@@ -158,13 +172,10 @@ export default class createRoom extends Component {
               }
               key={key}
               onClick={() => {
-                let updateArray = state.state.days;
-                let index = updateArray.findIndex(
-                  (obj) => obj.name === data.name
-                );
-                updateArray[index].isPress === true
-                  ? (updateArray[index].isPress = false)
-                  : (updateArray[index].isPress = true);
+                let updateArray = this.state.days;
+                updateArray[key].isPress === true
+                  ? (updateArray[key].isPress = false)
+                  : (updateArray[key].isPress = true);
                 this.setState({
                   days: updateArray,
                 });
@@ -187,7 +198,7 @@ export default class createRoom extends Component {
               <label>เวลาเรียน</label>
             </th>
           </tr>
-          {state.state.days.map((data, key) => {
+          {this.state.days.map((data, key) => {
             return data.isPress === true ? (
               <tr key={key}>
                 <td>{data.name}</td>
@@ -195,17 +206,10 @@ export default class createRoom extends Component {
                   <div className={style.textFieldTimeContainer}>
                     <TextField
                       id="time"
-                      // fullWidth
-                      InputProps={{
-                        disableUnderline: true,
-                      }}
                       type="time"
-                      onChange={(value) => {
-                        let updateArray = state.state.days;
-                        let index = updateArray.findIndex(
-                          (obj) => obj.name === data.name
-                        );
-                        updateArray[index].openClass = value.target.value;
+                      onChange={(event) => {
+                        let updateArray = this.state.days;
+                        updateArray[key].openClass = event.target.value;
                         this.setState({
                           days: updateArray,
                         });
@@ -215,17 +219,10 @@ export default class createRoom extends Component {
                     <label>ถึง</label>
                     <TextField
                       id="time"
-                      // fullWidth
-                      InputProps={{
-                        disableUnderline: true,
-                      }}
                       type="time"
                       onChange={(value) => {
-                        let updateArray = state.state.days;
-                        let index = updateArray.findIndex(
-                          (obj) => obj.name === data.name
-                        );
-                        updateArray[index].closeClass = value.target.value;
+                        let updateArray = this.state.days;
+                        updateArray[key].closeClass = value.target.value;
                         this.setState({
                           days: updateArray,
                         });
@@ -245,7 +242,22 @@ export default class createRoom extends Component {
         <MyButton
           label={"สร้างห้อง"}
           onClick={() => {
-            liff.closeWindow();
+            let days = this.state.days;
+            let passState = 0;
+            days.map((data) => {
+              if (data.isPress === true) {
+                passState++;
+              }
+              return null;
+            });
+            if (passState > 0) {
+              liff.closeWindow();
+            } else {
+              this.setState({
+                alertBar: true,
+                errorMessage: "Please select your day!!",
+              });
+            }
           }}
           fontSize={49}
         ></MyButton>
@@ -259,7 +271,7 @@ export default class createRoom extends Component {
         return this.firstPage;
 
       case 1:
-        return this.secondPage;
+        return this.secondPage();
 
       case 2:
         return this.thirdPage(state);
@@ -270,6 +282,21 @@ export default class createRoom extends Component {
   };
 
   render() {
-    return <div className={style.container}>{this.pageState(this)}</div>;
+    return (
+      <div className={style.container}>
+        {this.pageState(this)}
+        <AlertBar
+          label={this.state.errorMessage}
+          open={this.state.alertBar}
+          onClose={() => {
+            this.setState({
+              alertBar: false,
+            });
+          }}
+          backgroundColor={"#f44336"}
+          color={"#ffffff"}
+        ></AlertBar>
+      </div>
+    );
   }
 }

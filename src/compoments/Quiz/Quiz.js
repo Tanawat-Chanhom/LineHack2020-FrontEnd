@@ -10,6 +10,8 @@ export default class Quiz extends Component {
     super(props);
     this.state = {
       currentQuestion: 0,
+      alertBar: false,
+      errorMessage: "",
       questions: [
         {
           questionName: "ตามกฏทิษฎีของโลปิตาลแล้ว 1+1 เท่ากับเท่าไหร่",
@@ -112,9 +114,6 @@ export default class Quiz extends Component {
                   disabled
                   fullWidth
                   multiline
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
                   variant="outlined"
                   onChange={(event) => {
                     this.setState({
@@ -196,7 +195,30 @@ export default class Quiz extends Component {
                 label={"ส่งควิซ"}
                 fontSize={48}
                 onClick={() => {
-                  liff.closeWindow();
+                  let questions = this.state.questions;
+                  let passState = 0;
+                  let errorMessage = "";
+                  questions.map((questionData, questionIndex) => {
+                    questionData.choices.map((data, index) => {
+                      if (data.isPress === true) {
+                        passState++;
+                        return null;
+                      }
+                      if (index + 1 === questionData.choices.length) {
+                        errorMessage =
+                          "Please select your choice at question " +
+                          (questionIndex + 1);
+                      }
+                      return null;
+                    });
+                    return null;
+                  });
+                  if (passState === this.state.questions.length) {
+                    liff.closeWindow();
+                    console.log("pass");
+                  } else {
+                    this.props.onError(errorMessage);
+                  }
                 }}
               ></MyButton>
             ) : (

@@ -4,6 +4,7 @@ import style from "./styles.module.css";
 import { TextField } from "@material-ui/core";
 import MyButton from "../../compoments/button/Button";
 // import liff from "@line/liff";
+import AlertBar from "../../compoments/AlertBar/AlertBar";
 
 //Image
 import pic from "../../static/image/check.png";
@@ -14,6 +15,8 @@ export default class checkIn extends Component {
     this.state = {
       passCode: "",
       pageState: 0,
+      alertBar: false,
+      errorMessage: "",
     };
   }
 
@@ -45,10 +48,16 @@ export default class checkIn extends Component {
             label={"ยืนยันโค้ด"}
             fontSize={49}
             onClick={() => {
-              this.setState({
-                pageState: 1,
-              });
-              // liff.closeWindow();
+              if (this.state.passCode !== "") {
+                this.setState({
+                  pageState: 1,
+                });
+              } else {
+                this.setState({
+                  errorMessage: "Please enter pass code",
+                  alertBar: true,
+                });
+              }
             }}
           ></MyButton>
         </div>
@@ -79,6 +88,21 @@ export default class checkIn extends Component {
   };
 
   render() {
-    return <div className={style.container}>{this.pageState(this)}</div>;
+    return (
+      <>
+        <AlertBar
+          label={this.state.errorMessage}
+          open={this.state.alertBar}
+          onClose={() => {
+            this.setState({
+              alertBar: false,
+            });
+          }}
+          backgroundColor={"#f44336"}
+          color={"#ffffff"}
+        ></AlertBar>
+        <div className={style.container}>{this.pageState(this)}</div>
+      </>
+    );
   }
 }
