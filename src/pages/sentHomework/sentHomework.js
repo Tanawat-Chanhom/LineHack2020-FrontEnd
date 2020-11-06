@@ -8,7 +8,7 @@ import MyButton from "../../compoments/button/Button";
 //Image
 import TA from "../../static/image/TA-LOGO.png";
 
-export default class viewHomework extends Component {
+export default class sentHomework extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -16,6 +16,16 @@ export default class viewHomework extends Component {
             // quizName: "",
             // fullPoint: 0,
             // currentQuestion: 0,
+            // quizOption: [
+            //     {
+            //         optionName: "เลือกตอบแบบปรนัย",
+            //         isPress: false,
+            //     },
+            //     {
+            //         optionName: "เลือกตอบถูก/ผิด",
+            //         isPress: false,
+            //     },
+            // ],
             oldHomework: [
                 {
                     homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 1 และ 2",
@@ -39,7 +49,7 @@ export default class viewHomework extends Component {
                 {/* <img src={TA} alt="TA-LOGO" /> */}
                 <h1 className={style.titleText}>การบ้านทั้งหมดในขณะนี้</h1>
             </div>
-            <div className={style.quizListContainer}>
+            <div className={style.homeworkListContainer}>
                 {state.state.oldHomework.length === 0 ? (
                     <label style={{ color: "gray" }}>
                         - ท่านยังไม่ได้สั่งการบ้านใดๆ -
@@ -47,7 +57,7 @@ export default class viewHomework extends Component {
                 ) : (
                         state.state.oldHomework.map((data, key) => {
                             return (
-                                <div className={style.quizContainer} key={key}>
+                                <div className={style.homeworkContainer} key={key}>
                                     <label>{data.homeworkName}</label>
                                 </div>
                             );
@@ -79,26 +89,22 @@ export default class viewHomework extends Component {
         <div className={cx(style.elementsContainer, style.elementsContainer2)}>
             <div className={style.inputContainer}>
                 <div className={style.textFieldContainer}>
-                    <label>การบ้าน</label>
+                    <label>ระบุชื่อการบ้าน</label>
                     <TextField
-                        disabled
                         fullWidth
                         variant="outlined"
-                        value="แบบฝึกหัดหลังเรียน บทที่ 1 และ 2"
                     />
                 </div>
                 <div className={cx(style.textFieldContainer, style.textFieldContainer2)}>
-                    <label>วันที่ส่งการบ้าน</label>
+                    <label>วันที่และเวลาส่ง</label>
                     <TextField
                         type="date"
                         fullWidth
                         variant="outlined"
-                        disabled
-                        defaultValue="2020-09-30"
                     />
                 </div>
-                {/* <div className={cx(style.textFieldContainer, style.textFieldContainer2)}>
-                    <label>ก่อนเวลา</label>x
+                <div className={cx(style.textFieldContainer, style.textFieldContainer2)}>
+                    <label>ก่อนเวลา</label>
                     <div className={style.timeContainer}>
                         <TextField
                             type="time"
@@ -106,22 +112,20 @@ export default class viewHomework extends Component {
                             
                         />
                     </div>
-                </div> */}
+                </div>
                 <div className={style.textAreaContainer}>
                     <label>คำอธิบายเพิ่มเติม</label>
                     <TextField
-                        disabled
                         multiline
                         rows={6}
                         // fullWidth
                         variant="outlined"
-                        value="อันนี้ส่งที่ห้องพักอาจารย์นะคะ รวมให้ครบก่อนแล้วค่อยมาส่ง ถ้าใครไม่ส่งคะแนนช่องนี้จะหาย ไปทั้งหมดสิบคะแนนนะคะ เพราะบทละ 5 คะแนนค่ะ"
                     />
                 </div>
             </div>
             <div className={style.buttonContainer}>
                 <MyButton
-                    label={"ย้อนกลับ"}
+                    label={"สั่งการบ้าน"}
                     color={"#ffffff"}
                     backgroundColor={"#e5a52d"}
                     onClick={() => {
