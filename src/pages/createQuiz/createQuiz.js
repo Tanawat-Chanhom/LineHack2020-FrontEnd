@@ -5,10 +5,12 @@ import { TextField } from "@material-ui/core";
 import liff from "@line/liff";
 import MyButton from "../../compoments/button/Button";
 import AlertBar from "../../compoments/AlertBar/AlertBar";
+import DialogBox from "../../compoments/DialogBox/DialogBox";
 
 import AddIcon from "../../static/image/Icon awesome-plus-circle.png";
 import AddChoies from "../../static/image/Icon awesome-plus-circle-2.png";
 import DeleteIcon from "../../static/image/Group 35.png";
+import DeleteIcon2 from "../../static/image/Group 45.png";
 import Choice from "../../static/image/choice.png";
 import Vote from "../../static/image/vote.png";
 import ArowLeft from "../../static/image/Icon awesome-caret-left.png";
@@ -19,7 +21,7 @@ export default class createQuiz extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pageState: 0,
+      pageState: 2,
       quizName: "",
       fullPoint: 1,
       currentQuestion: 0,
@@ -167,12 +169,13 @@ export default class createQuiz extends Component {
       >
         <label>ข้อที่ {key + 1}</label>
         <img
-          src={DeleteIcon}
-          alt="DeleteIcon"
+          src={DeleteIcon2}
+          alt="DeleteIcon2"
           className={style.deleteIcon}
           onClick={() => {
             this.deleteQuestion(key);
           }}
+          style={{ width: 45, height: 45 }}
         />
       </div>
       <div className={style.textFieldContainer}>
@@ -197,7 +200,7 @@ export default class createQuiz extends Component {
           style.titleQuestionColor
         )}
       >
-        <label>ข้อถูก</label>
+        <label>ชอยส์ถูก</label>
       </div>
       <div className={style.textFieldContainer}>
         <TextField
@@ -222,7 +225,7 @@ export default class createQuiz extends Component {
           style.titleQuestionColor
         )}
       >
-        <label>ข้อผิด</label>
+        <label style={{ color: "#F35E5E" }}>ชอยส์ผิด</label>
       </div>
       {data.choices.map((data, index) => {
         return (
@@ -292,12 +295,13 @@ export default class createQuiz extends Component {
       >
         <label>ข้อที่ {key + 1}</label>
         <img
-          src={DeleteIcon}
-          alt="DeleteIcon"
+          src={DeleteIcon2}
+          alt="DeleteIcon2"
           className={style.deleteIcon}
           onClick={() => {
             this.deleteQuestion(key);
           }}
+          style={{ width: 45, height: 45 }}
         />
       </div>
       <div className={style.textFieldContainer}>
@@ -577,6 +581,14 @@ export default class createQuiz extends Component {
     }
   };
 
+  dialog = () => (
+    <div className={style.dialogContainer}>
+      <label style={{ color: "#FFA1A1" }}>ท่านต้องการจะลบควิซ</label>
+      <label style={{ color: "#ffffff" }}>"ควิซคณิตศาสตร์ ครั้งที่ 2"</label>
+      <label style={{ color: "#FFA1A1" }}>หรือไม่ ?</label>
+    </div>
+  );
+
   render() {
     return (
       <div className={style.container}>
@@ -592,6 +604,7 @@ export default class createQuiz extends Component {
             });
           }}
         />
+        <DialogBox component={this.dialog()}></DialogBox>
       </div>
     );
   }
