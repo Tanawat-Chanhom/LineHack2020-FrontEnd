@@ -199,12 +199,14 @@ export default class Quiz extends Component {
                   let passState = 0;
                   let errorMessage = "";
                   questions.map((questionData, questionIndex) => {
-                    questionData.choices.map((data, index) => {
+                    let counter = 0;
+                    questionData.choices.map(function (data, index) {
                       if (data.isPress === true) {
                         passState++;
-                        return null;
+                      } else {
+                        counter++;
                       }
-                      if (index + 1 === questionData.choices.length) {
+                      if (counter === questionData.choices.length) {
                         errorMessage =
                           "Please select your choice at question " +
                           (questionIndex + 1);
@@ -215,7 +217,6 @@ export default class Quiz extends Component {
                   });
                   if (passState === this.state.questions.length) {
                     liff.closeWindow();
-                    console.log("pass");
                   } else {
                     this.props.onError(errorMessage);
                   }

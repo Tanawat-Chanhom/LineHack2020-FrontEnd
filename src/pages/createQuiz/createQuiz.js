@@ -339,19 +339,9 @@ export default class createQuiz extends Component {
             >
               <TextField
                 fullWidth
-                InputLabelProps={{
-                  shrink: true,
-                }}
+                disabled
                 variant="outlined"
-                value={data.choiceName}
-                onChange={(event) => {
-                  let updateArray = this.state.newQuiz;
-                  updateArray[key].choices[index].choiceName =
-                    event.target.value;
-                  this.setState({
-                    newQuiz: updateArray,
-                  });
-                }}
+                value={index === 0 ? "True" : "False"}
               />
             </div>
             <div

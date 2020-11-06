@@ -16,6 +16,12 @@ import createHomework from "./pages/createHomework/createHomework";
 import viewHomework from "./pages/viewHomework/viewHomework";
 import sentHomework from "./pages/sentHomework/sentHomework";
 
+import checkHomework from "./pages/checkHomework/checkHomework";
+import classSummary from "./pages/classSummary/classSummary";
+import endClass from "./pages/endClass/endClass";
+import grading from "./pages/grading/grading";
+import myScore from "./pages/myScore/myScore";
+
 function App() {
   liff.init({ liffId: "1655106533-ba7L0Rw0" });
   return (
@@ -30,14 +36,24 @@ function App() {
             path="/create-check-in"
             component={createCheckIn}
           ></Route>
-          
-          <Route exact path="/create-Homework" component={createHomework}></Route>
-          <Route exact path="/sent-Homework" component={sentHomework}></Route>
-          <Route exact path="/view-Homework" component={viewHomework}></Route>
+
+          <Route
+            exact
+            path="/create-homework"
+            component={createHomework}
+          ></Route>
+          <Route exact path="/sent-homework" component={sentHomework}></Route>
+          <Route exact path="/view-homework" component={viewHomework}></Route>
           <Route exact path="/check-in" component={checkIn}></Route>
           <Route exact path="/create-quiz" component={createQuiz}></Route>
           <Route exact path="/quizzes" component={quizzes}></Route>
           <Route exact path="/do-quiz" component={doQuiz}></Route>
+
+          <Route exact path="/check-homework" component={checkHomework}></Route>
+          <Route exact path="/class-summary" component={classSummary}></Route>
+          <Route exact path="/end-class" component={endClass}></Route>
+          <Route exact path="/grading" component={grading}></Route>
+          <Route exact path="/my-score" component={myScore}></Route>
           <Route component={notFound}></Route>
         </Switch>
       </Router>
