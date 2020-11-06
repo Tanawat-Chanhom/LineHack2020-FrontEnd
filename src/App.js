@@ -13,6 +13,7 @@ import createQuiz from "./pages/createQuiz/createQuiz";
 import quizzes from "./pages/quizzes/quizzes";
 import doQuiz from "./pages/doQuiz/doQuiz";
 import createHomework from "./pages/createHomework/createHomework";
+import viewHomework from "./pages/viewHomework/viewHomework";
 
 function App() {
   liff.init({ liffId: "1655106533-ba7L0Rw0" });
@@ -28,7 +29,9 @@ function App() {
             path="/create-check-in"
             component={createCheckIn}
           ></Route>
+          
           <Route exact path="/create-Homework" component={createHomework}></Route>
+          <Route exact path="/view-Homework" component={viewHomework}></Route>
           <Route exact path="/check-in" component={checkIn}></Route>
           <Route exact path="/create-quiz" component={createQuiz}></Route>
           <Route exact path="/quizzes" component={quizzes}></Route>
