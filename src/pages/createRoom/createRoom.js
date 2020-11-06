@@ -277,7 +277,7 @@ export default class createRoom extends Component {
       case 2:
         return this.thirdPage(state);
       case 3:
-        return <FinalPage></FinalPage>;
+        return <FinalPage label={"เปิดห้องเรียนสำเร็จ"}></FinalPage>;
 
       default:
         break;
