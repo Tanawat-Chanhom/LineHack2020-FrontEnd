@@ -16,16 +16,6 @@ export default class viewHomework extends Component {
             // quizName: "",
             // fullPoint: 0,
             // currentQuestion: 0,
-            // quizOption: [
-            //     {
-            //         optionName: "เลือกตอบแบบปรนัย",
-            //         isPress: false,
-            //     },
-            //     {
-            //         optionName: "เลือกตอบถูก/ผิด",
-            //         isPress: false,
-            //     },
-            // ],
             oldHomework: [
                 {
                     homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 1 และ 2",
@@ -89,21 +79,25 @@ export default class viewHomework extends Component {
         <div className={cx(style.elementsContainer, style.elementsContainer2)}>
             <div className={style.inputContainer}>
                 <div className={style.textFieldContainer}>
-                    <label>ระบุชื่อการบ้าน</label>
+                    <label>การบ้าน</label>
                     <TextField
+                        disabled
                         fullWidth
                         variant="outlined"
+                        value="แบบฝึกหัดหลังเรียน บทที่ 1 และ 2"
                     />
                 </div>
                 <div className={cx(style.textFieldContainer, style.textFieldContainer2)}>
-                    <label>วันที่และเวลาส่ง</label>
+                    <label>วันที่ส่งการบ้าน</label>
                     <TextField
                         type="date"
                         fullWidth
                         variant="outlined"
+                        disabled
+                        defaultValue="2020-09-30"
                     />
                 </div>
-                <div className={cx(style.textFieldContainer, style.textFieldContainer2)}>
+                {/* <div className={cx(style.textFieldContainer, style.textFieldContainer2)}>
                     <label>ก่อนเวลา</label>
                     <div className={style.timeContainer}>
                         <TextField
@@ -112,7 +106,7 @@ export default class viewHomework extends Component {
                             
                         />
                     </div>
-                </div>
+                </div> */}
                 <div className={style.textAreaContainer}>
                     <label>คำอธิบายเพิ่มเติม</label>
                     <TextField
@@ -120,12 +114,13 @@ export default class viewHomework extends Component {
                         rows={6}
                         // fullWidth
                         variant="outlined"
+                        value="อันนี้ส่งที่ห้องพักอาจารย์นะคะ รวมให้ครบก่อนแล้วค่อยมาส่ง ถ้าใครไม่ส่งคะแนนช่องนี้จะหาย ไปทั้งหมดสิบคะแนนนะคะ เพราะบทละ 5 คะแนนค่ะ"
                     />
                 </div>
             </div>
             <div className={style.buttonContainer}>
                 <MyButton
-                    label={"สั่งการบ้าน"}
+                    label={"ย้อนกลับ"}
                     color={"#ffffff"}
                     backgroundColor={"#e5a52d"}
                     onClick={() => {

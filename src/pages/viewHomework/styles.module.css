@@ -18,7 +18,7 @@
     /* height: 100%; */
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    /* justify-content: space-evenly; */
     align-items: center;
 }
 
@@ -32,6 +32,7 @@ img {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 25%;
 }
 
 .titleText {
@@ -81,7 +82,7 @@ img {
     width: 40%;
     white-space: nowrap;
     margin: 5px 10px;
-    color: #ffffff;
+    color: #e5a52d;
     /* font-weight: bolder; */
     font-size: 47px;
 }
@@ -155,7 +156,7 @@ img {
     width: 40%;
     white-space: nowrap;
     margin: 5px 10px;
-    color: #ffffff;
+    color: #e5a52d;
     /* font-weight: bolder; */
     font-size: 47px;
 }
@@ -195,11 +196,12 @@ Textarea {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    margin-top: 25%;
 }
 
 .quizContainer label {
     font-size: 30px;
-    color: #ffffff;
+    color: #e5a52d;
     height: 100%;
     display: flex;
     align-items: center;

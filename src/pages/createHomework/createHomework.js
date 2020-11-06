@@ -49,7 +49,7 @@ export default class createHomework extends Component {
                 {/* <img src={TA} alt="TA-LOGO" /> */}
                 <h1 className={style.titleText}>การบ้านทั้งหมดในขณะนี้</h1>
             </div>
-            <div className={style.quizListContainer}>
+            <div className={style.homeworkListContainer}>
                 {state.state.oldHomework.length === 0 ? (
                     <label style={{ color: "gray" }}>
                         - ท่านยังไม่ได้สั่งการบ้านใดๆ -
@@ -57,7 +57,7 @@ export default class createHomework extends Component {
                 ) : (
                         state.state.oldHomework.map((data, key) => {
                             return (
-                                <div className={style.quizContainer} key={key}>
+                                <div className={style.homeworkContainer} key={key}>
                                     <label>{data.homeworkName}</label>
                                 </div>
                             );

@@ -177,7 +177,7 @@ Textarea {
     border: 1px solid #ffffff;
 }
 
-.quizContainer {
+.homeworkContainer {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -190,14 +190,14 @@ Textarea {
     height: 40px;
 }
 
-.quizListContainer {
+.homeworkListContainer {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
 }
 
-.quizContainer label {
+.homeworkContainer label {
     font-size: 30px;
     color: #ffffff;
     height: 100%;
