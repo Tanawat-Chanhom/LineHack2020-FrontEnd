@@ -1,141 +1,141 @@
 .container {
-    position: static;
-    display: flex;
-    justify-content: center;
-    width: 100vw;
-    min-height: 100vh;
-    overflow: scroll;
-    background-color: #2c3e50;
-    padding: 0px 20px;
+  position: static;
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  min-height: 100vh;
+  overflow: scroll;
+  background-color: #2c3e50;
+  padding: 0px 20px;
 }
 
 /* secondPage styles */
 
 .elementsContainer2 {
-    /* padding: 40px 0px; */
-    width: 100%;
-    max-width: 500px;
-    /* height: 100%; */
-    display: flex;
-    flex-direction: column;
-    /* justify-content: space-evenly; */
-    align-items: center;
+  /* padding: 40px 0px; */
+  width: 100%;
+  max-width: 500px;
+  /* height: 100%; */
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-evenly; */
+  align-items: center;
 }
 
 img {
-    position: relative;
-    width: 213px;
-    height: 213px;
+  position: relative;
+  width: 213px;
+  height: 213px;
 }
 
 .titleContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 25%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 25%;
 }
 
 .titleText {
-    margin: 20px;
-    color: #ffffff;
-    /* font-weight: bold; */
-    font-size: 40px;
+  margin: 20px;
+  color: #ffffff;
+  /* font-weight: bold; */
+  font-size: 40px;
 }
 
 /* firstPage styles */
 
 .title {
-    width: 100%;
-    text-align: center;
-    margin: 20px 0px;
+  width: 100%;
+  text-align: center;
+  margin: 20px 0px;
 }
 
 .title label {
-    /* font-weight: bold; */
-    font-size: 20px;
-    color: #ffffff;
-    margin: 20px 0px;
+  /* font-weight: bold; */
+  font-size: 20px;
+  color: #ffffff;
+  margin: 20px 0px;
 }
 
 .elementsContainer {
-    justify-content: flex-start;
+  justify-content: flex-start;
 }
 
 .inputContainer {
-    width: 100%;
-    margin: 10px 0px;
+  width: 100%;
+  margin: 10px 0px;
 }
 
 /* Text Field */
 
 .textFieldContainer {
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    justify-content: space-evenly;
-    /* align-items: center; */
-    margin: 20px 0px;
-    /* background-color: red; */
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-evenly;
+  /* align-items: center; */
+  margin: 20px 0px;
+  /* background-color: red; */
 }
 
 .textFieldContainer label {
-    width: 40%;
-    white-space: nowrap;
-    margin: 5px 10px;
-    color: #e5a52d;
-    /* font-weight: bolder; */
-    font-size: 47px;
+  width: 40%;
+  white-space: nowrap;
+  margin: 5px 10px;
+  color: #e5a52d;
+  /* font-weight: bolder; */
+  font-size: 47px;
 }
 
 .textFieldContainer input {
-    border: 1px solid #ffffff;
-    border-radius: 1em;
-    color: white;
+  border: 1px solid #ffffff;
+  border-radius: 1em;
+  color: white;
 }
 
 .textFieldContainer2 input {
-    border: 1px solid #ffffff;
-    color: #2C3E50;
-    background-color: #ffffff;
+  border: 1px solid #ffffff;
+  color: #2c3e50;
+  background-color: #ffffff;
 }
 
 .textFieldContainer fieldset {
-    border: 0;
+  border: 0;
 }
 
 /* Button Field */
 
 .buttonContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
 }
 
 .buttonContainer button {
-    /* margin: 5px; */
-    border-radius: 1em;
-    width: 100%;
+  /* margin: 5px; */
+  border-radius: 1em;
+  width: 100%;
 }
 
 .buttonContainer button:nth-child(1) {
-    background-color: #e5a52d;
-    /* font-weight: bold; */
-    font-size: 30px;
+  background-color: #e5a52d;
+  /* font-weight: bold; */
+  font-size: 30px;
 }
 
 .buttonContainer button:nth-child(2) {
-    background-color: #ecf0f1;
-    color: #2c3e50;
-    font-weight: bold;
-    font-size: 23px;
+  background-color: #ecf0f1;
+  color: #2c3e50;
+  font-weight: bold;
+  font-size: 23px;
 }
 
 .timeContainer {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 /* .textBetweenInput{
@@ -148,62 +148,62 @@ img {
 } */
 
 .textAreaContainer {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .textAreaContainer label {
-    width: 40%;
-    white-space: nowrap;
-    margin: 5px 10px;
-    color: #e5a52d;
-    /* font-weight: bolder; */
-    font-size: 47px;
+  width: 40%;
+  white-space: nowrap;
+  margin: 5px 10px;
+  color: #e5a52d;
+  /* font-weight: bolder; */
+  font-size: 47px;
 }
 
 .textAreaContainer input {
-    border: 1px solid #ffffff;
-    border-radius: 1em;
-    color: #ffffff !important;
+  border: 1px solid #ffffff;
+  border-radius: 1em;
+  color: #ffffff !important;
 }
 
 .textAreaContainer fieldset {
-    border: 1;
-    border-color: #ffffff;
-    border-radius: 1em;
+  border: 1;
+  border-color: #ffffff;
+  border-radius: 1em;
 }
 
 Textarea {
-    color: #ffffff !important;
-    border: 1px solid #ffffff;
+  color: #ffffff !important;
+  border: 1px solid #ffffff;
 }
 
 .quizContainer {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-end;
-    border: 1px solid #ffffff;
-    border-radius: 15px;
-    padding: 0px 10px;
-    margin: 6px 0px;
-    width: 100%;
-    height: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  border: 1px solid #ffffff;
+  border-radius: 15px;
+  padding: 0px 10px;
+  margin: 6px 0px;
+  width: 100%;
+  height: 40px;
 }
 
 .quizListContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    margin-top: 25%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 25%;
 }
 
 .quizContainer label {
-    font-size: 30px;
-    color: #e5a52d;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    margin: 0px 5px;
+  font-size: 30px;
+  color: #e5a52d;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  margin: 0px 5px;
 }
