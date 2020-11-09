@@ -16,7 +16,7 @@ export default class createRoom extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pageState: 3,
+      pageState: 0,
       subjectName: "",
       credit: 0,
       days: [

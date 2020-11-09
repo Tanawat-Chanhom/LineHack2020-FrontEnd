@@ -7,26 +7,29 @@ import MyButton from "../../compoments/button/Button";
 import AlertBar from "../../compoments/AlertBar/AlertBar";
 import DialogBox from "../../compoments/DialogBox/DialogBox";
 
-import AddIcon from "../../static/image/Icon awesome-plus-circle.png";
-import AddChoies from "../../static/image/Icon awesome-plus-circle-2.png";
-import DeleteIcon from "../../static/image/Group 35.png";
-import DeleteIcon2 from "../../static/image/Group 45.png";
+import AddIcon from "../../static/image/Icon awesome-plus-circle@2x.png";
+import AddChoies from "../../static/image/Icon awesome-plus-circle-2@2x.png";
+import DeleteIcon from "../../static/image/Group 35@2x.png";
+import DeleteIcon2 from "../../static/image/Group 45@2x.png";
 import Choice from "../../static/image/choice.png";
 import Vote from "../../static/image/vote.png";
 import ArowLeft from "../../static/image/Icon awesome-caret-left.png";
 import ArowRight from "../../static/image/Icon awesome-caret-right.png";
 import SelectChoice from "../../static/image/selectChoice.png";
+import Edit from "../../static/image/edit@2x.png";
 
 export default class createQuiz extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pageState: 2,
+      pageState: 0,
       quizName: "",
       fullPoint: 1,
       currentQuestion: 0,
       errorMessage: "",
       alretState: false,
+      dialogBox: false,
+      deleteQuizName: "",
       quizOption: [
         {
           optionName: "เลือกตอบแบบปรนัย",
@@ -391,8 +394,21 @@ export default class createQuiz extends Component {
         ) : (
           this.state.oldQuiz.map((data, quizIndex) => {
             return (
-              <div className={style.quizContainer} key={quizIndex}>
-                <label>{data.quizName}</label>
+              <div key={quizIndex} className={style.quizContainer}>
+                <div className={style.quizBox}>
+                  <label>{data.quizName}</label>
+                  <img src={Edit} alt="Edit" />
+                </div>
+                <img
+                  src={DeleteIcon}
+                  alt="DeleteIcon"
+                  onClick={() => {
+                    this.setState({
+                      dialogBox: true,
+                      deleteQuizName: data.quizName,
+                    });
+                  }}
+                />
               </div>
             );
           })
@@ -584,7 +600,7 @@ export default class createQuiz extends Component {
   dialog = () => (
     <div className={style.dialogContainer}>
       <label style={{ color: "#FFA1A1" }}>ท่านต้องการจะลบควิซ</label>
-      <label style={{ color: "#ffffff" }}>"ควิซคณิตศาสตร์ ครั้งที่ 2"</label>
+      <label style={{ color: "#ffffff" }}>"{this.state.deleteQuizName}"</label>
       <label style={{ color: "#FFA1A1" }}>หรือไม่ ?</label>
     </div>
   );
@@ -604,7 +620,15 @@ export default class createQuiz extends Component {
             });
           }}
         />
-        <DialogBox component={this.dialog()}></DialogBox>
+        <DialogBox
+          component={this.dialog()}
+          open={this.state.dialogBox}
+          onClose={() => {
+            this.setState({
+              dialogBox: false,
+            });
+          }}
+        ></DialogBox>
       </div>
     );
   }
