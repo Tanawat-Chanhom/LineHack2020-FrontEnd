@@ -108,12 +108,14 @@ export default class sentHomework extends Component {
         </div>
         <div className={style.textAreaContainer}>
           <label>คำอธิบายเพิ่มเติม</label>
-          <TextField
-            multiline
-            rows={6}
-            // fullWidth
-            variant="outlined"
-          />
+          <div className={style.areaContainer}>
+            <TextField
+              multiline
+              rows={6}
+              fullWidth
+              variant="outlined"
+            />
+          </div>
         </div>
       </div>
       <div className={style.buttonContainer}>

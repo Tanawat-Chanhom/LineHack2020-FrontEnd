@@ -166,14 +166,16 @@ export default class viewHomework extends Component {
   thirdPage = (
     <div className={cx(style.elementsContainer, style.elementsContainer2)}>
       <div className={style.inputContainer}>
-        <div className={style.textAreaContainer}>
+        <div className={cx(style.textFieldContainer, style.textAreaContainer)}>
           <label>เพิ่มข้อความ</label>
-          <TextField
-            multiline
-            rows={6}
-            // fullWidth
-            variant="outlined"
-          />
+          <div className={style.areaContainer}>
+            <TextField
+              fullWidth
+              multiline
+              rows={6}
+              variant="outlined"
+            />
+          </div>
         </div>
       </div>
       <div className={cx(style.buttonContainer, style.buttonContainer2)}>
