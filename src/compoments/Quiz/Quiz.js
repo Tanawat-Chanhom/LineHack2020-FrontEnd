@@ -216,7 +216,7 @@ export default class Quiz extends Component {
                     return null;
                   });
                   if (passState === this.state.questions.length) {
-                    liff.closeWindow();
+                    this.props.onFinish(2);
                   } else {
                     this.props.onError(errorMessage);
                   }

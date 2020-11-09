@@ -3,6 +3,9 @@ import style from "./styles.module.css";
 
 import { TextField } from "@material-ui/core";
 import MyButton from "../../compoments/button/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import axios from "axios";
+import ENV from "../../util/env.json";
 // import liff from "@line/liff";
 import AlertBar from "../../compoments/AlertBar/AlertBar";
 
@@ -17,10 +20,41 @@ export default class checkIn extends Component {
       pageState: 0,
       alertBar: false,
       errorMessage: "",
+      onProgress: false,
     };
   }
 
-  firstPage = () => {
+  checkIn = () => {
+    let location = {};
+    navigator.geolocation.getCurrentPosition((position) => {
+      location.latitude = position.coords.latitude;
+      location.longitude = position.coords.longitude;
+    });
+
+    axios
+      .get(ENV.SERVER + "/room/all")
+      .then((response) => {
+        console.log(response);
+        if (true) {
+          this.setState({
+            pageState: 1,
+          });
+        } else {
+          this.setState({
+            alertBar: true,
+            errorMessage: "Check in is not complete.",
+          });
+        }
+      })
+      .catch((error) => {
+        this.setState({
+          alertBar: true,
+          errorMessage: error.message || "Server error!!",
+        });
+      });
+  };
+
+  firstPage2 = () => {
     return (
       <div className={style.elementContainer}>
         <div className={style.titleContainer}>
@@ -48,6 +82,7 @@ export default class checkIn extends Component {
             label={"ยืนยันโค้ด"}
             fontSize={49}
             onClick={() => {
+              this.checkIn();
               if (this.state.passCode !== "") {
                 this.setState({
                   pageState: 1,
@@ -65,13 +100,29 @@ export default class checkIn extends Component {
     );
   };
 
+  firstPage = () => (
+    <>
+      <div className={style.elementContainer}>
+        <div className={style.progressContainer}>
+          <CircularProgress
+            style={{
+              color: "#e5a52d",
+              margin: 10,
+              width: "60%",
+              height: "unset",
+            }}
+          ></CircularProgress>
+        </div>
+      </div>
+      {this.checkIn()}
+    </>
+  );
+
   secondPage = (
     <div className={style.elementContainer}>
       <div className={style.successContainer}>
         <img src={pic} alt="check-LOGO" />
-        <label className={style.titleText}>
-          ปิ๊งป่องงง โค้ดถูกต้องจ้าา เช็คชื่อสำเร็จ
-        </label>
+        <label className={style.titleText}>เช็คชื่อสำเร็จ</label>
       </div>
     </div>
   );

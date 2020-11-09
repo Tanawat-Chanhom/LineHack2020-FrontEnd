@@ -30,7 +30,7 @@ export default class doQuiz extends Component {
   firstPage = () => {
     return (
       <div className={style.elementContainer}>
-        <div>
+        <div style={{ width: "100%" }}>
           <div className={style.titleContainer}>
             <label>ควิซ</label>
           </div>
@@ -96,6 +96,39 @@ export default class doQuiz extends Component {
     );
   };
 
+  secondPage = () => (
+    <div
+      className={style.elementContainer}
+      style={{ justifyContent: "flex-start" }}
+    >
+      <div className={cx(style.titleContainer, style.titleBorderButtom)}>
+        <label style={{ color: "#FCC55D" }}>
+          {this.state.quizzes.map((data) => {
+            return data.isPress === true ? data.quizName : "";
+          })}
+        </label>
+      </div>
+      <div className={style.scoreContainer}>
+        <label style={{ fontSize: 100 }}>6 คะแนน!</label>
+        <label style={{ fontSize: 42, color: "#FCC55D" }}>จากคะแนนเต็ม 6</label>
+      </div>
+      <div
+        className={style.buttonContainer}
+        style={{ justifyContent: "center" }}
+      >
+        <MyButton
+          label={"ยกเลิก"}
+          fontSize={48}
+          backgroundColor={"#ffffff"}
+          color={"#111111"}
+          onClick={() => {
+            liff.closeWindow();
+          }}
+        ></MyButton>
+      </div>
+    </div>
+  );
+
   pageState = (state) => {
     switch (this.state.pageState) {
       case 0:
@@ -109,8 +142,16 @@ export default class doQuiz extends Component {
                 errorMessage: errorMessage,
               });
             }}
+            onFinish={(index) => {
+              this.setState({
+                pageState: index,
+              });
+            }}
           ></Quiz>
         );
+
+      case 2:
+        return this.secondPage();
       default:
         break;
     }

@@ -13,6 +13,7 @@
   padding: 40px 0px;
   height: 100%;
   justify-content: space-between;
+  align-items: center;
 }
 
 .titleContainer {
@@ -62,4 +63,24 @@
   width: 40%;
   max-width: unset;
   min-width: unset;
+}
+
+.titleBorderButtom {
+  width: 90%;
+  border-bottom: 5px solid #ffffff25;
+}
+
+.scoreContainer {
+  width: 300px;
+  height: 300px;
+  border: 2px solid #ffffff25;
+  border-radius: 100em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.scoreContainer label {
+  color: #ffffff;
 }
