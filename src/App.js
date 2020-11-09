@@ -24,6 +24,7 @@ import myScore from "./pages/myScore/myScore";
 
 function App() {
   liff.init({ liffId: "1655106533-ba7L0Rw0" });
+  // liff.login();
   return (
     <div className="App">
       <Router>

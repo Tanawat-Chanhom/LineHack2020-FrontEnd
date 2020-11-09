@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import style from "./styles.module.css";
 import { TextField } from "@material-ui/core";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import liff from "@line/liff";
 import cx from "classnames";
 import MyButton from "../../compoments/button/Button";
 import AlertBar from "../../compoments/AlertBar/AlertBar";
 import FinalPage from "../../compoments/FinalPage/FinalPage";
+import axios from "axios";
+import ENV from "../../util/env.json";
 
 //Image
 import TA from "../../static/image/TA-LOGO.png";
@@ -19,6 +22,8 @@ export default class createRoom extends Component {
       pageState: 0,
       subjectName: "",
       credit: 0,
+      alertBar: false,
+      onProgress: false,
       days: [
         {
           name: "จันทร์",
@@ -66,28 +71,135 @@ export default class createRoom extends Component {
     };
   }
 
-  firstPage = (
+  filter = (data) => {
+    switch (data.name) {
+      case "จันทร์":
+        return "MON";
+      case "อังคาร":
+        return "TUE";
+      case "พุธ":
+        return "WED";
+      case "พฤหัส":
+        return "THU";
+      case "ศุกร์":
+        return "FRI";
+      case "เสาร์":
+        return "SAT";
+      case "อาทิตย์":
+        return "SUN";
+      default:
+        break;
+    }
+  };
+
+  sendInformation = () => {
+    let liffContext = liff.getContext();
+
+    let days = [];
+    this.state.days.map((data) => {
+      if (data.isPress === true) {
+        days.push({
+          day: this.filter(data),
+          start: data.openClass,
+          end: data.closeClass,
+        });
+      }
+      return null;
+    });
+
+    let body = {
+      subject: this.state.subjectName,
+      weight: this.state.credit,
+      groupId: liffContext.groupId,
+      teacherLineId: liffContext.userId,
+      days: days,
+    };
+
+    axios
+      .post(ENV.SERVER + "/room/create", body)
+      .then((response) => {
+        console.log(response);
+        if (response.data.status === 400) {
+          this.setState({
+            onProgress: false,
+            alertBar: true,
+            errorMessage: response.data.message,
+          });
+        } else {
+          liff.closeWindow();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({
+          onProgress: false,
+          alertBar: true,
+          errorMessage: error.message || "Error from server!!",
+        });
+      });
+  };
+
+  checkUserId = () => {
+    let liffContext = liff.getContext();
+
+    axios
+      .get(ENV.SERVER + "/room/get/" + liffContext.groupId)
+      .then((response) => {
+        console.log(response);
+        if (liffContext.userId === response.data.room.teacherLineId) {
+          this.setState({
+            pageState: 1,
+            onProgress: false,
+          });
+        } else {
+          this.setState({
+            onProgress: false,
+            alertBar: true,
+            errorMessage: "You not have permission",
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({
+          onProgress: false,
+          alertBar: true,
+          errorMessage: error.message || "Error from server!!",
+        });
+      });
+  };
+
+  firstPage = () => (
     <div className={style.elementsContainer}>
       <div className={style.titleContainer}>
         <img src={TA} alt="TA-LOGO" />
         <h1 className={style.titleText}>ผู้ช่วยสอน</h1>
       </div>
       <div className={style.buttonContainer}>
-        <MyButton
-          label={"เปิดห้องเรียน"}
-          color={"#ffffff"}
-          backgroundColor={"#E5A52D"}
-          onClick={() => {
-            this.setState({
-              pageState: 1,
-            });
-          }}
-        ></MyButton>
-        <MyButton
-          label={"วิธีใช้"}
-          color={"#111111"}
-          backgroundColor={"#ffffff"}
-        ></MyButton>
+        {this.state.onProgress === false ? (
+          <>
+            <MyButton
+              label={"เปิดห้องเรียน"}
+              color={"#ffffff"}
+              backgroundColor={"#E5A52D"}
+              onClick={() => {
+                this.setState({
+                  onProgress: true,
+                });
+                this.checkUserId();
+              }}
+            ></MyButton>
+            <MyButton
+              label={"วิธีใช้"}
+              color={"#111111"}
+              backgroundColor={"#ffffff"}
+            ></MyButton>
+          </>
+        ) : (
+          <CircularProgress
+            style={{ color: "#e5a52d", margin: 10 }}
+          ></CircularProgress>
+        )}
       </div>
     </div>
   );
@@ -119,10 +231,10 @@ export default class createRoom extends Component {
             type="number"
             fullWidth
             variant="outlined"
-            value={this.state.credit}
+            value={Number(this.state.credit) + ""}
             onChange={(event) => {
               this.setState({
-                credit: event.target.value,
+                credit: Number(event.target.value),
               });
             }}
           />
@@ -240,28 +352,37 @@ export default class createRoom extends Component {
         </table>
       </div>
       <div className={style.buttonContainer}>
-        <MyButton
-          label={"สร้างห้อง"}
-          onClick={() => {
-            let days = this.state.days;
-            let passState = 0;
-            days.map((data) => {
-              if (data.isPress === true) {
-                passState++;
-              }
-              return null;
-            });
-            if (passState > 0) {
-              liff.closeWindow();
-            } else {
-              this.setState({
-                alertBar: true,
-                errorMessage: "Please select your day!!",
+        {this.state.onProgress === false ? (
+          <MyButton
+            label={"สร้างห้อง"}
+            onClick={() => {
+              let days = this.state.days;
+              let passState = 0;
+              days.map((data) => {
+                if (data.isPress === true) {
+                  passState++;
+                }
+                return null;
               });
-            }
-          }}
-          fontSize={49}
-        ></MyButton>
+              if (passState > 0) {
+                this.sendInformation();
+                this.setState({
+                  onProgress: true,
+                });
+              } else {
+                this.setState({
+                  alertBar: true,
+                  errorMessage: "Please select your day!!",
+                });
+              }
+            }}
+            fontSize={49}
+          ></MyButton>
+        ) : (
+          <CircularProgress
+            style={{ color: "#e5a52d", margin: 10 }}
+          ></CircularProgress>
+        )}
       </div>
     </div>
   );
@@ -269,7 +390,7 @@ export default class createRoom extends Component {
   pageState = (state) => {
     switch (this.state.pageState) {
       case 0:
-        return this.firstPage;
+        return this.firstPage();
 
       case 1:
         return this.secondPage();
