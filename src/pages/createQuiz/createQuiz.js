@@ -29,11 +29,13 @@ export default class createQuiz extends Component {
       errorMessage: "",
       alretState: false,
       dialogBox: false,
+      dialogType: 0,
       deleteQuizName: "",
+      deleteKey: 0,
       quizOption: [
         {
           optionName: "เลือกตอบแบบปรนัย",
-          isPress: false,
+          isPress: true,
           icon: Choice,
         },
         {
@@ -176,7 +178,11 @@ export default class createQuiz extends Component {
           alt="DeleteIcon2"
           className={style.deleteIcon}
           onClick={() => {
-            this.deleteQuestion(key);
+            this.setState({
+              dialogBox: true,
+              dialogType: 1,
+              deleteKey: key,
+            });
           }}
           style={{ width: 45, height: 45 }}
         />
@@ -302,7 +308,11 @@ export default class createQuiz extends Component {
           alt="DeleteIcon2"
           className={style.deleteIcon}
           onClick={() => {
-            this.deleteQuestion(key);
+            this.setState({
+              dialogBox: true,
+              dialogType: 1,
+              deleteKey: key,
+            });
           }}
           style={{ width: 45, height: 45 }}
         />
@@ -605,6 +615,12 @@ export default class createQuiz extends Component {
     </div>
   );
 
+  dialog2 = () => (
+    <div className={style.dialogContainer}>
+      <label style={{ color: "#ffffff" }}>ท่านต้องการจะลบข้อนี้หรือไม่?</label>
+    </div>
+  );
+
   render() {
     return (
       <div className={style.container}>
@@ -621,12 +637,20 @@ export default class createQuiz extends Component {
           }}
         />
         <DialogBox
-          component={this.dialog()}
+          component={
+            this.state.dialogType === 0 ? this.dialog() : this.dialog2()
+          }
           open={this.state.dialogBox}
           onClose={() => {
             this.setState({
               dialogBox: false,
             });
+          }}
+          onSubmit={() => {
+            if (this.state.dialogType === 0) {
+            } else {
+              this.deleteQuestion(this.state.deleteKey);
+            }
           }}
         ></DialogBox>
       </div>
