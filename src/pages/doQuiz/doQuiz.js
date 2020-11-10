@@ -163,6 +163,8 @@ export default class doQuiz extends Component {
         <AlertBar
           label={this.state.errorMessage}
           open={this.state.alertBar}
+          backgroundColor={"#f44336"}
+          color={"#ffffff"}
           onClose={() => {
             this.setState({
               alertBar: false,

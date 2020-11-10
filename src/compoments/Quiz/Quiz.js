@@ -3,7 +3,7 @@ import style from "./styles.module.css";
 import MyButton from "../button/Button";
 import { TextField } from "@material-ui/core";
 import cx from "classnames";
-import liff from "@line/liff";
+// import liff from "@line/liff";
 
 export default class Quiz extends Component {
   constructor(props) {
