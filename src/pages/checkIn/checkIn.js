@@ -6,8 +6,9 @@ import MyButton from "../../compoments/button/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import axios from "axios";
 import ENV from "../../util/env.json";
-// import liff from "@line/liff";
+import liff from "@line/liff";
 import AlertBar from "../../compoments/AlertBar/AlertBar";
+import FinalPage from "../../compoments/FinalPage/FinalPage";
 
 //Image
 import pic from "../../static/image/check.png";
@@ -24,32 +25,56 @@ export default class checkIn extends Component {
     };
   }
 
-  checkIn = () => {
-    let location = {};
-    navigator.geolocation.getCurrentPosition((position) => {
-      location.latitude = position.coords.latitude;
-      location.longitude = position.coords.longitude;
-    });
+  componentDidMount() {
+    this.checkIn();
+  }
 
+  getLocation = async (position) => {
+    let lat = position.coords.latitude;
+    let long = position.coords.longitude;
+    let liffContext = await liff.getContext();
+    let liffProfile = await liff.getProfile();
+    let body = {
+      lineId: liffProfile.userId,
+      latitude: lat,
+      longitude: long,
+    };
+    console.log(body);
+    console.log(liffContext);
+    console.log(liffProfile);
     axios
-      .get(ENV.SERVER + "/room/all")
+      .put(ENV.SERVER + "/attendance/check/" + liffContext.groupId, body)
       .then((response) => {
         console.log(response);
-        if (true) {
+        if (response.data.status === 200) {
           this.setState({
             pageState: 1,
           });
         } else {
           this.setState({
             alertBar: true,
-            errorMessage: "Check in is not complete.",
+            errorMessage: response.data.message || "Check in is not complete.",
           });
         }
       })
       .catch((error) => {
+        console.log(error);
         this.setState({
           alertBar: true,
           errorMessage: error.message || "Server error!!",
+        });
+      });
+  };
+
+  checkIn = async () => {
+    navigator.geolocation
+      .getCurrentPosition((p) => {
+        this.getLocation(p);
+      })
+      .catch(() => {
+        this.setState({
+          alertBar: true,
+          errorMessage: "Please allow your location.",
         });
       });
   };
@@ -82,7 +107,6 @@ export default class checkIn extends Component {
             label={"ยืนยันโค้ด"}
             fontSize={49}
             onClick={() => {
-              this.checkIn();
               if (this.state.passCode !== "") {
                 this.setState({
                   pageState: 1,
@@ -114,7 +138,6 @@ export default class checkIn extends Component {
           ></CircularProgress>
         </div>
       </div>
-      {this.checkIn()}
     </>
   );
 
@@ -127,10 +150,10 @@ export default class checkIn extends Component {
     </div>
   );
 
-  pageState = (state) => {
+  pageState = () => {
     switch (this.state.pageState) {
       case 0:
-        return this.firstPage(state);
+        return this.firstPage();
       case 1:
         return this.secondPage;
       default:
@@ -152,7 +175,7 @@ export default class checkIn extends Component {
           backgroundColor={"#f44336"}
           color={"#ffffff"}
         ></AlertBar>
-        <div className={style.container}>{this.pageState(this)}</div>
+        <div className={style.container}>{this.pageState()}</div>
       </>
     );
   }

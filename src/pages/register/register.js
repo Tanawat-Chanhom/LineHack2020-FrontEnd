@@ -37,10 +37,11 @@ export default class appointment extends Component {
     </div>
   );
 
-  sendInformation = () => {
+  sendInformation = async () => {
     let { firstName, lastName, nickName, studentNumber } = this.state;
-    let liffContext = liff.getContext();
-    let liffProfile = liff.getProfile();
+    let liffContext = await liff.getContext();
+    let liffProfile = await liff.getProfile();
+    console.log(liffProfile);
     if (
       firstName !== "" &&
       lastName !== "" &&
@@ -60,9 +61,16 @@ export default class appointment extends Component {
         .post(ENV.SERVER + "/room/register/" + liffContext.groupId, body)
         .then((response) => {
           console.log(response);
-          this.setState({
-            pageState: 1,
-          });
+          if (response.data.status !== 400) {
+            this.setState({
+              pageState: 1,
+            });
+          } else {
+            this.setState({
+              alertBar: true,
+              errorMessage: response.data.message || "Error from service!!",
+            });
+          }
         })
         .catch((error) => {
           console.log(error);
