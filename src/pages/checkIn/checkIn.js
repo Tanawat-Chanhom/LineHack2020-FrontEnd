@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import style from "./styles.module.css";
 
-import { TextField } from "@material-ui/core";
-import MyButton from "../../compoments/button/Button";
+// import { TextField } from "@material-ui/core";
+// import MyButton from "../../compoments/button/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import axios from "axios";
 import ENV from "../../util/env.json";
 import liff from "@line/liff";
 import AlertBar from "../../compoments/AlertBar/AlertBar";
-import FinalPage from "../../compoments/FinalPage/FinalPage";
+// import FinalPage from "../../compoments/FinalPage/FinalPage";
 
 //Image
 import pic from "../../static/image/check.png";
@@ -79,50 +79,50 @@ export default class checkIn extends Component {
       });
   };
 
-  firstPage2 = () => {
-    return (
-      <div className={style.elementContainer}>
-        <div className={style.titleContainer}>
-          <label>กรอกโค้ดตามอาจารย์บอกนะจ๊ะ</label>
-        </div>
-        <div className={style.textFieldContainer}>
-          <TextField
-            id="outlined-full-width"
-            label=""
-            fullWidth
-            InputLabelProps={{
-              shrink: true,
-            }}
-            variant="outlined"
-            value={this.state.passCode}
-            onChange={(event) => {
-              this.setState({
-                passCode: event.target.value,
-              });
-            }}
-          />
-        </div>
-        <div className={style.buttonContainer}>
-          <MyButton
-            label={"ยืนยันโค้ด"}
-            fontSize={49}
-            onClick={() => {
-              if (this.state.passCode !== "") {
-                this.setState({
-                  pageState: 1,
-                });
-              } else {
-                this.setState({
-                  errorMessage: "Please enter pass code",
-                  alertBar: true,
-                });
-              }
-            }}
-          ></MyButton>
-        </div>
-      </div>
-    );
-  };
+  // firstPage2 = () => {
+  //   return (
+  //     <div className={style.elementContainer}>
+  //       <div className={style.titleContainer}>
+  //         <label>กรอกโค้ดตามอาจารย์บอกนะจ๊ะ</label>
+  //       </div>
+  //       <div className={style.textFieldContainer}>
+  //         <TextField
+  //           id="outlined-full-width"
+  //           label=""
+  //           fullWidth
+  //           InputLabelProps={{
+  //             shrink: true,
+  //           }}
+  //           variant="outlined"
+  //           value={this.state.passCode}
+  //           onChange={(event) => {
+  //             this.setState({
+  //               passCode: event.target.value,
+  //             });
+  //           }}
+  //         />
+  //       </div>
+  //       <div className={style.buttonContainer}>
+  //         <MyButton
+  //           label={"ยืนยันโค้ด"}
+  //           fontSize={49}
+  //           onClick={() => {
+  //             if (this.state.passCode !== "") {
+  //               this.setState({
+  //                 pageState: 1,
+  //               });
+  //             } else {
+  //               this.setState({
+  //                 errorMessage: "Please enter pass code",
+  //                 alertBar: true,
+  //               });
+  //             }
+  //           }}
+  //         ></MyButton>
+  //       </div>
+  //     </div>
+  //   );
+  // };
 
   firstPage = () => (
     <>

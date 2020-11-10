@@ -1,0 +1,132 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  min-height: 100vh;
+  max-width: 500px;
+  overflow: scroll;
+  padding: 0px 20px;
+}
+
+.elementContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 0px;
+  height: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.titleContainer {
+  font-size: 32px;
+  width: 100%;
+  color: #ffffff;
+  text-align: center;
+  margin: 10px;
+}
+
+.titleContainer label {
+  transform: translateY(3px);
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+}
+
+.gradOptionContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.gradOption {
+  width: 100%;
+  border: 1px solid #ffffff;
+  margin: 5px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.gradOption label {
+  font-size: 36px;
+  color: #ffffff;
+}
+
+.gradOption img {
+  width: 85px;
+  height: 85px;
+  margin: 10px 0px;
+}
+
+.helpTextContainer {
+  width: 100%;
+  text-align: center;
+  font-size: 35px;
+  color: #fcc55d;
+  margin: 10px 0px;
+}
+
+.titleColumnContainer {
+  width: 100%;
+  font-size: 22px;
+  color: #fcc55d;
+  border-bottom: 2px solid #ffffff;
+  margin-top: 10px;
+}
+
+.workListContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.workContainer {
+  border: 1px solid #ffffff;
+  padding: 0px 10px;
+  margin: 14px 0px 0px 0px;
+  border-radius: 8px;
+  background-color: #ffffff1f;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.workContainer label {
+  margin: 10px 0px;
+  transform: translateY(3px);
+  color: #ffffff;
+}
+
+.expText {
+  height: fit-content;
+  color: #ffffff;
+  font-size: 21px;
+}
+
+.checkLine {
+  width: 80%;
+  position: absolute;
+  border: 2px solid #ffffff;
+}
+
+.textFieldContainer {
+  width: 100%;
+  margin: 10px 0px;
+}
+
+.textFieldContainer input {
+  border: 1px solid #ffffff;
+  border-radius: 15px;
+  color: #ffffff;
+}
+
+.textFieldContainer fieldset {
+  border: 0;
+}
