@@ -36,6 +36,13 @@
   justify-content: center;
 }
 
+.buttonFixed {
+  position: fixed;
+  bottom: 0%;
+  left: 0%;
+  margin-bottom: 10px;
+}
+
 .gradOptionContainer {
   width: 100%;
   display: flex;
@@ -128,5 +135,72 @@
 }
 
 .textFieldContainer fieldset {
+  border: 0;
+}
+
+.studentHeader {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.studentStatusContainer {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+}
+
+.studentStatus {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.studentStatus label {
+  font-size: 30px;
+}
+
+.studentTableContainer {
+  width: 100%;
+  margin-top: 10px;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+tr th {
+  text-align: center;
+  color: #fcc55d;
+}
+
+.studentRow td {
+  font-size: 30px;
+  color: #ffffff;
+}
+
+.studentRow td small {
+  font-size: 25px;
+  color: #ffffff;
+}
+
+.textFieldContainer2 {
+  width: 100%;
+}
+
+.textFieldContainer2 input {
+  border: 1px solid #ffffff;
+  border-radius: 15px;
+  color: #ffffff;
+  width: 100%;
+  padding: 10px;
+}
+
+.textFieldContainer2 fieldset {
   border: 0;
 }

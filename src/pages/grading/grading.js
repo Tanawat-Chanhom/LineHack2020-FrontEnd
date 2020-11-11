@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import style from "./styles.module.css";
 import MyButton from "../../compoments/button/Button";
 import AlertBar from "../../compoments/AlertBar/AlertBar";
-// import cx from "classnames";
+import cx from "classnames";
 import { TextField } from "@material-ui/core";
 
 import HomeWorkIcon from "../../static/image/homework@2x.png";
@@ -12,11 +12,12 @@ export default class grading extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pageState: 0,
+      pageState: 3,
       alertBar: false,
       errorMessage: "",
       scoreNumber: 0,
       scoreName: "",
+      sended: 1,
       gradOption: [
         {
           optionName: "การบ้าน",
@@ -49,6 +50,80 @@ export default class grading extends Component {
           exp: "เหลืออีก 12 วัน",
           isPress: false,
           isCheck: true,
+        },
+      ],
+      students: [
+        {
+          studentName: "นายธนพล มาติกานนท์",
+          isSend: false,
+          studentNumber: "61070078",
+          score: 0,
+        },
+        {
+          studentName: "นายธนพล มาติกานนท์",
+          isSend: true,
+          studentNumber: "61070078",
+          score: 23,
+        },
+        {
+          studentName: "นายธนพล มาติกานนท์",
+          isSend: false,
+          studentNumber: "61070078",
+          score: 0,
+        },
+        {
+          studentName: "นายธนพล มาติกานนท์",
+          isSend: false,
+          studentNumber: "61070078",
+          score: 0,
+        },
+        {
+          studentName: "นายธนพล มาติกานนท์",
+          isSend: true,
+          studentNumber: "61070078",
+          score: 23,
+        },
+        {
+          studentName: "นายธนพล มาติกานนท์",
+          isSend: false,
+          studentNumber: "61070078",
+          score: 0,
+        },
+        {
+          studentName: "นายธนพล มาติกานนท์",
+          isSend: false,
+          studentNumber: "61070078",
+          score: 0,
+        },
+        {
+          studentName: "นายธนพล มาติกานนท์",
+          isSend: true,
+          studentNumber: "61070078",
+          score: 23,
+        },
+        {
+          studentName: "นายธนพล มาติกานนท์",
+          isSend: false,
+          studentNumber: "61070078",
+          score: 0,
+        },
+        {
+          studentName: "นายธนพล มาติกานนท์",
+          isSend: false,
+          studentNumber: "61070078",
+          score: 0,
+        },
+        {
+          studentName: "นายธนพล มาติกานนท์",
+          isSend: true,
+          studentNumber: "61070078",
+          score: 23,
+        },
+        {
+          studentName: "นายธนพล มาติกานนท์",
+          isSend: false,
+          studentNumber: "61070078",
+          score: 0,
         },
       ],
     };
@@ -310,8 +385,96 @@ export default class grading extends Component {
   );
 
   fourthPage = () => (
-    <div className={style.elementContainer}>
-      <p>fourth page</p>
+    <div
+      className={style.elementContainer}
+      style={{
+        alignItems: "flex-start",
+        paddingTop: 20,
+        justifyContent: "flex-start",
+      }}
+    >
+      <div className={style.studentHeader}>
+        <div className={style.studentStatusContainer}>
+          <div className={style.studentStatus}>
+            <label style={{ color: "#ffffff" }}>นักเรียนทังหมด</label>
+            <label style={{ color: "#FCC55D" }}>37 คน</label>
+          </div>
+          <div className={style.studentStatus}>
+            <label style={{ color: "#ffffff" }}>นักเรียนกดส่ง</label>
+            <label style={{ color: "#FCC55D" }}>37 คน</label>
+          </div>
+        </div>
+        <div className={style.studentStatusContainer}>
+          <div className={style.studentStatus}>
+            <label style={{ color: "#ffffff" }}>ยืนยันการส่งแล้้ว</label>
+            <label style={{ color: "#1FFFA9" }}>{this.state.sended} คน</label>
+          </div>
+        </div>
+      </div>
+      <div className={style.studentTableContainer}>
+        <table>
+          <tr>
+            <th>เลขที่</th>
+            <th>ชื่อ - นามสกุล</th>
+            <th>ให้คะแนน</th>
+          </tr>
+          {this.state.students.map((data, studentIndex) => {
+            return (
+              <tr className={style.studentRow}>
+                <td>
+                  <small>{data.studentNumber}</small>
+                </td>
+                <td style={{ color: data.isSend === true ? "#1FFFA9" : "" }}>
+                  {data.studentName}
+                </td>
+                <td style={{ maxWidth: 50 }}>
+                  <div className={style.textFieldContainer2}>
+                    <TextField
+                      type="number"
+                      fullWidth
+                      name="numberformat"
+                      variant="outlined"
+                      value={data.score}
+                      onChange={(event) => {
+                        let updateArray = this.state.students;
+                        updateArray.map((X, index) => {
+                          updateArray[index].score =
+                            studentIndex === index
+                              ? Number(event.target.value) + ""
+                              : X.score;
+                        });
+                        this.setState({
+                          students: updateArray,
+                        });
+                      }}
+                    />
+                  </div>
+                </td>
+              </tr>
+            );
+          })}
+        </table>
+      </div>
+      <div className={cx(style.buttonContainer, style.buttonFixed)}>
+        <MyButton
+          label={"ย้อนกลับ"}
+          onClick={() => {
+            this.createQuestion();
+          }}
+          fontSize={31}
+          backgroundColor={"#E5A52D"}
+          color={"#fff"}
+        ></MyButton>
+        <MyButton
+          label={"บันทึกข้้อมูล"}
+          fontSize={31}
+          backgroundColor={"#16AF74"}
+          color={"#fff"}
+          onClick={() => {
+            this.saveQuiz();
+          }}
+        ></MyButton>
+      </div>
     </div>
   );
 
