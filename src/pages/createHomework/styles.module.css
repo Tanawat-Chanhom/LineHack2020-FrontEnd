@@ -18,7 +18,7 @@
   /* height: 100%; */
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  /* justify-content: space-evenly; */
   align-items: center;
 }
 
@@ -32,6 +32,7 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 25%;
 }
 
 .titleText {
@@ -81,7 +82,7 @@ img {
   width: 40%;
   white-space: nowrap;
   margin: 5px 10px;
-  color: #ffffff;
+  color: #e5a52d;
   /* font-weight: bolder; */
   font-size: 47px;
 }
@@ -106,10 +107,14 @@ img {
 
 .buttonContainer {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   padding: 10px;
+  width: 100%;
+}
+.buttonContainer2 {
+  flex-direction: column;
 }
 
 .buttonContainer button {
@@ -121,7 +126,7 @@ img {
 .buttonContainer button:nth-child(1) {
   background-color: #e5a52d;
   /* font-weight: bold; */
-  font-size: 30px;
+  font-size: 20px;
 }
 
 .buttonContainer button:nth-child(2) {
@@ -155,7 +160,7 @@ img {
   width: 40%;
   white-space: nowrap;
   margin: 5px 10px;
-  color: #ffffff;
+  color: #e5a52d;
   /* font-weight: bolder; */
   font-size: 47px;
 }
@@ -171,6 +176,16 @@ img {
   border-color: #ffffff;
   border-radius: 1em;
 }
+.textAreaContainer div {
+  border: 1;
+  border-color: #ffffff;
+  border-radius: 1em;
+}
+.areaContainer {
+  border: 1px solid #ffffff;
+  border-color: #ffffff;
+  border-radius: 1em;
+}
 
 Textarea {
   color: #ffffff !important;
@@ -180,28 +195,61 @@ Textarea {
 .homeworkContainer {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-end;
-  border: 1px solid #ffffff;
-  border-radius: 15px;
-  padding: 0px 10px;
-  margin: 6px 0px;
-  width: 100%;
-  height: 40px;
-}
-
-.homeworkListContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
+  width: 100%;
 }
 
 .homeworkContainer label {
+  font-size: 30px;
+  color: #e5a52d;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  margin: 0px 5px;
+}
+.homeworkContainer img {
+  width: 30px;
+  height: 30px;
+  margin: 5px;
+}
+
+.uploadContainer {
+  display: flex;
+  margin: 8px 0px;
+}
+.uploadContainer input {
+  display: none;
+}
+.uploadText {
+  font-size: 30px;
+  background-color: #5d6870;
+  border: 1px solid #5d6870;
+  color: #ffffff;
+  border-radius: 0.5em;
+  padding: 4%;
+}
+
+.homeworkBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #ffffff;
+  border-radius: 15px;
+  padding: 10px;
+  margin: 6px 0px;
+  width: 100%;
+}
+
+.homeworkBox label {
   font-size: 30px;
   color: #ffffff;
   height: 100%;
   display: flex;
   align-items: center;
-  margin: 0px 5px;
+}
+
+.homeworkBox img {
+  width: 29px;
+  height: 26px;
 }

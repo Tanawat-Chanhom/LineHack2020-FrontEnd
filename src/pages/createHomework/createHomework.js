@@ -1,35 +1,36 @@
 import React, { Component } from "react";
 import style from "./styles.module.css";
-import { TextField } from "@material-ui/core";
+import { TextField, Button } from "@material-ui/core";
 import liff from "@line/liff";
 import cx from "classnames";
 import MyButton from "../../compoments/button/Button";
+import Edit from "../../static/image/edit@2x.png";
+import DeleteIcon from "../../static/image/Group 35@2x.png";
 
 //Image
-import TA from "../../static/image/TA-LOGO.png";
-import homeworkPic from "../../static/image/homework.png";
-import calenderPic from "../../static/image/Icon awesome-calendar-alt-white.png";
-import clockPic from "../../static/image/Icon awesome-clock-white.png";
-import filePic from "../../static/image/Icon feather-file-text.png";
+// import TA from "../../static/image/TA-LOGO.png";
+
+// const hiddenFileInput = React.useRef(null);
+
+// const handleClick = (event) => {
+//   hiddenFileInput.current.click();
+// };
+
+// const handleChange = (event) => {
+//   // const fileUploaded = event.target.files[0];
+//   // props.handleFile(fileUploaded);
+// };
 
 export default class createHomework extends Component {
   constructor(props) {
     super(props);
+    // this.file = null;
     this.state = {
+      // files: [],
       pageState: 0,
-      // quizName: "",
+      // homeworkName: "",
       // fullPoint: 0,
       // currentQuestion: 0,
-      // quizOption: [
-      //     {
-      //         optionName: "เลือกตอบแบบปรนัย",
-      //         isPress: false,
-      //     },
-      //     {
-      //         optionName: "เลือกตอบถูก/ผิด",
-      //         isPress: false,
-      //     },
-      // ],
       oldHomework: [
         {
           homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 1 และ 2",
@@ -44,9 +45,19 @@ export default class createHomework extends Component {
           exp: "เหลืออีก 28 วัน",
         },
       ],
-      // newQuiz: [],
+     
     };
   }
+
+  // handleClick = (event) => {
+  //   const hiddenFileInput = React.useRef(null);
+  //   hiddenFileInput.current.click();
+  // };
+  // handleChange = (event) => {
+  //   const fileUploaded = event.target.files[0];
+  //   event.handleFile(fileUploaded);
+  // };
+
   firstPage = (state) => (
     <div className={style.elementsContainer2}>
       <div className={style.titleContainer}>
@@ -61,8 +72,21 @@ export default class createHomework extends Component {
         ) : (
           state.state.oldHomework.map((data, key) => {
             return (
-              <div className={style.homeworkContainer} key={key}>
-                <label>{data.homeworkName}</label>
+              <div key={key} className={style.homeworkContainer}>
+                <div className={style.homeworkBox}>
+                  <label>{data.homeworkName}</label>
+                  <img src={Edit} alt="Edit" />
+                </div>
+                <img
+                  src={DeleteIcon}
+                  alt="DeleteIcon"
+                  onClick={() => {
+                    this.setState({
+                      dialogBox: true,
+                      deleteHomeworkName: data.homeworkName,
+                    });
+                  }}
+                />
               </div>
             );
           })
@@ -80,77 +104,96 @@ export default class createHomework extends Component {
       </div>
     </div>
   );
-  thirdPage = (
-    <div className={style.elementsContainer2}>
-      <div className={style.titleContainer}>
-        <img src={TA} alt="TA-LOGO" />
-        <h1 className={style.titleText}>ลงทะเบียนสำเร็จ</h1>
-      </div>
-    </div>
-  );
 
   secondPage = (
     <div className={cx(style.elementsContainer, style.elementsContainer2)}>
       <div className={style.inputContainer}>
         <div className={style.textFieldContainer}>
-          <label>
-            ระบุชื่อการบ้าน{" "}
-            <img
-              src={homeworkPic}
-              alt="Appoint"
-              style={{ height: "30px", width: "30px" }}
-            />
-          </label>
+          <label>ระบุชื่อการบ้าน</label>
           <TextField fullWidth variant="outlined" />
         </div>
         <div
           className={cx(style.textFieldContainer, style.textFieldContainer2)}
         >
-          <label>
-            วันที่และเวลาส่ง{" "}
-            <img
-              src={calenderPic}
-              alt="Calender"
-              style={{ height: "23px", width: "23px" }}
-            />
-          </label>
+          <label>วันที่ส่งการบ้าน</label>
           <TextField type="date" fullWidth variant="outlined" />
         </div>
         <div
           className={cx(style.textFieldContainer, style.textFieldContainer2)}
         >
-          <label>
-            ก่อนเวลา{" "}
-            <img
-              src={clockPic}
-              alt="Clock"
-              style={{ height: "25px", width: "25px" }}
-            />
-          </label>
+          <label>ก่อนเวลา </label>
           <div className={style.timeContainer}>
             <TextField type="time" variant="outlined" />
           </div>
         </div>
-        <div className={style.textAreaContainer}>
-          <label>
-            คำอธิบายเพิ่มเติม{" "}
-            <img
-              src={filePic}
-              alt="Other"
-              style={{ height: "20px", width: "18px" }}
+        <div className={cx(style.textFieldContainer, style.textAreaContainer)}>
+          <label>คำอธิบายเพิ่มเติม</label>
+          <div className={style.areaContainer}>
+            <TextField
+              fullWidth
+              multiline
+              rows={6}
+              // fullWidth
+              variant="outlined"
             />
-          </label>
-          <TextField
-            multiline
-            rows={6}
-            // fullWidth
-            variant="outlined"
+          </div>
+        </div>
+        <div className={style.uploadContainer}>
+          <input
+            // accept="image/*"
+            // className={classes.input}
+            id="contained-button-file"
+            multiple
+            type="file"
           />
+          <label htmlFor="contained-button-file" className={style.uploadText}>
+            <div onClick={""}>เพิ่มไฟล์แนบ</div>
+          </label>
         </div>
       </div>
+
       <div className={style.buttonContainer}>
         <MyButton
+          label={"ย้อนกลับ"}
+          color={"#ffffff"}
+          backgroundColor={"#e5a52d"}
+          onClick={() => {
+            this.setState({ pageState: 0 });
+          }}
+        ></MyButton>
+        <MyButton
           label={"สั่งการบ้าน"}
+          color={"#ffffff"}
+          backgroundColor={"#16AF74"}
+          onClick={() => {
+            this.setState({ pageState: 2 });
+          }}
+        ></MyButton>
+      </div>
+    </div>
+  );
+
+  thirdPage = (
+    <div className={cx(style.elementsContainer, style.elementsContainer2)}>
+      <div className={style.inputContainer}>
+        <div className={cx(style.textFieldContainer, style.textAreaContainer)}>
+          <label>เพิ่มข้อความ</label>
+          <div className={style.areaContainer}>
+            <TextField fullWidth multiline rows={6} variant="outlined" />
+          </div>
+        </div>
+      </div>
+      <div className={cx(style.buttonContainer, style.buttonContainer2)}>
+        <MyButton
+          label={"ยืนยันการส่งการบ้าน"}
+          color={"#ffffff"}
+          backgroundColor={"#16AF74"}
+          onClick={() => {
+            this.setState({ pageState: 0 });
+          }}
+        ></MyButton>
+        <MyButton
+          label={"ย้อนกลับ"}
           color={"#ffffff"}
           backgroundColor={"#e5a52d"}
           onClick={() => {
