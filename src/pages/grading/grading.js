@@ -125,13 +125,13 @@ export default class grading extends Component {
 
     // }
     this.setState({
-      onProgress: true,
+      onProgress: false,
     });
   };
 
   loadHomework = () => {
     this.setState({
-      onProgress: true,
+      onProgress: false,
     });
   };
 

@@ -27,6 +27,7 @@ export default class createQuiz extends Component {
     this.state = {
       pageState: 0,
       quizName: "",
+      updateQuizId: 0,
       fullPoint: 1,
       currentQuestion: 0,
       errorMessage: "",
@@ -36,6 +37,7 @@ export default class createQuiz extends Component {
       deleteQuizId: 0,
       deleteKey: 0,
       onProgress: false,
+      actionState: "",
       quizOption: [
         {
           optionName: "เลือกตอบแบบปรนัย",
@@ -51,12 +53,10 @@ export default class createQuiz extends Component {
       oldQuiz: [
         {
           quizName: "test1",
-          exp: "1234",
           id: 1,
         },
         {
           quizName: "test2",
-          exp: "1234",
           id: 2,
         },
       ],
@@ -66,7 +66,7 @@ export default class createQuiz extends Component {
 
   componentDidMount() {
     this.setState({
-      onProgress: false,
+      onProgress: true,
     });
     let liffContext = liff.getContext();
     console.log(liffContext);
@@ -82,6 +82,9 @@ export default class createQuiz extends Component {
                 id: data.id,
                 quizName: data.name,
                 exp: "เหลืออีก 10 วัน",
+                questions: data.questions,
+                type: data.type,
+                score: data.score,
               };
             }),
           });
@@ -97,6 +100,9 @@ export default class createQuiz extends Component {
   }
 
   deleteQuiz = (quizId) => {
+    this.setState({
+      onProgress: true,
+    });
     axios
       .delete(ENV.SERVER + "/quiz/delete/" + quizId)
       .then((response) => {
@@ -108,9 +114,14 @@ export default class createQuiz extends Component {
               ? updateArray.splice(index, 1)
               : "";
           });
+          this.setState({
+            onProgress: false,
+            oldQuiz: updateArray,
+          });
         } else {
           this.setState({
             alretState: true,
+            onProgress: false,
             errorMesage: "Delete is not complete!!",
           });
         }
@@ -119,19 +130,80 @@ export default class createQuiz extends Component {
         console.log(error);
         this.setState({
           alretState: true,
+          onProgress: false,
           errorMesage: error.message || "Server error!!",
         });
       });
   };
 
   updateQuiz = (quizId) => {
+    let quizEdit = this.state.oldQuiz[
+      this.state.oldQuiz.findIndex((id) => id.id === quizId)
+    ];
+    console.log(quizEdit);
     this.setState({
       pageState: 2,
+      updateQuizId: quizId,
+      quizName: quizEdit.quizName,
+      fullPoint: quizEdit.score,
     });
-    this.createQuestion();
+    if (quizEdit.type === "choice") {
+      this.setState({
+        newQuiz: quizEdit.questions.map((data) => {
+          return {
+            questionName: data.question,
+            answerName: data.answer,
+            choices: data.choices,
+          };
+        }),
+        quizOption: [
+          {
+            optionName: "เลือกตอบแบบปรนัย",
+            isPress: true,
+            icon: Choice,
+          },
+          {
+            optionName: "เลือกตอบถูก/ผิด",
+            isPress: false,
+            icon: Vote,
+          },
+        ],
+      });
+    } else if (quizEdit.type === "trueFalse") {
+      this.setState({
+        newQuiz: quizEdit.questions.map((data) => {
+          let answer = data.answer;
+          return {
+            questionName: data.question,
+            choices: [
+              {
+                choiceName: "True",
+                isAnswer: answer === "True" ? true : false,
+              },
+              {
+                choiceName: "False",
+                isAnswer: answer === "False" ? true : false,
+              },
+            ],
+          };
+        }),
+        quizOption: [
+          {
+            optionName: "เลือกตอบแบบปรนัย",
+            isPress: false,
+            icon: Choice,
+          },
+          {
+            optionName: "เลือกตอบถูก/ผิด",
+            isPress: true,
+            icon: Vote,
+          },
+        ],
+      });
+    }
   };
 
-  saveQuiz = () => {
+  saveQuiz = (actionState) => {
     let quizzes = this.state.newQuiz;
     let passState = 0;
     let errorMesage =
@@ -151,12 +223,12 @@ export default class createQuiz extends Component {
         if (data === "") {
           passState++;
           errorMesage =
-            "1Please enter choices name at question " + questionNumber;
+            "Please enter choices name at question " + questionNumber;
         }
         if (data.choiceName === "") {
           passState++;
           errorMesage =
-            "2Please enter choices name at question " + questionNumber;
+            "Please enter choices name at question " + questionNumber;
         }
         return null;
       });
@@ -170,12 +242,17 @@ export default class createQuiz extends Component {
       return null;
     });
     if (passState === 0 && this.state.newQuiz.length > 0) {
+      this.setState({
+        onProgress: true,
+      });
       let liffContext = liff.getContext();
-      let { quizName, newQuiz } = this.state;
+      let { quizName, newQuiz, fullPoint } = this.state;
       let body = {};
       if (this.state.quizOption[0].isPress === true) {
         body = {
           name: quizName,
+          type: "choice",
+          score: fullPoint,
           questions: newQuiz.map((data) => {
             return {
               question: data.questionName,
@@ -189,6 +266,8 @@ export default class createQuiz extends Component {
       } else {
         body = {
           name: quizName,
+          type: "trueFalse",
+          score: fullPoint,
           questions: newQuiz.map((data) => {
             return {
               question: data.questionName,
@@ -205,28 +284,53 @@ export default class createQuiz extends Component {
           }),
         };
       }
-      axios
-        .post(ENV.SERVER + "/quiz/create/" + liffContext.groupId, body)
-        .then((response) => {
-          console.log(response);
-          if (response.data.status === 200) {
-            liff.closeWindow();
-          } else {
+      if (actionState === "create") {
+        axios
+          .post(ENV.SERVER + "/quiz/create/" + liffContext.groupId, body)
+          .then((response) => {
+            console.log(response);
+            if (response.data.status === 200) {
+              liff.closeWindow();
+            } else {
+              this.setState({
+                alretState: true,
+                onProgress: false,
+                errorMesage: response.data.message || "Create fail!!",
+              });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
             this.setState({
               alretState: true,
               onProgress: false,
-              errorMesage: response.data.message || "Create fail!!",
+              errorMesage: error.message || "Server error!!",
             });
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          this.setState({
-            alretState: true,
-            onProgress: false,
-            errorMesage: error.message || "Server error!!",
           });
-        });
+      } else if (actionState === "update") {
+        axios
+          .put(ENV.SERVER + "/quiz/edit/" + this.state.updateQuizId, body)
+          .then((response) => {
+            console.log(response);
+            if (response.data.status === 200) {
+              liff.closeWindow();
+            } else {
+              this.setState({
+                alretState: true,
+                onProgress: false,
+                errorMesage: response.data.message || "Create fail!!",
+              });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            this.setState({
+              alretState: true,
+              onProgress: false,
+              errorMesage: error.message || "Server error!!",
+            });
+          });
+      }
     } else {
       this.setState({
         errorMessage: errorMesage,
@@ -529,9 +633,23 @@ export default class createQuiz extends Component {
         {this.state.onProgress === false ? (
           <>
             {this.state.oldQuiz.length === 0 ? (
-              <label style={{ color: "gray", fontSize: 32 }}>
-                - ท่านยังไม่ได้สั่งการบ้านใดๆ -
-              </label>
+              <>
+                {this.state.onProgress === false ? (
+                  <label style={{ color: "gray", fontSize: 32 }}>
+                    - ท่านยังไม่ได้สั่งการบ้านใดๆ -
+                  </label>
+                ) : (
+                  <center>
+                    <CircularProgress
+                      style={{
+                        display: "inline-block",
+                        color: "#e5a52d",
+                        margin: 10,
+                      }}
+                    ></CircularProgress>
+                  </center>
+                )}
+              </>
             ) : (
               this.state.oldQuiz.map((data, quizIndex) => {
                 return (
@@ -543,6 +661,9 @@ export default class createQuiz extends Component {
                         alt="Edit"
                         onClick={() => {
                           this.updateQuiz(data.id);
+                          this.setState({
+                            actionState: "update",
+                          });
                         }}
                       />
                     </div>
@@ -571,7 +692,7 @@ export default class createQuiz extends Component {
         <MyButton
           label={"เริ่มสร้างควิซ"}
           onClick={() => {
-            this.setState({ pageState: 1 });
+            this.setState({ pageState: 1, actionState: "create" });
           }}
         ></MyButton>
       </div>
@@ -669,80 +790,95 @@ export default class createQuiz extends Component {
 
   thridPage = () => (
     <>
-      <>
-        {this.state.newQuiz.map((data, key) => {
-          if (this.state.currentQuestion === key) {
-            if (this.state.quizOption[0].isPress === true) {
-              return this.MultipleChoice(data, key);
-            } else {
-              return this.TrueFalse(data, key);
-            }
-          }
-          return null;
-        })}
-      </>
-      <>
-        {this.state.newQuiz.length > 1 ? (
-          <div className={style.paginationContainer}>
-            <img
-              src={ArowLeft}
-              alt="ArowLeft"
-              onClick={this.previousQuestion}
-            />
-            <div className={style.paginationDotContainer}>
-              {this.state.newQuiz.map((_, index) => {
-                return (
-                  <>
-                    <span
-                      className={style.paginationDot}
-                      style={{
-                        backgroundColor:
-                          this.state.currentQuestion === index
-                            ? " #e5a52d"
-                            : "#ffffff",
-                      }}
-                      key={index}
-                      onClick={() => {
-                        this.goToQuestion(index);
-                      }}
-                    />
-                  </>
-                );
-              })}
-            </div>
-            <img src={ArowRight} alt="ArowRight" onClick={this.nextQuestion} />
-          </div>
-        ) : (
-          <></>
-        )}
-      </>
       {this.state.onProgress === false ? (
-        <div className={style.buttonContainer}>
-          <MyButton
-            label={"เพิ่ม"}
-            onClick={() => {
-              this.createQuestion();
-            }}
-            icon={AddIcon}
-            backgroundColor={"#ffffff"}
-            color={"#111111"}
-          ></MyButton>
-          <MyButton
-            label={"บันทึก"}
-            onClick={() => {
-              this.setState({
-                onProgress: true,
-              });
-              this.saveQuiz();
-            }}
-          ></MyButton>
-        </div>
+        <>
+          <>
+            {this.state.newQuiz.map((data, key) => {
+              if (this.state.currentQuestion === key) {
+                if (this.state.quizOption[0].isPress === true) {
+                  return this.MultipleChoice(data, key);
+                } else {
+                  return this.TrueFalse(data, key);
+                }
+              }
+              return null;
+            })}
+          </>
+          <>
+            {this.state.newQuiz.length > 1 ? (
+              <div className={style.paginationContainer}>
+                <img
+                  src={ArowLeft}
+                  alt="ArowLeft"
+                  onClick={this.previousQuestion}
+                />
+                <div className={style.paginationDotContainer}>
+                  {this.state.newQuiz.map((_, index) => {
+                    return (
+                      <>
+                        <span
+                          className={style.paginationDot}
+                          style={{
+                            backgroundColor:
+                              this.state.currentQuestion === index
+                                ? " #e5a52d"
+                                : "#ffffff",
+                          }}
+                          key={index}
+                          onClick={() => {
+                            this.goToQuestion(index);
+                          }}
+                        />
+                      </>
+                    );
+                  })}
+                </div>
+                <img
+                  src={ArowRight}
+                  alt="ArowRight"
+                  onClick={this.nextQuestion}
+                />
+              </div>
+            ) : (
+              <></>
+            )}
+          </>
+          {this.state.onProgress === false ? (
+            <div className={style.buttonContainer}>
+              <MyButton
+                label={"เพิ่ม"}
+                onClick={() => {
+                  this.createQuestion();
+                }}
+                icon={AddIcon}
+                backgroundColor={"#ffffff"}
+                color={"#111111"}
+              ></MyButton>
+              <MyButton
+                label={"บันทึก"}
+                onClick={() => {
+                  this.saveQuiz(this.state.actionState);
+                }}
+              ></MyButton>
+            </div>
+          ) : (
+            <div className={style.buttonContainer}>
+              <CircularProgress
+                style={{
+                  display: "inline-block",
+                  color: "#e5a52d",
+                  margin: 10,
+                }}
+              ></CircularProgress>
+            </div>
+          )}
+        </>
       ) : (
-        <div className={style.buttonContainer}>
+        <center>
           <CircularProgress
             style={{ display: "inline-block", color: "#e5a52d", margin: 10 }}
           ></CircularProgress>
-        </div>
+        </center>
       )}
     </>
   );
