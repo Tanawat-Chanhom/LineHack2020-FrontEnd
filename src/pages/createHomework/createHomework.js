@@ -4,6 +4,8 @@ import { TextField, Button } from "@material-ui/core";
 import liff from "@line/liff";
 import cx from "classnames";
 import MyButton from "../../compoments/button/Button";
+import AlertBar from "../../compoments/AlertBar/AlertBar";
+import DialogBox from "../../compoments/DialogBox/DialogBox";
 import Edit from "../../static/image/edit@2x.png";
 import DeleteIcon from "../../static/image/Group 35@2x.png";
 
@@ -26,11 +28,16 @@ export default class createHomework extends Component {
     super(props);
     // this.file = null;
     this.state = {
+      files: [],
+      imagesPreviewUrls: [],
       // files: [],
       pageState: 0,
-      // homeworkName: "",
-      // fullPoint: 0,
-      // currentQuestion: 0,
+      errorMessage: "",
+      alretState: false,
+      dialogBox: false,
+      dialogType: 0,
+      deleteHomeworkName: "",
+      deleteKey: 0,
       oldHomework: [
         {
           homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 1 และ 2",
@@ -45,8 +52,35 @@ export default class createHomework extends Component {
           exp: "เหลืออีก 28 วัน",
         },
       ],
-     
+      newHomework: [],
     };
+  }
+
+  _handleImageChange = (e) => {
+    e.preventDefault();
+
+    // FileList to Array
+    let files = Array.from(e.target.files);
+
+    // File Reader for Each file and and update state arrays
+    files.forEach((file, i) => {
+      let reader = new FileReader();
+
+      reader.onloadend = () => {
+        this.setState((prevState) => ({
+          files: [...prevState.files, file],
+          imagesPreviewUrls: [...prevState.imagesPreviewUrls, reader.result],
+        }));
+      };
+
+      reader.readAsDataURL(file);
+    });
+  };
+
+  _handleSubmit() {
+    console.log()
+    // e.preventDefault();
+    // TODO: do something with -> this.state.file
   }
 
   // handleClick = (event) => {
@@ -57,6 +91,18 @@ export default class createHomework extends Component {
   //   const fileUploaded = event.target.files[0];
   //   event.handleFile(fileUploaded);
   // };
+  deleteHomework = (homeworkIndex) => {
+    if (this.state.newHomework.length > 1) {
+      let updateArray = this.state.newHomework;
+      updateArray.splice(homeworkIndex, 1);
+      this.setState({
+        newHomework: updateArray,
+      });
+      // this.goToQuestion(
+      //   questionIndex + (this.state.currentQuestion === 0 ? 0 : -1)
+      // );
+    }
+  };
 
   firstPage = (state) => (
     <div className={style.elementsContainer2}>
@@ -105,7 +151,7 @@ export default class createHomework extends Component {
     </div>
   );
 
-  secondPage = (
+  secondPage = (state) => (
     <div className={cx(style.elementsContainer, style.elementsContainer2)}>
       <div className={style.inputContainer}>
         <div className={style.textFieldContainer}>
@@ -136,15 +182,34 @@ export default class createHomework extends Component {
               // fullWidth
               variant="outlined"
             />
+            {state.state.imagesPreviewUrls.map((data, key) => {
+              return (
+                <div className={style.imguploadContainer}>
+                  <img key={key} src={data} className={style.imgupload} />
+                  <img
+                  src={DeleteIcon}
+                  alt="DeleteIcon"
+                  className={style.imguploaddel}
+                  onClick={() => {
+                    // this.setState({
+                    //   dialogBox: true,
+                    //   deleteHomeworkName: data.homeworkName,
+                    // });
+                  }}
+                />
+                </div>
+              );
+            })}
           </div>
         </div>
         <div className={style.uploadContainer}>
           <input
-            // accept="image/*"
             // className={classes.input}
             id="contained-button-file"
             multiple
+            onChange={this._handleImageChange}
             type="file"
+            accept="image/*"
           />
           <label htmlFor="contained-button-file" className={style.uploadText}>
             <div onClick={""}>เพิ่มไฟล์แนบ</div>
@@ -165,9 +230,14 @@ export default class createHomework extends Component {
           label={"สั่งการบ้าน"}
           color={"#ffffff"}
           backgroundColor={"#16AF74"}
+          type="submit" 
           onClick={() => {
-            this.setState({ pageState: 2 });
+            this.setState({ pageState: 0 });
+            this._handleSubmit();
           }}
+          
+          // onClick={this._handleSubmit}
+          
         ></MyButton>
       </div>
     </div>
@@ -210,7 +280,7 @@ export default class createHomework extends Component {
         return this.firstPage(state);
 
       case 1:
-        return this.secondPage;
+        return this.secondPage(state);
 
       case 2:
         return this.thirdPage;
@@ -220,7 +290,50 @@ export default class createHomework extends Component {
     }
   };
 
+  dialog = () => (
+    <div className={style.dialogContainer}>
+      <label style={{ color: "#FFA1A1" }}>ท่านต้องการจะลบการบ้าน</label>
+      <label style={{ color: "#ffffff" }}>
+        "{this.state.deleteHomeworkName}"
+      </label>
+      <label style={{ color: "#FFA1A1" }}>หรือไม่ ?</label>
+    </div>
+  );
+
   render() {
-    return <div className={style.container}>{this.pageState(this)}</div>;
+    return (
+      <div className={style.container}>
+        {this.pageState(this)}
+
+        <AlertBar
+          open={this.state.alretState}
+          label={this.state.errorMessage}
+          backgroundColor={"#f44336"}
+          color={"#ffffff"}
+          onClose={() => {
+            this.setState({
+              alretState: false,
+            });
+          }}
+        />
+        <DialogBox
+          component={
+            this.state.dialogType === 0 ? this.dialog() : this.dialog2()
+          }
+          open={this.state.dialogBox}
+          onClose={() => {
+            this.setState({
+              dialogBox: false,
+            });
+          }}
+          onSubmit={() => {
+            if (this.state.dialogType === 0) {
+            } else {
+              this.deleteHomework(this.state.deleteKey);
+            }
+          }}
+        ></DialogBox>
+      </div>
+    );
   }
 }
