@@ -4,6 +4,10 @@ import MyButton from "../../compoments/button/Button";
 import AlertBar from "../../compoments/AlertBar/AlertBar";
 import cx from "classnames";
 import { TextField } from "@material-ui/core";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import FinalPage from "../../compoments/FinalPage/FinalPage";
+import axios from "axios";
+import ENV from "../../util/env.json";
 
 import HomeWorkIcon from "../../static/image/homework@2x.png";
 import Exam from "../../static/image/exam@2x.png";
@@ -12,12 +16,13 @@ export default class grading extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pageState: 3,
+      pageState: 0,
       alertBar: false,
       errorMessage: "",
       scoreNumber: 0,
       scoreName: "",
       sended: 1,
+      onProgress: false,
       gradOption: [
         {
           optionName: "การบ้าน",
@@ -36,7 +41,7 @@ export default class grading extends Component {
         {
           workName: "แบบฝึกหัดหลังเรียน บทที่ 1 และ 2",
           exp: "ส่งพรุ่งนี้้!",
-          isPress: true,
+          isPress: false,
           isCheck: false,
         },
         {
@@ -54,80 +59,81 @@ export default class grading extends Component {
       ],
       students: [
         {
-          studentName: "นายธนพล มาติกานนท์",
+          firstName: "ธนพล",
+          lastName: "มาติกานนท์",
           isSend: false,
           studentNumber: "61070078",
           score: 0,
         },
         {
-          studentName: "นายธนพล มาติกานนท์",
+          firstName: "ธนพล",
+          lastName: "มาติกานนท์",
           isSend: true,
           studentNumber: "61070078",
-          score: 23,
-        },
-        {
-          studentName: "นายธนพล มาติกานนท์",
-          isSend: false,
-          studentNumber: "61070078",
           score: 0,
         },
         {
-          studentName: "นายธนพล มาติกานนท์",
-          isSend: false,
-          studentNumber: "61070078",
-          score: 0,
-        },
-        {
-          studentName: "นายธนพล มาติกานนท์",
+          firstName: "ธนพล",
+          lastName: "มาติกานนท์",
           isSend: true,
-          studentNumber: "61070078",
-          score: 23,
-        },
-        {
-          studentName: "นายธนพล มาติกานนท์",
-          isSend: false,
-          studentNumber: "61070078",
-          score: 0,
-        },
-        {
-          studentName: "นายธนพล มาติกานนท์",
-          isSend: false,
-          studentNumber: "61070078",
-          score: 0,
-        },
-        {
-          studentName: "นายธนพล มาติกานนท์",
-          isSend: true,
-          studentNumber: "61070078",
-          score: 23,
-        },
-        {
-          studentName: "นายธนพล มาติกานนท์",
-          isSend: false,
-          studentNumber: "61070078",
-          score: 0,
-        },
-        {
-          studentName: "นายธนพล มาติกานนท์",
-          isSend: false,
-          studentNumber: "61070078",
-          score: 0,
-        },
-        {
-          studentName: "นายธนพล มาติกานนท์",
-          isSend: true,
-          studentNumber: "61070078",
-          score: 23,
-        },
-        {
-          studentName: "นายธนพล มาติกานนท์",
-          isSend: false,
           studentNumber: "61070078",
           score: 0,
         },
       ],
     };
   }
+
+  saveInformation = () => {
+    // setInterval(() => {
+    //   this.setState({
+    //     pageState: 4,
+    //     onProgress: false,
+    //   });
+    // }, 2000);
+    // let body = this.state.students;
+    // axios
+    //   .post(ENV.SERVER + "/", body)
+    //   .then((response) => {
+    //     console.log(response);
+    //     if (response.data.status === 200) {
+    //       this.setState({
+    //         onProgress: false,
+    //         pageState: 4,
+    //       });
+    //     } else {
+    //       this.setState({
+    //         alertBar: true,
+    //         onProgress: false,
+    //         errorMessage: response.data.message || "Save information fail!!",
+    //       });
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     this.setState({
+    //       alertBar: true,
+    //       onProgress: false,
+    //       errorMessage: error.message || "Server error!!",
+    //     });
+    //   });
+  };
+
+  loadStudent = (loadType) => {
+    // if (loadType === 0) {
+
+    // } else {
+
+    // }
+    this.setState({
+      onProgress: true,
+    });
+  };
+
+  loadHomework = () => {
+    this.setState({
+      onProgress: true,
+    });
+  };
 
   firstPage = () => (
     <div
@@ -162,6 +168,7 @@ export default class grading extends Component {
             return (
               <div
                 className={style.gradOption}
+                key={gradOptionIndex}
                 style={{
                   backgroundColor: data.isPress === true ? "#E5A52D" : "",
                 }}
@@ -184,8 +191,12 @@ export default class grading extends Component {
           })}
         </div>
         <div className={style.helpTextContainer}>
-          {this.state.gradOption.map((data) => {
-            return <label>{data.isPress === true ? data.helpText : ""}</label>;
+          {this.state.gradOption.map((data, index) => {
+            return (
+              <label key={index}>
+                {data.isPress === true ? data.helpText : ""}
+              </label>
+            );
           })}
         </div>
       </div>
@@ -201,6 +212,7 @@ export default class grading extends Component {
               this.setState({
                 pageState: 2,
               });
+              this.loadHomework();
             } else {
               this.setState({
                 alertBar: true,
@@ -218,92 +230,130 @@ export default class grading extends Component {
       <div className={style.titleContainer}>
         <label>เลือกการบ้านที่จะตรวจ</label>
       </div>
-      <div className={style.titleColumnContainer}>
-        <label>ยังไม่ได้ตรววจ</label>
-      </div>
-      <div className={style.workListContainer}>
-        {this.state.homeworks.map((data, workIndex) => {
-          if (data.isCheck !== true) {
-            return (
-              <div
-                className={style.workContainer}
-                style={{ borderColor: data.isPress === true ? "#FDCD7E" : "" }}
+      <div
+        style={{
+          width: "100%",
+        }}
+      >
+        {this.state.onProgress === false ? (
+          <>
+            <div className={style.titleColumnContainer}>
+              <label>ยังไม่ได้ตรววจ</label>
+            </div>
+            <div className={style.workListContainer}>
+              {this.state.homeworks.map((data, workIndex) => {
+                if (data.isCheck !== true) {
+                  return (
+                    <div
+                      className={style.workContainer}
+                      key={workIndex}
+                      style={{
+                        borderColor: data.isPress === true ? "#FDCD7E" : "",
+                      }}
+                      onClick={() => {
+                        let updateArray = this.state.homeworks;
+                        updateArray.map((_, index) => {
+                          updateArray[index].isPress =
+                            workIndex === index ? true : false;
+                          return null;
+                        });
+                        this.setState({
+                          homeworks: updateArray,
+                        });
+                      }}
+                    >
+                      <label
+                        style={{
+                          fontSize: 30,
+                          color: data.isPress === true ? "#FDCD7E" : "",
+                        }}
+                      >
+                        {data.workName}
+                      </label>
+                      <small
+                        className={style.expText}
+                        style={{
+                          color: data.isPress === true ? "#FDCD7E" : "",
+                        }}
+                      >
+                        {data.exp}
+                      </small>
+                    </div>
+                  );
+                }
+                return null;
+              })}
+            </div>
+            <div className={style.titleColumnContainer}>
+              <label>ส่งแล้ว</label>
+            </div>
+            <div className={style.workListContainer}>
+              {this.state.homeworks.map((data, workIndex) => {
+                if (data.isCheck === true) {
+                  return (
+                    <div
+                      key={workIndex}
+                      className={style.workContainer}
+                      style={{ borderColor: "#1FFFA9" }}
+                    >
+                      <label
+                        style={{
+                          fontSize: 30,
+                          textDecorationLine: "line-through",
+                          textDecorationColor: "#1FFFA9",
+                        }}
+                      >
+                        {data.workName}
+                      </label>
+                      <label
+                        style={{
+                          color: "#1FFFA9",
+                          fontSize: 30,
+                        }}
+                      >
+                        ตรวจแล้ว
+                      </label>
+                    </div>
+                  );
+                }
+                return null;
+              })}
+            </div>
+            <div className={style.buttonContainer} style={{ marginTop: 20 }}>
+              <MyButton
+                label={"เริ่มให้คะแนน"}
+                fontSize={43}
                 onClick={() => {
-                  let updateArray = this.state.homeworks;
-                  updateArray.map((_, index) => {
-                    updateArray[index].isPress =
-                      workIndex === index ? true : false;
+                  let passState = 0;
+                  let homeworks = this.state.homeworks;
+                  homeworks.map((_, index) => {
+                    if (homeworks[index].isPress === true) {
+                      passState++;
+                    }
                     return null;
                   });
-                  this.setState({
-                    homeworks: updateArray,
-                  });
+                  if (passState > 0) {
+                    this.loadStudent(0);
+                    this.setState({
+                      pageState: 3,
+                    });
+                  } else {
+                    this.setState({
+                      alertBar: true,
+                      errorMessage: "Please select your homework!!",
+                    });
+                  }
                 }}
-              >
-                <label
-                  style={{
-                    fontSize: 30,
-                    color: data.isPress === true ? "#FDCD7E" : "",
-                  }}
-                >
-                  {data.workName}
-                </label>
-                <small
-                  className={style.expText}
-                  style={{ color: data.isPress === true ? "#FDCD7E" : "" }}
-                >
-                  {data.exp}
-                </small>
-              </div>
-            );
-          }
-          return null;
-        })}
-      </div>
-      <div className={style.titleColumnContainer}>
-        <label>ส่งแล้ว</label>
-      </div>
-      <div className={style.workListContainer}>
-        {this.state.homeworks.map((data, workIndex) => {
-          if (data.isCheck === true) {
-            return (
-              <div
-                className={style.workContainer}
-                style={{ borderColor: "#1FFFA9" }}
-              >
-                <label
-                  style={{
-                    fontSize: 30,
-                    textDecorationLine: "line-through",
-                    textDecorationColor: "#1FFFA9",
-                  }}
-                >
-                  {data.workName}
-                </label>
-                <label
-                  style={{
-                    color: "#1FFFA9",
-                    fontSize: 30,
-                  }}
-                >
-                  ตรวจแล้ว
-                </label>
-              </div>
-            );
-          }
-          return null;
-        })}
-      </div>
-      <div className={style.buttonContainer} style={{ marginTop: 20 }}>
-        <MyButton
-          label={"เริ่มให้คะแนน"}
-          fontSize={43}
-          onClick={() => {
-            this.setState({
-              pageState: 3,
-            });
-          }}
-        ></MyButton>
+              ></MyButton>
+            </div>
+          </>
+        ) : (
+          <center>
+            <CircularProgress
+              style={{ display: "inline-block", color: "#e5a52d", margin: 10 }}
+            ></CircularProgress>
+          </center>
+        )}
       </div>
     </>
   );
@@ -358,6 +408,7 @@ export default class grading extends Component {
           fontSize={43}
           onClick={() => {
             if (this.state.scoreName !== "") {
+              this.loadStudent(1);
               this.setState({
                 pageState: 3,
               });
@@ -393,88 +444,119 @@ export default class grading extends Component {
         justifyContent: "flex-start",
       }}
     >
-      <div className={style.studentHeader}>
-        <div className={style.studentStatusContainer}>
-          <div className={style.studentStatus}>
-            <label style={{ color: "#ffffff" }}>นักเรียนทังหมด</label>
-            <label style={{ color: "#FCC55D" }}>37 คน</label>
+      {this.state.onProgress === false ? (
+        <>
+          <div
+            className={style.studentHeader}
+            style={{
+              display: this.state.gradOption[0].isPress === true ? "" : "none",
+            }}
+          >
+            <div className={style.studentStatusContainer}>
+              <div className={style.studentStatus}>
+                <label style={{ color: "#ffffff" }}>นักเรียนทังหมด</label>
+                <label style={{ color: "#FCC55D" }}>37 คน</label>
+              </div>
+              <div className={style.studentStatus}>
+                <label style={{ color: "#ffffff" }}>นักเรียนกดส่ง</label>
+                <label style={{ color: "#FCC55D" }}>37 คน</label>
+              </div>
+            </div>
+            <div className={style.studentStatusContainer}>
+              <div className={style.studentStatus}>
+                <label style={{ color: "#ffffff" }}>ยืนยันการส่งแล้้ว</label>
+                <label style={{ color: "#1FFFA9" }}>
+                  {this.state.sended} คน
+                </label>
+              </div>
+            </div>
           </div>
-          <div className={style.studentStatus}>
-            <label style={{ color: "#ffffff" }}>นักเรียนกดส่ง</label>
-            <label style={{ color: "#FCC55D" }}>37 คน</label>
+          <div className={style.studentTableContainer}>
+            <table>
+              <thead>
+                <tr>
+                  <th>เลขที่</th>
+                  <th>ชื่อ - นามสกุล</th>
+                  <th>ให้คะแนน</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.students.map((data, studentIndex) => {
+                  return (
+                    <tr className={style.studentRow} key={studentIndex}>
+                      <td>
+                        <small>{data.studentNumber}</small>
+                      </td>
+                      <td
+                        style={{ color: data.isSend === true ? "#1FFFA9" : "" }}
+                      >
+                        {data.firstName + " " + data.lastName}
+                      </td>
+                      <td style={{ maxWidth: 50 }}>
+                        <div className={style.textFieldContainer2}>
+                          <TextField
+                            type="number"
+                            fullWidth
+                            name="numberformat"
+                            variant="outlined"
+                            value={data.score}
+                            onChange={(event) => {
+                              let updateArray = this.state.students;
+                              updateArray.map((X, index) => {
+                                updateArray[index].score =
+                                  studentIndex === index
+                                    ? Number(event.target.value) + ""
+                                    : X.score;
+                                return null;
+                              });
+                              this.setState({
+                                students: updateArray,
+                              });
+                            }}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
+          <div className={cx(style.buttonContainer, style.buttonFixed)}>
+            <>
+              <MyButton
+                label={"ย้อนกลับ"}
+                onClick={() => {
+                  this.setState({
+                    pageState: this.state.pageState - 1,
+                  });
+                }}
+                fontSize={31}
+                backgroundColor={"#E5A52D"}
+                color={"#fff"}
+              ></MyButton>
+              <MyButton
+                label={"บันทึกข้้อมูล"}
+                fontSize={31}
+                backgroundColor={"#16AF74"}
+                color={"#fff"}
+                onClick={() => {
+                  this.setState({
+                    onProgress: true,
+                  });
+                  this.saveInformation();
+                }}
+              ></MyButton>
+            </>
+          </div>
+        </>
+      ) : (
+        <div className={style.loadTable}>
+          <CircularProgress
+            style={{ display: "inline-block", color: "#e5a52d", margin: 10 }}
+          ></CircularProgress>
         </div>
-        <div className={style.studentStatusContainer}>
-          <div className={style.studentStatus}>
-            <label style={{ color: "#ffffff" }}>ยืนยันการส่งแล้้ว</label>
-            <label style={{ color: "#1FFFA9" }}>{this.state.sended} คน</label>
-          </div>
-        </div>
-      </div>
-      <div className={style.studentTableContainer}>
-        <table>
-          <tr>
-            <th>เลขที่</th>
-            <th>ชื่อ - นามสกุล</th>
-            <th>ให้คะแนน</th>
-          </tr>
-          {this.state.students.map((data, studentIndex) => {
-            return (
-              <tr className={style.studentRow}>
-                <td>
-                  <small>{data.studentNumber}</small>
-                </td>
-                <td style={{ color: data.isSend === true ? "#1FFFA9" : "" }}>
-                  {data.studentName}
-                </td>
-                <td style={{ maxWidth: 50 }}>
-                  <div className={style.textFieldContainer2}>
-                    <TextField
-                      type="number"
-                      fullWidth
-                      name="numberformat"
-                      variant="outlined"
-                      value={data.score}
-                      onChange={(event) => {
-                        let updateArray = this.state.students;
-                        updateArray.map((X, index) => {
-                          updateArray[index].score =
-                            studentIndex === index
-                              ? Number(event.target.value) + ""
-                              : X.score;
-                        });
-                        this.setState({
-                          students: updateArray,
-                        });
-                      }}
-                    />
-                  </div>
-                </td>
-              </tr>
-            );
-          })}
-        </table>
-      </div>
-      <div className={cx(style.buttonContainer, style.buttonFixed)}>
-        <MyButton
-          label={"ย้อนกลับ"}
-          onClick={() => {
-            this.createQuestion();
-          }}
-          fontSize={31}
-          backgroundColor={"#E5A52D"}
-          color={"#fff"}
-        ></MyButton>
-        <MyButton
-          label={"บันทึกข้้อมูล"}
-          fontSize={31}
-          backgroundColor={"#16AF74"}
-          color={"#fff"}
-          onClick={() => {
-            this.saveQuiz();
-          }}
-        ></MyButton>
-      </div>
+      )}
     </div>
   );
 
@@ -488,6 +570,8 @@ export default class grading extends Component {
         return this.thridPage();
       case 3:
         return this.fourthPage();
+      case 4:
+        return <FinalPage label={"ให้คะแนนสำเร็จ"}></FinalPage>;
       default:
         break;
     }

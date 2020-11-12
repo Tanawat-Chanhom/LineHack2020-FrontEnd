@@ -48,12 +48,26 @@ export default class createQuiz extends Component {
           icon: Vote,
         },
       ],
-      oldQuiz: [],
+      oldQuiz: [
+        {
+          quizName: "test1",
+          exp: "1234",
+          id: 1,
+        },
+        {
+          quizName: "test2",
+          exp: "1234",
+          id: 2,
+        },
+      ],
       newQuiz: [],
     };
   }
 
   componentDidMount() {
+    this.setState({
+      onProgress: false,
+    });
     let liffContext = liff.getContext();
     console.log(liffContext);
     axios
@@ -72,6 +86,9 @@ export default class createQuiz extends Component {
             }),
           });
           // c6711e9c6da4ed762ea5229e3bbf0ed97
+          this.setState({
+            onProgress: false,
+          });
         }
       })
       .catch((error) => {
@@ -85,9 +102,11 @@ export default class createQuiz extends Component {
       .then((response) => {
         console.log(response);
         if (response.data.status === 200) {
-          this.setState({
-            alretState: true,
-            errorMesage: response.data.message || "Delete complete!!",
+          let updateArray = this.state.oldQuiz;
+          updateArray.map((_, index) => {
+            return updateArray[index].id === quizId
+              ? updateArray.splice(index, 1)
+              : "";
           });
         } else {
           this.setState({
@@ -103,6 +122,13 @@ export default class createQuiz extends Component {
           errorMesage: error.message || "Server error!!",
         });
       });
+  };
+
+  updateQuiz = (quizId) => {
+    this.setState({
+      pageState: 2,
+    });
+    this.createQuestion();
   };
 
   saveQuiz = () => {
@@ -500,31 +526,45 @@ export default class createQuiz extends Component {
         <label>สร้างควิซ</label>
       </div>
       <div className={style.quizListContainer}>
-        {this.state.oldQuiz.length === 0 ? (
-          <label style={{ color: "gray" }}>
-            - ท่านยังไม่ได้สั่งการบ้านใดๆ -
-          </label>
+        {this.state.onProgress === false ? (
+          <>
+            {this.state.oldQuiz.length === 0 ? (
+              <label style={{ color: "gray", fontSize: 32 }}>
+                - ท่านยังไม่ได้สั่งการบ้านใดๆ -
+              </label>
+            ) : (
+              this.state.oldQuiz.map((data, quizIndex) => {
+                return (
+                  <div key={quizIndex} className={style.quizContainer}>
+                    <div className={style.quizBox}>
+                      <label>{data.quizName}</label>
+                      <img
+                        src={Edit}
+                        alt="Edit"
+                        onClick={() => {
+                          this.updateQuiz(data.id);
+                        }}
+                      />
+                    </div>
+                    <img
+                      src={DeleteIcon}
+                      alt="DeleteIcon"
+                      onClick={() => {
+                        this.setState({
+                          dialogBox: true,
+                          deleteQuizId: data.id,
+                        });
+                      }}
+                    />
+                  </div>
+                );
+              })
+            )}
+          </>
         ) : (
-          this.state.oldQuiz.map((data, quizIndex) => {
-            return (
-              <div key={quizIndex} className={style.quizContainer}>
-                <div className={style.quizBox}>
-                  <label>{data.quizName}</label>
-                  <img src={Edit} alt="Edit" />
-                </div>
-                <img
-                  src={DeleteIcon}
-                  alt="DeleteIcon"
-                  onClick={() => {
-                    this.setState({
-                      dialogBox: true,
-                      deleteQuizId: data.id,
-                    });
-                  }}
-                />
-              </div>
-            );
-          })
+          <CircularProgress
+            style={{ display: "inline-block", color: "#e5a52d", margin: 10 }}
+          ></CircularProgress>
         )}
       </div>
       <div className={style.buttonContainer}>
@@ -723,7 +763,12 @@ export default class createQuiz extends Component {
   dialog = () => (
     <div className={style.dialogContainer}>
       <label style={{ color: "#FFA1A1" }}>ท่านต้องการจะลบควิซ</label>
-      <label style={{ color: "#ffffff" }}>"{this.state.deleteQuizName}"</label>
+      {this.state.oldQuiz.map((data) => {
+        if (data.id === this.state.deleteQuizId) {
+          return <label style={{ color: "#ffffff" }}>"{data.quizName}"</label>;
+        }
+        return null;
+      })}
       <label style={{ color: "#FFA1A1" }}>หรือไม่ ?</label>
     </div>
   );
