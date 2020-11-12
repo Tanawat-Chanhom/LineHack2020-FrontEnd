@@ -42,14 +42,20 @@ export default class createHomework extends Component {
         {
           homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 1 และ 2",
           exp: "ส่งพรุ่งนี้",
+          expired: true,
+          sent: true,
         },
         {
           homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 3 และ 4",
           exp: "เหลืออีก 14 วัน",
+          expired: false,
+          sent: true,
         },
         {
           homeworkName: "บันทึกการอ่าน",
           exp: "เหลืออีก 28 วัน",
+          expired: false,
+          sent: false,
         },
       ],
       newHomework: [],
@@ -78,7 +84,7 @@ export default class createHomework extends Component {
   };
 
   _handleSubmit() {
-    console.log()
+    console.log();
     // e.preventDefault();
     // TODO: do something with -> this.state.file
   }
@@ -117,24 +123,66 @@ export default class createHomework extends Component {
           </label>
         ) : (
           state.state.oldHomework.map((data, key) => {
-            return (
-              <div key={key} className={style.homeworkContainer}>
-                <div className={style.homeworkBox}>
-                  <label>{data.homeworkName}</label>
-                  <img src={Edit} alt="Edit" />
+            if (data.sent === false) {
+              return (
+
+                <div key={key} className={style.homeworkContainer}>
+                  <div className={style.homeworkBox}>
+                    <label>{data.homeworkName}</label>
+                    <img src={Edit} alt="Edit" />
+                  </div>
+                  <img
+                    src={DeleteIcon}
+                    alt="DeleteIcon"
+                    onClick={() => {
+                      this.setState({
+                        dialogBox: true,
+                        deleteHomeworkName: data.homeworkName,
+                      });
+                    }}
+                  />
                 </div>
-                <img
-                  src={DeleteIcon}
-                  alt="DeleteIcon"
-                  onClick={() => {
-                    this.setState({
-                      dialogBox: true,
-                      deleteHomeworkName: data.homeworkName,
-                    });
-                  }}
-                />
-              </div>
-            );
+              );
+            } else if (data.sent === true) {
+              return (
+                <div key={key} className={style.homeworkContainer}>
+                  <div className={style.homeworkBox}>
+                    <label>{data.homeworkName}</label>
+                    <img src={Edit} alt="Edit" />
+                  </div>
+                  <img
+                    src={DeleteIcon}
+                    alt="DeleteIcon"
+                    onClick={() => {
+                      this.setState({
+                        dialogBox: true,
+                        deleteHomeworkName: data.homeworkName,
+                      });
+                    }}
+                  />
+                </div>
+              );
+            }
+            else if (data.expired === true) {
+              return (
+                <div key={key} className={style.homeworkContainer}>
+                  <div className={style.homeworkBox}>
+                    <label>{data.homeworkName}</label>
+                    <img src={Edit} alt="Edit" />
+                  </div>
+                  <img
+                    src={DeleteIcon}
+                    alt="DeleteIcon"
+                    onClick={() => {
+                      this.setState({
+                        dialogBox: true,
+                        deleteHomeworkName: data.homeworkName,
+                      });
+                    }}
+                  />
+                </div>
+              );
+            }
           })
         )}
       </div>
@@ -187,16 +235,16 @@ export default class createHomework extends Component {
                 <div className={style.imguploadContainer}>
                   <img key={key} src={data} className={style.imgupload} />
                   <img
-                  src={DeleteIcon}
-                  alt="DeleteIcon"
-                  className={style.imguploaddel}
-                  onClick={() => {
-                    // this.setState({
-                    //   dialogBox: true,
-                    //   deleteHomeworkName: data.homeworkName,
-                    // });
-                  }}
-                />
+                    src={DeleteIcon}
+                    alt="DeleteIcon"
+                    className={style.imguploaddel}
+                    onClick={() => {
+                      // this.setState({
+                      //   dialogBox: true,
+                      //   deleteHomeworkName: data.homeworkName,
+                      // });
+                    }}
+                  />
                 </div>
               );
             })}
@@ -230,14 +278,13 @@ export default class createHomework extends Component {
           label={"สั่งการบ้าน"}
           color={"#ffffff"}
           backgroundColor={"#16AF74"}
-          type="submit" 
+          type="submit"
           onClick={() => {
             this.setState({ pageState: 0 });
             this._handleSubmit();
           }}
-          
+
           // onClick={this._handleSubmit}
-          
         ></MyButton>
       </div>
     </div>
