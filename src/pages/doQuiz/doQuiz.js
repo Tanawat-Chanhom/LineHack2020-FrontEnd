@@ -5,26 +5,67 @@ import liff from "@line/liff";
 import MyButton from "../../compoments/button/Button";
 import Quiz from "../../compoments/Quiz/Quiz";
 import AlertBar from "../../compoments/AlertBar/AlertBar";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import axios from "axios";
+import ENV from "../../util/env.json";
 
 export default class doQuiz extends Component {
   constructor(props) {
     super(props);
     this.state = {
       canStart: false,
-      pageState: 0,
+      pageState: 1,
       errorMessage: "",
       alertBar: false,
-      quizzes: [
-        {
-          quizName: "ควิซคณิตศาสตร์ ครั้งที่ 1",
-          isPress: false,
-        },
-        {
-          quizName: "ควิซคณิตศาสตร์ ครั้งที่ 2",
-          isPress: false,
-        },
-      ],
+      onProgress: false,
+      quizId: "",
+      quizzes: [],
+      questions: [],
+      quizType: "",
+      score: 0,
     };
+  }
+
+  componentDidMount() {
+    this.setState({
+      onProgress: true,
+    });
+    let liffContext = liff.getContext();
+    axios
+      .get(ENV.SERVER + "/quiz/student/" + liffContext.groupId)
+      .then((response) => {
+        console.log(response);
+        if (response.data.status === 200) {
+          let quiz = response.data.quiz;
+          this.setState({
+            quizzes: [
+              {
+                id: quiz.id,
+                quizName: quiz.name,
+              },
+            ],
+            questions: quiz.questions,
+            quizType: quiz.type,
+          });
+          this.setState({
+            onProgress: false,
+          });
+        } else {
+          this.setState({
+            onProgress: false,
+            alertBar: true,
+            errorMessage: response.data.message,
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({
+          onProgress: false,
+          alertBar: true,
+          errorMessage: error || "Server error!!",
+        });
+      });
   }
 
   firstPage = () => {
@@ -35,37 +76,52 @@ export default class doQuiz extends Component {
             <label>ควิซ</label>
           </div>
           <div className={style.quizzes}>
-            {this.state.quizzes.map((data, index) => {
-              return (
-                <div
-                  className={
-                    data.isPress === true
-                      ? cx(style.quizContainer, style.selectQuiz)
-                      : style.quizContainer
-                  }
-                  onClick={() => {
-                    let UpdateArray = this.state.quizzes;
-                    UpdateArray.map((data, UpdateArrayIndex) => {
-                      UpdateArray[UpdateArrayIndex].isPress =
-                        UpdateArrayIndex === index ? true : false;
-                      return null;
-                    });
-                    this.setState({
-                      quizzes: UpdateArray,
-                      canStart: true,
-                    });
+            {this.state.onProgress === false ? (
+              <>
+                {this.state.quizzes.map((data, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className={
+                        data.isPress === true
+                          ? cx(style.quizContainer, style.selectQuiz)
+                          : style.quizContainer
+                      }
+                      onClick={() => {
+                        let UpdateArray = this.state.quizzes;
+                        UpdateArray.map((data, UpdateArrayIndex) => {
+                          UpdateArray[UpdateArrayIndex].isPress =
+                            UpdateArrayIndex === index ? true : false;
+                          return null;
+                        });
+                        this.setState({
+                          quizzes: UpdateArray,
+                          canStart: true,
+                        });
+                      }}
+                    >
+                      <label
+                        style={{
+                          color: data.isPress === true ? "#FCC55D" : "#ffffff",
+                        }}
+                      >
+                        {data.quizName}
+                      </label>
+                    </div>
+                  );
+                })}
+              </>
+            ) : (
+              <center>
+                <CircularProgress
+                  style={{
+                    display: "inline-block",
+                    color: "#e5a52d",
+                    margin: 10,
                   }}
-                >
-                  <label
-                    style={{
-                      color: data.isPress === true ? "#FCC55D" : "#ffffff",
-                    }}
-                  >
-                    {data.quizName}
-                  </label>
-                </div>
-              );
-            })}
+                ></CircularProgress>
+              </center>
+            )}
           </div>
         </div>
         <div className={style.buttonContainer}>
@@ -85,8 +141,17 @@ export default class doQuiz extends Component {
             backgroundColor={this.state.canStart !== true ? "#B1B1B1" : ""}
             onClick={() => {
               if (this.state.canStart === true) {
+                let Array = this.state.quizzes;
+                let quizId = "";
+                Array.map((data) => {
+                  if (data.isPress === true) {
+                    quizId = data.id;
+                  }
+                  return null;
+                });
                 this.setState({
                   pageState: 1,
+                  quizId: quizId,
                 });
               }
             }}
@@ -109,8 +174,10 @@ export default class doQuiz extends Component {
         </label>
       </div>
       <div className={style.scoreContainer}>
-        <label style={{ fontSize: 100 }}>6 คะแนน!</label>
-        <label style={{ fontSize: 42, color: "#FCC55D" }}>จากคะแนนเต็ม 6</label>
+        <label style={{ fontSize: 100 }}>{this.state.score} คะแนน!</label>
+        <label style={{ fontSize: 42, color: "#FCC55D" }}>
+          จากคะแนนเต็ม {this.state.questions.length}
+        </label>
       </div>
       <div
         className={style.buttonContainer}
@@ -129,27 +196,30 @@ export default class doQuiz extends Component {
     </div>
   );
 
-  pageState = (state) => {
+  pageState = () => {
     switch (this.state.pageState) {
       case 0:
         return this.firstPage();
       case 1:
         return (
           <Quiz
+            quizId={this.state.quizId}
+            questions={this.state.questions}
+            quizType={this.state.quizType}
             onError={(errorMessage) => {
               this.setState({
                 alertBar: true,
                 errorMessage: errorMessage,
               });
             }}
-            onFinish={(index) => {
+            onFinish={(index, score) => {
               this.setState({
                 pageState: index,
+                score: score,
               });
             }}
           ></Quiz>
         );
-
       case 2:
         return this.secondPage();
       default:
@@ -171,7 +241,7 @@ export default class doQuiz extends Component {
             });
           }}
         ></AlertBar>
-        <div className={style.container}>{this.pageState(this)}</div>
+        <div className={style.container}>{this.pageState()}</div>
       </>
     );
   }

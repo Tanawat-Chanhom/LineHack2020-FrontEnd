@@ -55,11 +55,43 @@
   display: flex;
   flex-direction: row;
   width: 100%;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .buttonContainer div {
   width: 40%;
   max-width: unset;
   min-width: unset;
+}
+
+.timerContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.timer {
+  width: 90px;
+  height: 90px;
+  border: 1px solid #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  margin: 2px;
+  padding: 5px;
+  border-radius: 15px;
+  transition: all 0.2s ease;
+}
+
+.timer img {
+  width: 43px;
+  height: 43px;
+}
+
+.timer label {
+  font-size: 41px;
+  color: #ffffff;
 }

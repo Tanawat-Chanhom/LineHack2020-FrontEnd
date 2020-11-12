@@ -3,81 +3,75 @@ import style from "./styles.module.css";
 import MyButton from "../button/Button";
 import { TextField } from "@material-ui/core";
 import cx from "classnames";
-// import liff from "@line/liff";
+import axios from "axios";
+import ENV from "../../util/env.json";
+import firebase from "../../util/firebaseConfig";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import liff from "@line/liff";
 
 export default class Quiz extends Component {
   constructor(props) {
     super(props);
     this.state = {
       currentQuestion: 0,
+      quizId: props.quizId,
+      quizType: props.quizType,
       alertBar: false,
       errorMessage: "",
-      questions: [
-        {
-          questionName: "ตามกฏทิษฎีของโลปิตาลแล้ว 1+1 เท่ากับเท่าไหร่",
-          choices: [
-            {
-              choiceName: "1",
-              isPress: false,
-            },
-            {
-              choiceName: "2",
-              isPress: false,
-            },
-            {
-              choiceName: "3",
-              isPress: false,
-            },
-            {
-              choiceName: "4",
-              isPress: false,
-            },
-          ],
-        },
-        {
-          questionName: "ตามกฏทิษฎีของโลปิตาลแล้ว 1+1 เท่ากับเท่าไหร่",
-          choices: [
-            {
-              choiceName: "1",
-              isPress: false,
-            },
-            {
-              choiceName: "2",
-              isPress: false,
-            },
-            {
-              choiceName: "3",
-              isPress: false,
-            },
-            {
-              choiceName: "4",
-              isPress: false,
-            },
-          ],
-        },
-        {
-          questionName: "ตามกฏทิษฎีของโลปิตาลแล้ว 1+1 เท่ากับเท่าไหร่",
-          choices: [
-            {
-              choiceName: "1",
-              isPress: false,
-            },
-            {
-              choiceName: "2",
-              isPress: false,
-            },
-            {
-              choiceName: "3",
-              isPress: false,
-            },
-            {
-              choiceName: "4",
-              isPress: false,
-            },
-          ],
-        },
-      ],
+      timer: "0",
+      score: 0,
+      questions: [],
+      onProgress: false,
     };
+  }
+
+  componentDidMount() {
+    console.log("firebase");
+    const database = firebase.database().ref("/quiz/" + this.state.quizId);
+    database.on("value", (snap) => {
+      console.log("snap");
+      let time = snap.val();
+      let minutes = Math.floor(time / 60);
+      let seconds = time - minutes * 60;
+      let timer = minutes + ":" + seconds;
+      this.setState({
+        timer: timer,
+      });
+      if (time <= 1) {
+        this.submit();
+      }
+    });
+
+    let questions = this.props.questions; // []
+    let newArray = [];
+    questions.map((questionData) => {
+      let choice = questionData.choices;
+      choice.push(questionData.answer);
+      choice = choice.map((data) => {
+        if (data === questionData.answer) {
+          return {
+            choiceName: data,
+            isPress: false,
+            isAnswer: true,
+          };
+        } else {
+          return {
+            choiceName: data,
+            isPress: false,
+            isAnswer: false,
+          };
+        }
+      });
+      choice = choice.sort(() => Math.random() - 0.5);
+      newArray.push({
+        questionName: questionData.question,
+        choices: choice,
+      });
+      return null;
+    });
+    this.setState({
+      questions: newArray,
+    });
   }
 
   nextQuestion = () => {
@@ -96,6 +90,51 @@ export default class Quiz extends Component {
     }
   };
 
+  submit = () => {
+    this.setState({
+      onProgress: true,
+    });
+    let liffContext = liff.getContext();
+    let questions = this.state.questions;
+    let score = 0;
+    questions.map((_, questionIndex) => {
+      questions[questionIndex].choices.map((data) => {
+        if (data.isPress === true && data.isAnswer === true) {
+          score++;
+        }
+        return null;
+      });
+      return null;
+    });
+    let body = {
+      lineId: liffContext.userId,
+      score: score,
+    };
+    axios
+      .put(ENV.SERVER + "/quiz/student/" + this.state.quizId, body)
+      .then((response) => {
+        console.log(response);
+        if (response.data.status === 200) {
+          this.props.onFinish(2, score);
+          this.setState({
+            onProgress: false,
+          });
+        } else {
+          this.setState({
+            onProgress: false,
+          });
+          this.props.onError(response.data.message || "Submit score fail!!");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({
+          onProgress: false,
+        });
+        this.props.onError(error || "Server error!!");
+      });
+  };
+
   render() {
     return (
       <div className={style.elementContainer}>
@@ -105,6 +144,14 @@ export default class Quiz extends Component {
           }
           return (
             <div className={style.questionContainer} key={questionIndex}>
+              <div
+                className={style.titleContainer}
+                style={{ margin: 0, fontSize: 35, color: "" }}
+              >
+                <center>
+                  <label>เหลืออีก {this.state.timer} วินาที</label>
+                </center>
+              </div>
               <div className={style.titleContainer}>
                 <label>ข้อที่ {questionIndex + 1}</label>
               </div>
@@ -181,55 +228,70 @@ export default class Quiz extends Component {
             })}
           </div>
           <div className={style.buttonContainer}>
-            <MyButton
-              label={"ย้อนกลับ"}
-              fontSize={48}
-              backgroundColor={"#ffffff"}
-              color={"#111111"}
-              onClick={() => {
-                this.previousQuestion();
-              }}
-            ></MyButton>
-            {this.state.currentQuestion === this.state.questions.length - 1 ? (
-              <MyButton
-                label={"ส่งควิซ"}
-                fontSize={48}
-                onClick={() => {
-                  let questions = this.state.questions;
-                  let passState = 0;
-                  let errorMessage = "";
-                  questions.map((questionData, questionIndex) => {
-                    let counter = 0;
-                    questionData.choices.map(function (data, index) {
-                      if (data.isPress === true) {
-                        passState++;
+            {this.state.onProgress === false ? (
+              <>
+                <MyButton
+                  label={"ย้อนกลับ"}
+                  fontSize={48}
+                  backgroundColor={"#ffffff"}
+                  color={"#111111"}
+                  onClick={() => {
+                    this.previousQuestion();
+                  }}
+                ></MyButton>
+                {this.state.currentQuestion ===
+                this.state.questions.length - 1 ? (
+                  <MyButton
+                    label={"ส่งควิซ"}
+                    fontSize={48}
+                    onClick={() => {
+                      let questions = this.state.questions;
+                      let passState = 0;
+                      let errorMessage = "";
+                      questions.map((questionData, questionIndex) => {
+                        let counter = 0;
+                        questionData.choices.map(function (data, index) {
+                          if (data.isPress === true) {
+                            passState++;
+                          } else {
+                            counter++;
+                          }
+                          if (counter === questionData.choices.length) {
+                            errorMessage =
+                              "Please select your choice at question " +
+                              (questionIndex + 1);
+                          }
+                          return null;
+                        });
+                        return null;
+                      });
+                      if (passState === this.state.questions.length) {
+                        this.submit();
                       } else {
-                        counter++;
+                        this.props.onError(errorMessage);
                       }
-                      if (counter === questionData.choices.length) {
-                        errorMessage =
-                          "Please select your choice at question " +
-                          (questionIndex + 1);
-                      }
-                      return null;
-                    });
-                    return null;
-                  });
-                  if (passState === this.state.questions.length) {
-                    this.props.onFinish(2);
-                  } else {
-                    this.props.onError(errorMessage);
-                  }
-                }}
-              ></MyButton>
+                    }}
+                  ></MyButton>
+                ) : (
+                  <MyButton
+                    label={"ข้อถัดไป  >"}
+                    fontSize={48}
+                    onClick={() => {
+                      this.nextQuestion();
+                    }}
+                  ></MyButton>
+                )}
+              </>
             ) : (
-              <MyButton
-                label={"ข้อถัดไป  >"}
-                fontSize={48}
-                onClick={() => {
-                  this.nextQuestion();
-                }}
-              ></MyButton>
+              <center>
+                <CircularProgress
+                  style={{
+                    display: "inline-block",
+                    color: "#e5a52d",
+                    margin: 10,
+                  }}
+                ></CircularProgress>
+              </center>
             )}
           </div>
         </div>
