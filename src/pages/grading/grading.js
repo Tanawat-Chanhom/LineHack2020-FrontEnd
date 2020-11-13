@@ -20,7 +20,7 @@ export default class grading extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pageState: 3,
+      pageState: 0,
       alertBar: false,
       errorMessage: "",
       scoreNumber: 0,
@@ -36,7 +36,7 @@ export default class grading extends Component {
       gradOption: [
         {
           optionName: "การบ้าน",
-          isPress: true,
+          isPress: false,
           icon: HomeWorkIcon,
           helpText: "เป็นการให้คะแนนการบ้านที่สร้างไว้ในระบบ",
         },
@@ -48,48 +48,48 @@ export default class grading extends Component {
         },
       ],
       homeworks: [
-        {
-          workName: "แบบฝึกหัดหลังเรียน บทที่ 1",
-          exp: "ส่งพรุ่งนี้้!",
-          isPress: false,
-          isCheck: false,
-        },
-        {
-          workName: "แบบฝึกหัดหลังเรียน บทที่ 3",
-          exp: "เหลืออีก 7 วัน",
-          isPress: false,
-          isCheck: false,
-        },
-        {
-          workName: "แบบฝึกหัดหลังเรียน บทที่ 4",
-          exp: "เหลืออีก 12 วัน",
-          isPress: false,
-          isCheck: true,
-        },
+        // {
+        //   workName: "แบบฝึกหัดหลังเรียน บทที่ 1",
+        //   exp: "ส่งพรุ่งนี้้!",
+        //   isPress: false,
+        //   isCheck: false,
+        // },
+        // {
+        //   workName: "แบบฝึกหัดหลังเรียน บทที่ 3",
+        //   exp: "เหลืออีก 7 วัน",
+        //   isPress: false,
+        //   isCheck: false,
+        // },
+        // {
+        //   workName: "แบบฝึกหัดหลังเรียน บทที่ 4",
+        //   exp: "เหลืออีก 12 วัน",
+        //   isPress: false,
+        //   isCheck: true,
+        // },
       ],
       grading: [],
       students: [
-        {
-          name: "test",
-          lastName: "soft",
-          sid: 1,
-          score: 23,
-          isSend: true,
-          files: [
-            "https://i.pinimg.com/originals/6f/a0/ee/6fa0eee440db3dbd4b31dd0e2f7fab7c.png",
-            "https://i.pinimg.com/originals/6f/a0/ee/6fa0eee440db3dbd4b31dd0e2f7fab7c.png",
-          ],
-        },
-        {
-          name: "test",
-          lastName: "soft",
-          sid: 1,
-          score: 23,
-          isSend: true,
-          files: [
-            "https://i.pinimg.com/originals/6f/a0/ee/6fa0eee440db3dbd4b31dd0e2f7fab7c.png",
-          ],
-        },
+        // {
+        //   name: "test",
+        //   lastName: "soft",
+        //   sid: 1,
+        //   score: 23,
+        //   isSend: true,
+        //   files: [
+        //     "https://i.pinimg.com/originals/6f/a0/ee/6fa0eee440db3dbd4b31dd0e2f7fab7c.png",
+        //     "https://i.pinimg.com/originals/6f/a0/ee/6fa0eee440db3dbd4b31dd0e2f7fab7c.png",
+        //   ],
+        // },
+        // {
+        //   name: "test",
+        //   lastName: "soft",
+        //   sid: 1,
+        //   score: 23,
+        //   isSend: true,
+        //   files: [
+        //     "https://i.pinimg.com/originals/6f/a0/ee/6fa0eee440db3dbd4b31dd0e2f7fab7c.png",
+        //   ],
+        // },
       ],
     };
   }
@@ -101,30 +101,34 @@ export default class grading extends Component {
     let body = {
       members: this.state.students,
     };
-    axios
-      .post(ENV.SERVER + "/grades/add/" + this.state.gradId, body)
-      .then((response) => {
-        console.log(response);
-        if (response.data.status === 200) {
-          this.setState({
-            saveProgress: false,
-          });
-        } else {
-          this.setState({
-            alertBar: true,
-            saveProgress: false,
-            errorMessage: response.data.message || "Save information fail!!",
-          });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        this.setState({
-          alertBar: true,
-          saveProgress: false,
-          errorMessage: error.message || "Server error!!",
-        });
-      });
+    // if () {
+    //   axios
+    //   .post(ENV.SERVER + "/grades/add/" + this.state.gradId, body)
+    //   .then((response) => {
+    //     console.log(response);
+    //     if (response.data.status === 200) {
+    //       this.setState({
+    //         saveProgress: false,
+    //       });
+    //     } else {
+    //       this.setState({
+    //         alertBar: true,
+    //         saveProgress: false,
+    //         errorMessage: response.data.message || "Save information fail!!",
+    //       });
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     this.setState({
+    //       alertBar: true,
+    //       saveProgress: false,
+    //       errorMessage: error.message || "Server error!!",
+    //     });
+    //   });
+    // } else {
+
+    // }
   };
 
   loadStudent = (loadType, id) => {
@@ -133,7 +137,7 @@ export default class grading extends Component {
     });
     console.log(id);
     if (loadType === 0) {
-      // tset
+      //
     } else if (loadType === 1) {
       axios
         .get(ENV.SERVER + "/grades/detail/" + id)
@@ -205,8 +209,37 @@ export default class grading extends Component {
 
   loadHomework = () => {
     this.setState({
-      onProgress: false,
+      onProgress: true,
     });
+    let liffContext = liff.getContext();
+    axios
+      .get(ENV.SERVER + "/homework/all/" + liffContext.groupId)
+      .then((response) => {
+        console.log(response);
+        if (response.data.status === 201) {
+          console.log(response);
+          this.setState({
+            onProgress: false,
+            homeworks: response.data.homework,
+          });
+        } else {
+          this.setState({
+            alertBar: true,
+            onProgress: false,
+            errorMessage: response.data.message || "Save information fail!!",
+            pageState: 1,
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({
+          alertBar: true,
+          onProgress: false,
+          errorMessage: error.message || "Server error!!",
+          pageState: 1,
+        });
+      });
   };
 
   loadGrading = () => {
@@ -348,8 +381,17 @@ export default class grading extends Component {
                             workIndex === index ? true : false;
                           return null;
                         });
+                        let sended = 0;
+                        data.members.map((data) => {
+                          if (data.isSend === true) {
+                            sended++;
+                          }
+                        });
                         this.setState({
                           homeworks: updateArray,
+                          students: data.members,
+                          gradId: data.id,
+                          sended: sended,
                         });
                       }}
                     >
@@ -359,7 +401,7 @@ export default class grading extends Component {
                           color: data.isPress === true ? "#FDCD7E" : "",
                         }}
                       >
-                        {data.workName}
+                        {data.title}
                       </label>
                     </div>
                   </>
@@ -417,7 +459,6 @@ export default class grading extends Component {
                     return null;
                   });
                   if (passState > 0) {
-                    // this.loadStudent(0);
                     this.setState({
                       pageState: 3,
                     });
@@ -634,7 +675,9 @@ export default class grading extends Component {
             >
               <div className={style.studentStatus}>
                 <label style={{ color: "#ffffff" }}>นักเรียนทังหมด</label>
-                <label style={{ color: "#FCC55D" }}>37 คน</label>
+                <label style={{ color: "#FCC55D" }}>
+                  {this.state.students.length} คน
+                </label>
               </div>
               <div
                 className={style.studentStatus}
@@ -644,13 +687,15 @@ export default class grading extends Component {
                 }}
               >
                 <label style={{ color: "#ffffff" }}>นักเรียนกดส่ง</label>
-                <label style={{ color: "#FCC55D" }}>37 คน</label>
+                <label style={{ color: "#FCC55D" }}>
+                  {this.state.sended} คน
+                </label>
               </div>
             </div>
             {this.state.saveProgress === false ? (
               <div className={style.titleButton}>
                 <MyButton
-                  label={"บันทึกข้้อมูล"}
+                  label={"บันทึกข้อมูล"}
                   fontSize={30}
                   backgroundColor={"#16AF74"}
                   icon={saveIcon}
@@ -720,15 +765,23 @@ export default class grading extends Component {
                             />
                           </div>
                         ) : (
-                          <div className={style.watchFileContainer}>
+                          <div
+                            className={style.watchFileContainer}
+                            style={{ opacity: data.isSend === true ? 1 : 0.5 }}
+                          >
                             <img
                               src={WatchFile}
                               alt="WatchFile"
                               onClick={() => {
-                                this.setState({
-                                  onSlider: true,
-                                  imageSelect: data.files,
-                                });
+                                if (
+                                  data.isSend === true &&
+                                  data.files !== undefined
+                                ) {
+                                  this.setState({
+                                    onSlider: true,
+                                    imageSelect: data.files,
+                                  });
+                                }
                               }}
                             />
                           </div>
@@ -753,30 +806,36 @@ export default class grading extends Component {
                 backgroundColor={"#E5A52D"}
                 color={"#fff"}
               ></MyButton>
-              {this.state.watchFile === false ? (
-                <MyButton
-                  label={"ดูการบ้านที่ส่ง"}
-                  onClick={() => {
-                    this.setState({
-                      watchFile: true,
-                    });
-                  }}
-                  fontSize={31}
-                  backgroundColor={"#3C5575"}
-                  color={"#fff"}
-                ></MyButton>
+              {this.state.gradOption[0].isPress === true ? (
+                <>
+                  {this.state.watchFile === false ? (
+                    <MyButton
+                      label={"ดูการบ้านที่ส่ง"}
+                      onClick={() => {
+                        this.setState({
+                          watchFile: true,
+                        });
+                      }}
+                      fontSize={31}
+                      backgroundColor={"#3C5575"}
+                      color={"#fff"}
+                    ></MyButton>
+                  ) : (
+                    <MyButton
+                      label={"ดูคะแนน"}
+                      onClick={() => {
+                        this.setState({
+                          watchFile: false,
+                        });
+                      }}
+                      fontSize={31}
+                      backgroundColor={"#3D92A8"}
+                      color={"#fff"}
+                    ></MyButton>
+                  )}
+                </>
               ) : (
-                <MyButton
-                  label={"ดูคะแนน"}
-                  onClick={() => {
-                    this.setState({
-                      watchFile: false,
-                    });
-                  }}
-                  fontSize={31}
-                  backgroundColor={"#3D92A8"}
-                  color={"#fff"}
-                ></MyButton>
+                <></>
               )}
             </>
           </div>
