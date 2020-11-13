@@ -12,7 +12,7 @@
 /* secondPage styles */
 
 .elementsContainer2 {
-  /* padding: 40px 0px; */
+  padding: 40px 0px;
   width: 100%;
   max-width: 500px;
   /* height: 100%; */
@@ -32,7 +32,6 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 25%;
 }
 
 .titleText {
@@ -239,6 +238,7 @@ Textarea {
   padding: 10px;
   margin: 6px 0px;
   width: 100%;
+  background-color: #ffffff14;
 }
 
 .homeworkBox label {
@@ -371,4 +371,8 @@ Textarea {
 .circleBase label1 {
   color: #e5a52d !important;
   font-size: 31px;
+}
+
+.homeworkListContainer {
+  width: 100%;
 }

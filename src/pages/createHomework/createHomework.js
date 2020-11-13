@@ -10,7 +10,7 @@ import axios from "axios";
 import ENV from "../../util/env.json";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import liff from "@line/liff";
-// import FinalPage
+import FinalPage from "../../compoments/FinalPage/FinalPage";
 
 //Image
 // import TA from "../../static/image/TA-LOGO.png";
@@ -126,17 +126,19 @@ export default class createHomework extends Component {
       .post(ENV.SERVER + "/homework/create", body)
       .then((response) => {
         console.log(response);
-        // if (response.data.status === 200) {
-        // this.setState({
-        //   onProgress: false,
-        // });
-        // } else {
-        this.setState({
-          alretState: true,
-          onProgress: false,
-          errorMessage: response.data.message || "Load homework fail!!",
-        });
-        // }
+        if (response.data.status === 201) {
+          this.setState({
+            onProgress: false,
+            pageState: 2,
+          });
+          liff.closeWindow();
+        } else {
+          this.setState({
+            alretState: true,
+            onProgress: false,
+            errorMessage: response.data.message || "Load homework fail!!",
+          });
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -388,57 +390,33 @@ export default class createHomework extends Component {
       </div>
 
       <div className={style.buttonContainer}>
-        <MyButton
-          label={"ย้อนกลับ"}
-          color={"#ffffff"}
-          backgroundColor={"#e5a52d"}
-          onClick={() => {
-            this.setState({ pageState: 0 });
-          }}
-        ></MyButton>
-        <MyButton
-          label={"สั่งการบ้าน"}
-          color={"#ffffff"}
-          backgroundColor={"#16AF74"}
-          type="submit"
-          onClick={() => {
-            this.setState({ pageState: 0 });
-            this._handleSubmit();
-          }}
-
-          // onClick={this._handleSubmit}
-        ></MyButton>
-      </div>
-    </div>
-  );
-
-  thirdPage = () => (
-    <div className={cx(style.elementsContainer, style.elementsContainer2)}>
-      <div className={style.inputContainer}>
-        <div className={cx(style.textFieldContainer, style.textAreaContainer)}>
-          <label>เพิ่มข้อความ</label>
-          <div className={style.areaContainer}>
-            <TextField fullWidth multiline rows={6} variant="outlined" />
-          </div>
-        </div>
-      </div>
-      <div className={cx(style.buttonContainer, style.buttonContainer2)}>
-        <MyButton
-          label={"ยืนยันการส่งการบ้าน"}
-          color={"#ffffff"}
-          backgroundColor={"#16AF74"}
-          onClick={() => {
-            this.setState({ pageState: 0 });
-          }}
-        ></MyButton>
-        <MyButton
-          label={"ย้อนกลับ"}
-          color={"#ffffff"}
-          backgroundColor={"#e5a52d"}
-          onClick={() => {
-            this.setState({ pageState: 0 });
-          }}
-        ></MyButton>
+        {this.state.onProgress === false ? (
+          <>
+            <MyButton
+              label={"ย้อนกลับ"}
+              color={"#ffffff"}
+              backgroundColor={"#e5a52d"}
+              onClick={() => {
+                this.setState({ pageState: 0 });
+              }}
+            ></MyButton>
+            <MyButton
+              label={"สั่งการบ้าน"}
+              color={"#ffffff"}
+              backgroundColor={"#16AF74"}
+              type="submit"
+              onClick={() => {
+                this._handleSubmit();
+              }}
+            ></MyButton>
+          </>
+        ) : (
+          <center>
+            <CircularProgress
+              style={{ display: "inline-block", color: "#e5a52d", margin: 10 }}
+            ></CircularProgress>
+          </center>
+        )}
       </div>
     </div>
   );
@@ -450,7 +428,7 @@ export default class createHomework extends Component {
       case 1:
         return this.secondPage();
       case 2:
-        return this.thirdPage();
+        return <FinalPage label={"สั่งการบ้านเรียบร้อย"} />;
       default:
         break;
     }

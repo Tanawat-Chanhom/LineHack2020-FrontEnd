@@ -5,6 +5,12 @@ import { TextField } from "@material-ui/core";
 import cx from "classnames";
 import MyButton from "../../compoments/button/Button";
 import firebase from "../../util/firebaseConfig";
+import axios from "axios";
+import ENV from "../../util/env.json";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import liff from "@line/liff";
+import FinalPage from "../../compoments/FinalPage/FinalPage";
+
 //Image
 // import TA from "../../static/image/TA-LOGO.png";
 // import Edit from "../../static/image/edit@2x.png";
@@ -22,6 +28,7 @@ export default class sentHomework extends Component {
       // quizName: "",
       // fullPoint: 0,
       // currentQuestion: 0,
+      onProgress: false,
       oldHomework: [
         {
           homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 1 และ 2",
@@ -32,6 +39,10 @@ export default class sentHomework extends Component {
           expired: true,
           sent: true,
           isPress: false,
+          files: [
+            "https://i.pinimg.com/originals/6f/a0/ee/6fa0eee440db3dbd4b31dd0e2f7fab7c.png",
+            "https://i.pinimg.com/originals/6f/a0/ee/6fa0eee440db3dbd4b31dd0e2f7fab7c.png",
+          ],
         },
         {
           homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 7 และ 9",
@@ -72,11 +83,51 @@ export default class sentHomework extends Component {
           expired: false,
           sent: false,
           isPress: false,
+          files: [
+            "https://i.pinimg.com/originals/6f/a0/ee/6fa0eee440db3dbd4b31dd0e2f7fab7c.png",
+            "https://i.pinimg.com/originals/6f/a0/ee/6fa0eee440db3dbd4b31dd0e2f7fab7c.png",
+          ],
         },
       ],
       // newQuiz: [],
     };
   }
+
+  componentDidMount() {
+    this.loadHomework();
+  }
+
+  loadHomework = () => {
+    this.setState({
+      onProgress: true,
+    });
+    let liffContext = liff.getContext();
+    axios
+      .get(ENV.SERVER + "/homework/all/" + liffContext.groupId)
+      .then((response) => {
+        console.log(response);
+        if (response.data.status === 200) {
+          this.setState({
+            onProgress: false,
+            oldHomework: response.data.homework,
+          });
+        } else {
+          this.setState({
+            alretState: true,
+            onProgress: false,
+            errorMessage: response.data.message || "Load homework fail!!",
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({
+          alretState: true,
+          onProgress: false,
+          errorMessage: error.message || "Server error",
+        });
+      });
+  };
 
   _handleImageChange = (e) => {
     e.preventDefault();
@@ -139,142 +190,152 @@ export default class sentHomework extends Component {
         <h1 className={style.titleText}>การบ้านทั้งหมดในขณะนี้</h1>
       </div>
       <div className={style.homeworkListContainer}>
-        {state.state.oldHomework.length === 0 ? (
-          <label style={{ color: "gray" }}>
-            - ท่านยังไม่ได้สั่งการบ้านใดๆ -
-          </label>
+        {this.state.onProgress === false ? (
+          <>
+            {state.state.oldHomework.length === 0 ? (
+              <label style={{ color: "gray" }}>
+                - ท่านยังไม่ได้สั่งการบ้านใดๆ -
+              </label>
+            ) : (
+              <div>
+                <div className={style.homeworkIndexContainer}>
+                  <label className={style.homeworkIndexContainerText}>
+                    ยังไม่ได้ส่ง
+                  </label>
+                  <div className={style.homeworkIndexContainerSelect}>
+                    {state.state.oldHomework.map((data, key) => {
+                      if (data.sent === false && data.expired === false) {
+                        return (
+                          <div key={key} className={style.homeworkContainer}>
+                            <div
+                              className={style.homeworkBox}
+                              style={{
+                                backgroundColor:
+                                  data.isPress === true ? "#E5A52D" : "",
+                              }}
+                              onClick={() => {
+                                let UpdateArray = this.state.oldHomework;
+                                UpdateArray.map((data, UpdateArrayIndex) => {
+                                  UpdateArray[UpdateArrayIndex].isPress =
+                                    UpdateArrayIndex === key ? true : false;
+                                  console.log(
+                                    UpdateArray[UpdateArrayIndex].isPress
+                                  );
+                                  return null;
+                                });
+                                this.setState({
+                                  pageState: 1,
+                                  // quizzes: UpdateArray,
+                                  // canStart: true,
+                                });
+                              }}
+                            >
+                              <label>{data.homeworkName}</label>
+                              <label>{data.exp}</label>
+                            </div>
+                          </div>
+                        );
+                      }
+                    })}
+                  </div>
+                </div>
+
+                <div className={style.homeworkIndexContainer}>
+                  <label className={style.homeworkIndexContainerText}>
+                    ส่งแล้ว
+                  </label>
+                  <div className={style.homeworkIndexContainerSelect}>
+                    {state.state.oldHomework.map((data, key) => {
+                      if (data.sent === true && data.expired === false) {
+                        return (
+                          <div key={key} className={style.homeworkContainer}>
+                            <div
+                              className={cx(
+                                style.homeworkBox,
+                                style.homeworkBoxSent
+                              )}
+                              style={{
+                                backgroundColor:
+                                  data.isPress === true ? "#5d6870" : "",
+                                // borderColor: data.isPress === true ? "#ffffff" : "",
+                                color: data.isPress === true ? "#ffffff" : "",
+                              }}
+                              onClick={() => {
+                                let UpdateArray = this.state.oldHomework;
+                                UpdateArray.map((data, UpdateArrayIndex) => {
+                                  UpdateArray[UpdateArrayIndex].isPress =
+                                    UpdateArrayIndex === key ? true : false;
+                                  console.log(
+                                    UpdateArray[UpdateArrayIndex].isPress
+                                  );
+                                  return null;
+                                });
+                                this.setState({
+                                  pageState: 1,
+                                  // quizzes: UpdateArray,
+                                  // canStart: true,
+                                });
+                              }}
+                            >
+                              <label>{data.homeworkName}</label>
+                              <label>ส่งแล้ว</label>
+                            </div>
+                          </div>
+                        );
+                      }
+                    })}
+                  </div>
+                </div>
+
+                <div className={style.homeworkIndexContainer}>
+                  <label className={style.homeworkIndexContainerText}>
+                    เลยกำหนดส่ง
+                  </label>
+                  <div className={style.homeworkIndexContainerSelect}>
+                    {state.state.oldHomework.map((data, key) => {
+                      if (data.expired === true) {
+                        return (
+                          <div key={key} className={style.homeworkContainer}>
+                            <div
+                              className={style.homeworkBox}
+                              style={{
+                                backgroundColor:
+                                  data.isPress === true ? "#E5A52D" : "",
+                              }}
+                              onClick={() => {
+                                let UpdateArray = this.state.oldHomework;
+                                UpdateArray.map((data, UpdateArrayIndex) => {
+                                  UpdateArray[UpdateArrayIndex].isPress =
+                                    UpdateArrayIndex === key ? true : false;
+                                  console.log(
+                                    UpdateArray[UpdateArrayIndex].isPress
+                                  );
+                                  return null;
+                                });
+                                this.setState({
+                                  pageState: 1,
+                                  // quizzes: UpdateArray,
+                                  // canStart: true,
+                                });
+                              }}
+                            >
+                              <label>{data.homeworkName}</label>
+                            </div>
+                          </div>
+                        );
+                      }
+                    })}
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
         ) : (
-          <div>
-            <div className={style.homeworkIndexContainer}>
-              <label className={style.homeworkIndexContainerText}>
-                ยังไม่ได้ส่ง
-              </label>
-              <div className={style.homeworkIndexContainerSelect}>
-                {state.state.oldHomework.map((data, key) => {
-                  if (data.sent === false && data.expired === false) {
-                    return (
-                      <div key={key} className={style.homeworkContainer}>
-                        <div
-                          className={style.homeworkBox}
-                          style={{
-                            backgroundColor:
-                              data.isPress === true ? "#E5A52D" : "",
-                          }}
-                          onClick={() => {
-                            let UpdateArray = this.state.oldHomework;
-                            UpdateArray.map((data, UpdateArrayIndex) => {
-                              UpdateArray[UpdateArrayIndex].isPress =
-                                UpdateArrayIndex === key ? true : false;
-                              console.log(
-                                UpdateArray[UpdateArrayIndex].isPress
-                              );
-                              return null;
-                            });
-                            this.setState({
-                              pageState: 1,
-                              // quizzes: UpdateArray,
-                              // canStart: true,
-                            });
-                          }}
-                        >
-                          <label>{data.homeworkName}</label>
-                          <label>{data.exp}</label>
-                        </div>
-                      </div>
-                    );
-                  }
-                })}
-              </div>
-            </div>
-
-            <div className={style.homeworkIndexContainer}>
-              <label className={style.homeworkIndexContainerText}>
-                ส่งแล้ว
-              </label>
-              <div className={style.homeworkIndexContainerSelect}>
-                {state.state.oldHomework.map((data, key) => {
-                  if (data.sent === true && data.expired === false) {
-                    return (
-                      <div key={key} className={style.homeworkContainer}>
-                        <div
-                          className={cx(
-                            style.homeworkBox,
-                            style.homeworkBoxSent
-                          )}
-                          style={{
-                            backgroundColor:
-                              data.isPress === true ? "#5d6870" : "",
-                            // borderColor: data.isPress === true ? "#ffffff" : "",
-                            color: data.isPress === true ? "#ffffff" : "",
-                          }}
-                          onClick={() => {
-                            let UpdateArray = this.state.oldHomework;
-                            UpdateArray.map((data, UpdateArrayIndex) => {
-                              UpdateArray[UpdateArrayIndex].isPress =
-                                UpdateArrayIndex === key ? true : false;
-                              console.log(
-                                UpdateArray[UpdateArrayIndex].isPress
-                              );
-                              return null;
-                            });
-                            this.setState({
-                              pageState: 1,
-                              // quizzes: UpdateArray,
-                              // canStart: true,
-                            });
-                          }}
-                        >
-                          <label>{data.homeworkName}</label>
-                          <label>ส่งแล้ว</label>
-                        </div>
-                      </div>
-                    );
-                  }
-                })}
-              </div>
-            </div>
-
-            <div className={style.homeworkIndexContainer}>
-              <label className={style.homeworkIndexContainerText}>
-                เลยกำหนดส่ง
-              </label>
-              <div className={style.homeworkIndexContainerSelect}>
-                {state.state.oldHomework.map((data, key) => {
-                  if (data.expired === true) {
-                    return (
-                      <div key={key} className={style.homeworkContainer}>
-                        <div
-                          className={style.homeworkBox}
-                          style={{
-                            backgroundColor:
-                              data.isPress === true ? "#E5A52D" : "",
-                          }}
-                          onClick={() => {
-                            let UpdateArray = this.state.oldHomework;
-                            UpdateArray.map((data, UpdateArrayIndex) => {
-                              UpdateArray[UpdateArrayIndex].isPress =
-                                UpdateArrayIndex === key ? true : false;
-                              console.log(
-                                UpdateArray[UpdateArrayIndex].isPress
-                              );
-                              return null;
-                            });
-                            this.setState({
-                              pageState: 1,
-                              // quizzes: UpdateArray,
-                              // canStart: true,
-                            });
-                          }}
-                        >
-                          <label>{data.homeworkName}</label>
-                        </div>
-                      </div>
-                    );
-                  }
-                })}
-              </div>
-            </div>
-          </div>
+          <center>
+            <CircularProgress
+              style={{ display: "inline-block", color: "#e5a52d", margin: 10 }}
+            ></CircularProgress>
+          </center>
         )}
       </div>
       {/* <div className={style.buttonContainer}>
@@ -342,6 +403,19 @@ export default class sentHomework extends Component {
                 </div>
               </div>
             </div>
+            <div
+              className={style.titleContainer}
+              style={{ marginTop: "unset" }}
+            >
+              <label className={style.titleText} style={{ color: "#e5a52d" }}>
+                รูปภาพ
+              </label>
+            </div>
+            <div className={style.imagesContainer}>
+              {data.files.map((url) => {
+                return <img src={url} alt="image" />;
+              })}
+            </div>
 
             <div className={style.buttonContainer}>
               <MyButton
@@ -376,7 +450,6 @@ export default class sentHomework extends Component {
             {state.state.imagesPreviewUrls.map((data, key) => {
               return (
                 <div className={style.imguploadContainer}>
-                  <label1>{state.state.files[key].name}</label1>
                   <img key={key} src={data} className={style.imgupload} />
                   <img
                     src={DeleteIcon}
@@ -389,7 +462,6 @@ export default class sentHomework extends Component {
                       // });
                     }}
                   />
-                  {/* <label1>{state.state.files[key].name}</label1> */}
                 </div>
               );
             })}

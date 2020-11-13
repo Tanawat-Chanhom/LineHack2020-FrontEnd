@@ -38,7 +38,7 @@ img {
 .titleText {
   margin: 20px;
   color: #ffffff;
-  /* font-weight: bold; */
+  font-weight: 100;
   font-size: 40px;
 }
 
@@ -311,6 +311,20 @@ Textarea {
   color: #1fffa9;
 }
 
-.test{
+.test {
   border: 0;
+}
+
+.imagesContainer {
+  border: 1px solid #ffffff;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.imagesContainer img {
+  width: 100%;
+  height: auto;
+  margin: 5px 0px;
 }

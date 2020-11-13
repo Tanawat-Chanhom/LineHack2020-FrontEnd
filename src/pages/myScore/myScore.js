@@ -5,6 +5,11 @@ import cx from "classnames";
 import MyButton from "../../compoments/button/Button";
 import AlertBar from "../../compoments/AlertBar/AlertBar";
 import DialogBox from "../../compoments/DialogBox/DialogBox";
+import axios from "axios";
+import ENV from "../../util/env.json";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import liff from "@line/liff";
+import FinalPage from "../../compoments/FinalPage/FinalPage";
 
 //Image
 // import TA from "../../static/image/TA-LOGO.png";
@@ -26,6 +31,7 @@ export default class myScore extends Component {
       dialogType: 0,
       deleteHomeworkName: "",
       deleteKey: 0,
+      onProgress: false,
       oldHomework: [
         {
           homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 1 และ 2",
@@ -50,27 +56,101 @@ export default class myScore extends Component {
     };
   }
 
-  firstPage = (state) => (
+  componentDidMount() {
+    this.loadHomework();
+  }
+
+  loadHomework = () => {
+    this.setState({
+      onProgress: true,
+    });
+    let liffContext = liff.getContext();
+    let body = {
+      groupId: liffContext.groupId,
+      lineId: liffContext.userId,
+    };
+    axios
+      .post(ENV.SERVER + "/grades/my_score", body)
+      .then((response) => {
+        console.log(response);
+        if (response.data.status === 200) {
+          this.setState({
+            onProgress: false,
+            oldHomework: response.data.myscores,
+          });
+          console.log(response);
+        } else {
+          this.setState({
+            alretState: true,
+            onProgress: false,
+            errorMessage: response.data.message || "Load homework fail!!",
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({
+          alretState: true,
+          onProgress: false,
+          errorMessage: error.message || "Server error",
+        });
+      });
+  };
+
+  firstPage = () => (
     <div className={style.elementsContainer2}>
       <div className={style.titleContainer}>
-        {/* <img src={TA} alt="TA-LOGO" /> */}
         <h1 className={style.titleText}>ดูคะแนน</h1>
       </div>
       <div className={style.homeworkListContainer}>
-        {state.state.oldHomework.length === 0 ? (
-          <label style={{ color: "gray" }}>
-            - ท่านยังไม่ได้สั่งการบ้านใดๆ -
-          </label>
+        {this.state.onProgress === false ? (
+          <>
+            {this.state.oldHomework.length === 0 ? (
+              <label style={{ color: "gray" }}>
+                - ท่านยังไม่ได้สั่งการบ้านใดๆ -
+              </label>
+            ) : (
+              this.state.oldHomework.map((data, key) => {
+                return (
+                  <div
+                    key={key}
+                    className={style.homeworkContainer}
+                    onClick={() => {
+                      let updateArray = this.state.oldHomework;
+                      updateArray.map((_, index) => {
+                        updateArray[index].idPress =
+                          key === index ? true : false;
+                      });
+                      this.setState({
+                        oldHomework: updateArray,
+                      });
+                    }}
+                  >
+                    <div
+                      className={style.homeworkBox}
+                      style={{
+                        borderColor: data.idPress === true ? "#E5A52D" : "",
+                      }}
+                    >
+                      <label
+                        style={{
+                          color: data.idPress === true ? "#E5A52D" : "",
+                        }}
+                      >
+                        {data.homeworkName}
+                      </label>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </>
         ) : (
-          state.state.oldHomework.map((data, key) => {
-            return (
-              <div key={key} className={style.homeworkContainer}>
-                <div className={style.homeworkBox}>
-                  <label>{data.homeworkName}</label>
-                </div>
-              </div>
-            );
-          })
+          <center>
+            <CircularProgress
+              style={{ display: "inline-block", color: "#e5a52d", margin: 10 }}
+            ></CircularProgress>
+          </center>
         )}
       </div>
       <div className={style.buttonContainer}>
@@ -97,9 +177,9 @@ export default class myScore extends Component {
         <label>20 คะแนน</label>
         <label1 className={style.subTitleText}>จากคะแนนเต็ม 20 คะแนน</label1>
       </div>
-      <img src={curtainRight} alt="" className={style.curtainLeft}/>
-      <img src={curtainLeft} alt="" className={style.curtainRight}/>
-      <img src={stage} alt="" className={style.stage}/>
+      <img src={curtainRight} alt="" className={style.curtainLeft} />
+      <img src={curtainLeft} alt="" className={style.curtainRight} />
+      <img src={stage} alt="" className={style.stage} />
 
       <div className={style.buttonContainer}>
         <MyButton
@@ -113,21 +193,15 @@ export default class myScore extends Component {
           }}
         ></MyButton>
       </div>
-
     </div>
   );
 
-  pageState = (state) => {
+  pageState = () => {
     switch (this.state.pageState) {
       case 0:
-        return this.firstPage(state);
-
+        return this.firstPage();
       case 1:
-        return this.secondPage(state);
-
-      // case 2:
-      //   return this.thirdPage;
-
+        return this.secondPage();
       default:
         break;
     }
@@ -146,7 +220,7 @@ export default class myScore extends Component {
   render() {
     return (
       <div className={style.container}>
-        {this.pageState(this)}
+        {this.pageState()}
 
         <AlertBar
           open={this.state.alretState}
