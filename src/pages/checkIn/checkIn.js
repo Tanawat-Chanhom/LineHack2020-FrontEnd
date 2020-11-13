@@ -67,16 +67,9 @@ export default class checkIn extends Component {
   };
 
   checkIn = async () => {
-    navigator.geolocation
-      .getCurrentPosition((p) => {
-        this.getLocation(p);
-      })
-      .catch(() => {
-        this.setState({
-          alertBar: true,
-          errorMessage: "Please allow your location.",
-        });
-      });
+    navigator.geolocation.getCurrentPosition((p) => {
+      this.getLocation(p);
+    });
   };
 
   // firstPage2 = () => {
