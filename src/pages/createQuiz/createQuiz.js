@@ -92,10 +92,21 @@ export default class createQuiz extends Component {
           this.setState({
             onProgress: false,
           });
+        } else {
+          this.setState({
+            onProgress: false,
+            alretState: true,
+            errorMessage: response.data.message || "Get quiz fail!!",
+          });
         }
       })
       .catch((error) => {
         console.log(error);
+        this.setState({
+          onProgress: false,
+          alretState: true,
+          errorMessage: error.message || "Server error!!",
+        });
       });
   }
 
@@ -122,7 +133,7 @@ export default class createQuiz extends Component {
           this.setState({
             alretState: true,
             onProgress: false,
-            errorMesage: "Delete is not complete!!",
+            errorMessage: "Delete is not complete!!",
           });
         }
       })
@@ -131,7 +142,7 @@ export default class createQuiz extends Component {
         this.setState({
           alretState: true,
           onProgress: false,
-          errorMesage: error.message || "Server error!!",
+          errorMessage: error.message || "Server error!!",
         });
       });
   };
@@ -206,28 +217,28 @@ export default class createQuiz extends Component {
   saveQuiz = (actionState) => {
     let quizzes = this.state.newQuiz;
     let passState = 0;
-    let errorMesage =
+    let errorMessage =
       this.state.newQuiz.length === 0 ? "Add your Question" : "";
     quizzes.map((questionData, questionIndex) => {
       let questionNumber = Number(questionIndex) + 1;
       if (questionData.answerName === "") {
         passState++;
-        errorMesage = "Please enter answer name at question " + questionNumber;
+        errorMessage = "Please enter answer name at question " + questionNumber;
       }
       if (questionData.questionName === "") {
         passState++;
-        errorMesage =
+        errorMessage =
           "Please enter question name at question " + questionNumber;
       }
       questionData.choices.map((data) => {
         if (data === "") {
           passState++;
-          errorMesage =
+          errorMessage =
             "Please enter choices name at question " + questionNumber;
         }
         if (data.choiceName === "") {
           passState++;
-          errorMesage =
+          errorMessage =
             "Please enter choices name at question " + questionNumber;
         }
         return null;
@@ -237,7 +248,8 @@ export default class createQuiz extends Component {
         questionData.choices[1].isAnswer === false
       ) {
         passState++;
-        errorMesage = "Please select true answer at question " + questionNumber;
+        errorMessage =
+          "Please select true answer at question " + questionNumber;
       }
       return null;
     });
@@ -295,7 +307,7 @@ export default class createQuiz extends Component {
               this.setState({
                 alretState: true,
                 onProgress: false,
-                errorMesage: response.data.message || "Create fail!!",
+                errorMessage: response.data.message || "Create fail!!",
               });
             }
           })
@@ -304,7 +316,7 @@ export default class createQuiz extends Component {
             this.setState({
               alretState: true,
               onProgress: false,
-              errorMesage: error.message || "Server error!!",
+              errorMessage: error.message || "Server error!!",
             });
           });
       } else if (actionState === "update") {
@@ -318,7 +330,7 @@ export default class createQuiz extends Component {
               this.setState({
                 alretState: true,
                 onProgress: false,
-                errorMesage: response.data.message || "Create fail!!",
+                errorMessage: response.data.message || "Create fail!!",
               });
             }
           })
@@ -327,13 +339,13 @@ export default class createQuiz extends Component {
             this.setState({
               alretState: true,
               onProgress: false,
-              errorMesage: error.message || "Server error!!",
+              errorMessage: error.message || "Server error!!",
             });
           });
       }
     } else {
       this.setState({
-        errorMessage: errorMesage,
+        errorMessage: errorMessage,
         alretState: true,
       });
     }

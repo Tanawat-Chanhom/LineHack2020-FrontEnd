@@ -355,6 +355,7 @@ export default class createHomework extends Component {
                     key={key}
                     src={data.base64}
                     className={style.imgupload}
+                    alt="test"
                   />
                   <img
                     src={DeleteIcon}

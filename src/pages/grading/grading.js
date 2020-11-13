@@ -5,7 +5,6 @@ import AlertBar from "../../compoments/AlertBar/AlertBar";
 import cx from "classnames";
 import { TextField } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import FinalPage from "../../compoments/FinalPage/FinalPage";
 import axios from "axios";
 import ENV from "../../util/env.json";
 import liff from "@line/liff";
@@ -409,6 +408,7 @@ export default class grading extends Component {
                           if (data.isSend === true) {
                             sended++;
                           }
+                          return null;
                         });
                         this.setState({
                           homeworks: updateArray,

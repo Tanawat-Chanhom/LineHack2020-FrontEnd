@@ -63,7 +63,7 @@ export default class doQuiz extends Component {
         this.setState({
           onProgress: false,
           alertBar: true,
-          errorMessage: error || "Server error!!",
+          errorMessage: error.message || "Server error!!",
         });
       });
   }

@@ -261,6 +261,7 @@ export default class sentHomework extends Component {
                           </div>
                         );
                       }
+                      return null;
                     })}
                   </div>
                 </div>
@@ -308,6 +309,7 @@ export default class sentHomework extends Component {
                           </div>
                         );
                       }
+                      return null;
                     })}
                   </div>
                 </div>
@@ -349,6 +351,7 @@ export default class sentHomework extends Component {
                           </div>
                         );
                       }
+                      return null;
                     })}
                   </div>
                 </div>
@@ -438,7 +441,7 @@ export default class sentHomework extends Component {
             </div>
             <div className={style.imagesContainer}>
               {data.files.map((url) => {
-                return <img src={url} alt="image" />;
+                return <img src={url} alt="test" />;
               })}
             </div>
 
@@ -463,6 +466,7 @@ export default class sentHomework extends Component {
           </div>
         );
       }
+      return null;
     });
 
   thirdPage = (state) => (
@@ -490,6 +494,7 @@ export default class sentHomework extends Component {
                     key={key}
                     src={data.base64}
                     className={style.imgupload}
+                    alt="test"
                   />
                   <img
                     src={DeleteIcon}

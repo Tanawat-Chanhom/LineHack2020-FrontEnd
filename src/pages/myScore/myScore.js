@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import style from "./styles.module.css";
-import { TextField } from "@material-ui/core";
 import cx from "classnames";
 import MyButton from "../../compoments/button/Button";
 import AlertBar from "../../compoments/AlertBar/AlertBar";
@@ -9,7 +8,6 @@ import axios from "axios";
 import ENV from "../../util/env.json";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import liff from "@line/liff";
-import FinalPage from "../../compoments/FinalPage/FinalPage";
 
 //Image
 // import TA from "../../static/image/TA-LOGO.png";
