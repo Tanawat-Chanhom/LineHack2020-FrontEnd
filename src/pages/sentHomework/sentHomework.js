@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 import style from "./styles.module.css";
-import { TextField, Button } from "@material-ui/core";
-import liff from "@line/liff";
+import { TextField} from "@material-ui/core";
+// import liff from "@line/liff";
 import cx from "classnames";
 import MyButton from "../../compoments/button/Button";
-import Edit from "../../static/image/edit@2x.png";
-import DeleteIcon from "../../static/image/Group 35@2x.png";
+
 
 //Image
 // import TA from "../../static/image/TA-LOGO.png";
+// import Edit from "../../static/image/edit@2x.png";
+// import DeleteIcon from "../../static/image/Group 35@2x.png";
 
 // const hiddenFileInput = React.useRef(null);
 

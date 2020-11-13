@@ -13,7 +13,6 @@ import createQuiz from "./pages/createQuiz/createQuiz";
 import quizzes from "./pages/quizzes/quizzes";
 import doQuiz from "./pages/doQuiz/doQuiz";
 import createHomework from "./pages/createHomework/createHomework";
-import viewHomework from "./pages/viewHomework/viewHomework";
 import sentHomework from "./pages/sentHomework/sentHomework";
 
 import checkHomework from "./pages/checkHomework/checkHomework";
@@ -44,7 +43,6 @@ function App() {
             component={createHomework}
           ></Route>
           <Route exact path="/sent-homework" component={sentHomework}></Route>
-          <Route exact path="/view-homework" component={viewHomework}></Route>
           <Route exact path="/check-in" component={checkIn}></Route>
           <Route exact path="/create-quiz" component={createQuiz}></Route>
           <Route exact path="/quizzes" component={quizzes}></Route>
