@@ -100,7 +100,9 @@ export default class sentHomework extends Component {
                       <div key={key} className={style.homeworkContainer}>
                         <div className={style.homeworkBox}>
                           <label>{data.homeworkName}</label>
+                          <label>{data.exp}</label>
                         </div>
+                        
                       </div>
                     );
                   }
@@ -117,8 +119,9 @@ export default class sentHomework extends Component {
                   if (data.sent === true && data.expired === false) {
                     return (
                       <div key={key} className={style.homeworkContainer}>
-                        <div className={style.homeworkBox}>
+                        <div className={cx(style.homeworkBox,style.homeworkBoxSent)}>
                           <label>{data.homeworkName}</label>
+                          <label>ส่งแล้ว</label>
                         </div>
                       </div>
                     );

@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import style from "./styles.module.css";
-import { TextField, Button } from "@material-ui/core";
-import liff from "@line/liff";
+import { TextField} from "@material-ui/core";
 import cx from "classnames";
 import MyButton from "../../compoments/button/Button";
 import AlertBar from "../../compoments/AlertBar/AlertBar";
 import DialogBox from "../../compoments/DialogBox/DialogBox";
-import Edit from "../../static/image/edit@2x.png";
-import DeleteIcon from "../../static/image/Group 35@2x.png";
 
 //Image
 // import TA from "../../static/image/TA-LOGO.png";
+import Edit from "../../static/image/edit@2x.png";
+import DeleteIcon from "../../static/image/Group 35@2x.png";
+
 
 // const hiddenFileInput = React.useRef(null);
 
@@ -30,7 +30,6 @@ export default class createHomework extends Component {
     this.state = {
       files: [],
       imagesPreviewUrls: [],
-      // files: [],
       pageState: 0,
       errorMessage: "",
       alretState: false,
@@ -84,7 +83,7 @@ export default class createHomework extends Component {
   };
 
   _handleSubmit() {
-    console.log();
+    console.log('handle uploading-', this.state.files);
     // e.preventDefault();
     // TODO: do something with -> this.state.file
   }
@@ -245,6 +244,7 @@ export default class createHomework extends Component {
                       // });
                     }}
                   />
+                  {/* <label1>{state.state.files[key].name}</label1> */}
                 </div>
               );
             })}
