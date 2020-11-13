@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import style from "./styles.module.css";
-import { TextField} from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 import cx from "classnames";
 import MyButton from "../../compoments/button/Button";
 import AlertBar from "../../compoments/AlertBar/AlertBar";
@@ -10,18 +10,6 @@ import DialogBox from "../../compoments/DialogBox/DialogBox";
 // import TA from "../../static/image/TA-LOGO.png";
 import Edit from "../../static/image/edit@2x.png";
 import DeleteIcon from "../../static/image/Group 35@2x.png";
-
-
-// const hiddenFileInput = React.useRef(null);
-
-// const handleClick = (event) => {
-//   hiddenFileInput.current.click();
-// };
-
-// const handleChange = (event) => {
-//   // const fileUploaded = event.target.files[0];
-//   // props.handleFile(fileUploaded);
-// };
 
 export default class createHomework extends Component {
   constructor(props) {
@@ -83,19 +71,11 @@ export default class createHomework extends Component {
   };
 
   _handleSubmit() {
-    console.log('handle uploading-', this.state.files);
+    console.log("handle uploading-", this.state.files);
     // e.preventDefault();
     // TODO: do something with -> this.state.file
   }
 
-  // handleClick = (event) => {
-  //   const hiddenFileInput = React.useRef(null);
-  //   hiddenFileInput.current.click();
-  // };
-  // handleChange = (event) => {
-  //   const fileUploaded = event.target.files[0];
-  //   event.handleFile(fileUploaded);
-  // };
   deleteHomework = (homeworkIndex) => {
     if (this.state.newHomework.length > 1) {
       let updateArray = this.state.newHomework;
@@ -124,7 +104,6 @@ export default class createHomework extends Component {
           state.state.oldHomework.map((data, key) => {
             if (data.sent === false) {
               return (
-
                 <div key={key} className={style.homeworkContainer}>
                   <div className={style.homeworkBox}>
                     <label>{data.homeworkName}</label>
@@ -161,8 +140,7 @@ export default class createHomework extends Component {
                   />
                 </div>
               );
-            }
-            else if (data.expired === true) {
+            } else if (data.expired === true) {
               return (
                 <div key={key} className={style.homeworkContainer}>
                   <div className={style.homeworkBox}>
@@ -191,7 +169,9 @@ export default class createHomework extends Component {
           color={"#ffffff"}
           backgroundColor={"#e5a52d"}
           onClick={() => {
-            this.setState({ pageState: 1 });
+            this.setState({
+              pageState: 1,
+            });
           }}
         ></MyButton>
       </div>
@@ -203,7 +183,7 @@ export default class createHomework extends Component {
       <div className={style.inputContainer}>
         <div className={style.textFieldContainer}>
           <label>ระบุชื่อการบ้าน</label>
-          <TextField fullWidth variant="outlined" />
+          <TextField fullWidth variant="outlined" className={style.textFieldTitle}/>
         </div>
         <div
           className={cx(style.textFieldContainer, style.textFieldContainer2)}
@@ -222,13 +202,7 @@ export default class createHomework extends Component {
         <div className={cx(style.textFieldContainer, style.textAreaContainer)}>
           <label>คำอธิบายเพิ่มเติม</label>
           <div className={style.areaContainer}>
-            <TextField
-              fullWidth
-              multiline
-              rows={6}
-              // fullWidth
-              variant="outlined"
-            />
+            <TextField fullWidth multiline rows={6} variant="outlined" />
             {state.state.imagesPreviewUrls.map((data, key) => {
               return (
                 <div className={style.imguploadContainer}>

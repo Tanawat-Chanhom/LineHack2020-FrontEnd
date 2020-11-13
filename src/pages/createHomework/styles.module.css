@@ -294,7 +294,10 @@ Textarea {
   font-size: 32px;
   color: #e5a52d;
 }
-.homeworkIndexContainerSelect{
+.homeworkIndexContainerSelect {
   border-top: 1px solid #ffffff;
   padding-top: 5%;
+}
+.textFieldTitle input{
+  color: #e5a52d;
 }

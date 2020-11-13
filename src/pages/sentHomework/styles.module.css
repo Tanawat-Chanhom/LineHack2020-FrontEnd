@@ -32,7 +32,7 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 25%;
+  margin-top: 15%;
 }
 
 .titleText {
@@ -88,15 +88,15 @@ img {
 }
 
 .textFieldContainer input {
-  border: 1px solid #ffffff;
+  /* border: 1px solid #ffffff; */
   border-radius: 1em;
   color: white;
 }
 
 .textFieldContainer2 input {
-  border: 1px solid #ffffff;
-  color: #2c3e50;
-  background-color: #ffffff;
+  /* border: 1px solid #ffffff; */
+  color: #ffffff;
+  /* background-color: #ffffff; */
 }
 
 .textFieldContainer fieldset {
@@ -309,4 +309,8 @@ Textarea {
 
 .homeworkBoxSent label {
   color: #1fffa9;
+}
+
+.test{
+  border: 0;
 }

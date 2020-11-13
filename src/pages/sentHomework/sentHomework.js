@@ -1,32 +1,22 @@
 import React, { Component } from "react";
 import style from "./styles.module.css";
-import { TextField} from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 // import liff from "@line/liff";
 import cx from "classnames";
 import MyButton from "../../compoments/button/Button";
 
-
 //Image
 // import TA from "../../static/image/TA-LOGO.png";
 // import Edit from "../../static/image/edit@2x.png";
-// import DeleteIcon from "../../static/image/Group 35@2x.png";
-
-// const hiddenFileInput = React.useRef(null);
-
-// const handleClick = (event) => {
-//   hiddenFileInput.current.click();
-// };
-
-// const handleChange = (event) => {
-//   // const fileUploaded = event.target.files[0];
-//   // props.handleFile(fileUploaded);
-// };
+import DeleteIcon from "../../static/image/Group 35@2x.png";
 
 export default class sentHomework extends Component {
   constructor(props) {
     super(props);
     // this.file = null;
     this.state = {
+      files: [],
+      imagesPreviewUrls: [],
       // files: [],
       pageState: 0,
       // quizName: "",
@@ -68,13 +58,44 @@ export default class sentHomework extends Component {
     };
   }
 
-  // handleClick = (event) => {
-  //   const hiddenFileInput = React.useRef(null);
-  //   hiddenFileInput.current.click();
-  // };
-  // handleChange = (event) => {
-  //   const fileUploaded = event.target.files[0];
-  //   event.handleFile(fileUploaded);
+  _handleImageChange = (e) => {
+    e.preventDefault();
+
+    // FileList to Array
+    let files = Array.from(e.target.files);
+
+    // File Reader for Each file and and update state arrays
+    files.forEach((file, i) => {
+      let reader = new FileReader();
+
+      reader.onloadend = () => {
+        this.setState((prevState) => ({
+          files: [...prevState.files, file],
+          imagesPreviewUrls: [...prevState.imagesPreviewUrls, reader.result],
+        }));
+      };
+
+      reader.readAsDataURL(file);
+    });
+  };
+
+  _handleSubmit() {
+    console.log("handle uploading-", this.state.files);
+    // e.preventDefault();
+    // TODO: do something with -> this.state.file
+  }
+
+  // deleteHomework = (homeworkIndex) => {
+  //   if (this.state.newHomework.length > 1) {
+  //     let updateArray = this.state.newHomework;
+  //     updateArray.splice(homeworkIndex, 1);
+  //     this.setState({
+  //       newHomework: updateArray,
+  //     });
+  //     // this.goToQuestion(
+  //     //   questionIndex + (this.state.currentQuestion === 0 ? 0 : -1)
+  //     // );
+  //   }
   // };
 
   firstPage = (state) => (
@@ -103,7 +124,6 @@ export default class sentHomework extends Component {
                           <label>{data.homeworkName}</label>
                           <label>{data.exp}</label>
                         </div>
-                        
                       </div>
                     );
                   }
@@ -120,7 +140,12 @@ export default class sentHomework extends Component {
                   if (data.sent === true && data.expired === false) {
                     return (
                       <div key={key} className={style.homeworkContainer}>
-                        <div className={cx(style.homeworkBox,style.homeworkBoxSent)}>
+                        <div
+                          className={cx(
+                            style.homeworkBox,
+                            style.homeworkBoxSent
+                          )}
+                        >
                           <label>{data.homeworkName}</label>
                           <label>ส่งแล้ว</label>
                         </div>
@@ -189,9 +214,9 @@ export default class sentHomework extends Component {
             defaultValue="2020-09-30"
           />
         </div>
-        <div className={cx(style.textFieldContainer, style.textAreaContainer)}>
+        <div className={cx(style.textFieldContainer, style.textAreaContainer)} >
           <label>คำอธิบายเพิ่มเติม</label>
-          <div className={style.areaContainer}>
+          <div className={cx(style.areaContainer,style.test)}>
             <TextField
               fullWidth
               multiline
@@ -203,7 +228,7 @@ export default class sentHomework extends Component {
             />
           </div>
         </div>
-        <div className={style.uploadContainer}>
+        {/* <div className={style.uploadContainer}>
           <input
             // accept="image/*"
             // className={classes.input}
@@ -214,7 +239,7 @@ export default class sentHomework extends Component {
           <label htmlFor="contained-button-file" className={style.uploadText}>
             <div onClick={""}>เพิ่มไฟล์แนบ</div>
           </label>
-        </div>
+        </div> */}
       </div>
 
       <div className={style.buttonContainer}>
@@ -238,14 +263,47 @@ export default class sentHomework extends Component {
     </div>
   );
 
-  thirdPage = (
+  thirdPage = (state) => (
     <div className={cx(style.elementsContainer, style.elementsContainer2)}>
       <div className={style.inputContainer}>
         <div className={cx(style.textFieldContainer, style.textAreaContainer)}>
           <label>เพิ่มข้อความ</label>
           <div className={style.areaContainer}>
             <TextField fullWidth multiline rows={6} variant="outlined" />
+            {state.state.imagesPreviewUrls.map((data, key) => {
+              return (
+                <div className={style.imguploadContainer}>
+                  <label1>{state.state.files[key].name}</label1>
+                  <img key={key} src={data} className={style.imgupload} />
+                  <img
+                    src={DeleteIcon}
+                    alt="DeleteIcon"
+                    className={style.imguploaddel}
+                    onClick={() => {
+                      // this.setState({
+                      //   dialogBox: true,
+                      //   deleteHomeworkName: data.homeworkName,
+                      // });
+                    }}
+                  />
+                  {/* <label1>{state.state.files[key].name}</label1> */}
+                </div>
+              );
+            })}
           </div>
+        </div>
+        <div className={style.uploadContainer}>
+          <input
+            // className={classes.input}
+            id="contained-button-file"
+            multiple
+            onChange={this._handleImageChange}
+            type="file"
+            accept="image/*"
+          />
+          <label htmlFor="contained-button-file" className={style.uploadText}>
+            <div onClick={""}>เพิ่มไฟล์แนบ</div>
+          </label>
         </div>
       </div>
       <div className={cx(style.buttonContainer, style.buttonContainer2)}>
@@ -278,7 +336,7 @@ export default class sentHomework extends Component {
         return this.secondPage;
 
       case 2:
-        return this.thirdPage;
+        return this.thirdPage(state);
 
       default:
         break;
