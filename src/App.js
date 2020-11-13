@@ -43,6 +43,11 @@ function App() {
             component={createHomework}
           ></Route>
           <Route exact path="/sent-homework" component={sentHomework}></Route>
+          <Route
+            exact
+            path="/sent-homework/:id/:pageState"
+            component={sentHomework}
+          ></Route>
           <Route exact path="/check-in" component={checkIn}></Route>
           <Route exact path="/create-quiz" component={createQuiz}></Route>
           <Route exact path="/quizzes" component={quizzes}></Route>

@@ -20,13 +20,12 @@ export default class Quiz extends Component {
       errorMessage: "",
       timer: "0",
       score: 0,
-      questions: [],
+      questions: props.questions,
       onProgress: false,
     };
   }
 
   componentDidMount() {
-    console.log("firebase");
     const database = firebase.database().ref("/quiz/" + this.state.quizId);
     database.on("value", (snap) => {
       console.log("snap");
@@ -37,7 +36,7 @@ export default class Quiz extends Component {
       this.setState({
         timer: timer,
       });
-      if (time <= 1) {
+      if (time <= 0) {
         this.submit();
       }
     });
@@ -131,7 +130,7 @@ export default class Quiz extends Component {
         this.setState({
           onProgress: false,
         });
-        this.props.onError(error || "Server error!!");
+        this.props.onError(error.message || "Server error!!");
       });
   };
 

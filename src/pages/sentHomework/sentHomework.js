@@ -42,7 +42,12 @@ export default class sentHomework extends Component {
   }
 
   componentDidMount() {
-    this.loadHomework();
+    let params = this.props.match.params;
+    if (params.id !== undefined && params.pageState !== undefined) {
+      this.loadHomework2(params.pageState, params.id);
+    } else {
+      this.loadHomework();
+    }
   }
 
   loadHomework = () => {
@@ -62,6 +67,41 @@ export default class sentHomework extends Component {
           this.setState({
             onProgress: false,
             oldHomework: response.data.homeworks,
+          });
+        } else {
+          this.setState({
+            alretState: true,
+            onProgress: false,
+            errorMessage: response.data.message || "Load homework fail!!",
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({
+          alretState: true,
+          onProgress: false,
+          errorMessage: error.message || "Server error",
+        });
+      });
+  };
+
+  loadHomework2 = (pageState, id) => {
+    this.setState({
+      onProgress: true,
+      homeworkId: id,
+    });
+    axios
+      .get(ENV.SERVER + "/homework/" + id)
+      .then((response) => {
+        console.log(response.data.homework);
+        if (response.data.status === 200) {
+          this.setState({
+            onProgress: false,
+            oldHomework: [response.data.homework],
+          });
+          this.setState({
+            pageState: Number(pageState),
           });
         } else {
           this.setState({
@@ -141,10 +181,9 @@ export default class sentHomework extends Component {
       .put(ENV.SERVER + "/homework/send/" + this.state.homeworkId, body)
       .then((response) => {
         console.log(response);
-        if (response.data.status === 201) {
+        if (response.data.status === 200) {
           this.setState({
             onProgress: false,
-            // pageState: 2,
           });
           liff.closeWindow();
         } else {
@@ -165,52 +204,7 @@ export default class sentHomework extends Component {
       });
   }
 
-  // deleteHomework = (homeworkIndex) => {
-  //   if (this.state.newHomework.length > 1) {
-  //     let updateArray = this.state.newHomework;
-  //     updateArray.splice(homeworkIndex, 1);
-  //     this.setState({
-  //       newHomework: updateArray,
-  //     });
-  //     // this.goToQuestion(
-  //     //   questionIndex + (this.state.currentQuestion === 0 ? 0 : -1)
-  //     // );
-  //   }
-  // };
-
-  // loadHomework = () => {
-  //   this.setState({
-  //     onProgress: true,
-  //   });
-  //   let liffContext = liff.getContext();
-  //   axios
-  //     .get(ENV.SERVER + "/homework/all/" + liffContext.groupId)
-  //     .then((response) => {
-  //       console.log(response);
-  //       if (response.data.status === 200) {
-  //         this.setState({
-  //           onProgress: false,
-  //           oldHomework: response.data.homework,
-  //         });
-  //       } else {
-  //         this.setState({
-  //           alretState: true,
-  //           onProgress: false,
-  //           errorMessage: response.data.message || "Load homework fail!!",
-  //         });
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       this.setState({
-  //         alretState: true,
-  //         onProgress: false,
-  //         errorMessage: error.message || "Server error",
-  //       });
-  //     });
-  // };
-
-  firstPage = (state) => (
+  firstPage = () => (
     <div className={style.elementsContainer2}>
       <div className={style.titleContainer}>
         <h1 className={style.titleText}>การบ้านทั้งหมดในขณะนี้</h1>
@@ -218,7 +212,7 @@ export default class sentHomework extends Component {
       <div className={style.homeworkListContainer}>
         {this.state.onProgress === false ? (
           <>
-            {state.state.oldHomework.length === 0 ? (
+            {this.state.oldHomework.length === 0 ? (
               <div style={{ width: "100%", textAlign: "center" }}>
                 <label
                   style={{
@@ -236,7 +230,7 @@ export default class sentHomework extends Component {
                     ยังไม่ได้ส่ง
                   </label>
                   <div className={style.homeworkIndexContainerSelect}>
-                    {state.state.oldHomework.map((data, key) => {
+                    {this.state.oldHomework.map((data, key) => {
                       if (Number(data.expire) > Number(new Date().getTime())) {
                         return (
                           <div key={key} className={style.homeworkContainer}>
@@ -276,7 +270,7 @@ export default class sentHomework extends Component {
                     ส่งแล้ว
                   </label>
                   <div className={style.homeworkIndexContainerSelect}>
-                    {state.state.oldHomework.map((data, key) => {
+                    {this.state.oldHomework.map((data, key) => {
                       if (data.sent === true && data.expired === false) {
                         return (
                           <div key={key} className={style.homeworkContainer}>
@@ -323,7 +317,7 @@ export default class sentHomework extends Component {
                     เลยกำหนดส่ง
                   </label>
                   <div className={style.homeworkIndexContainerSelect}>
-                    {state.state.oldHomework.map((data, key) => {
+                    {this.state.oldHomework.map((data, key) => {
                       if (Number(data.expire) < Number(new Date().getTime())) {
                         return (
                           <div key={key} className={style.homeworkContainer}>
@@ -382,8 +376,8 @@ export default class sentHomework extends Component {
     </div>
   );
 
-  secondPage = (state) =>
-    state.state.oldHomework.map((data, key) => {
+  secondPage = () =>
+    this.state.oldHomework.map((data, key) => {
       if (data.isPress === true) {
         return (
           <div
@@ -552,16 +546,16 @@ export default class sentHomework extends Component {
     </div>
   );
 
-  pageState = (state) => {
+  pageState = () => {
     switch (this.state.pageState) {
       case 0:
-        return this.firstPage(state);
+        return this.firstPage();
 
       case 1:
-        return this.secondPage(state);
+        return this.secondPage();
 
       case 2:
-        return this.thirdPage(state);
+        return this.thirdPage();
 
       default:
         break;
@@ -582,7 +576,7 @@ export default class sentHomework extends Component {
             });
           }}
         />
-        <div className={style.container}>{this.pageState(this)}</div>
+        <div className={style.container}>{this.pageState()}</div>
       </>
     );
   }

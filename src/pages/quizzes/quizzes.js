@@ -25,7 +25,7 @@ export default class quizzes extends Component {
       unit: "",
       timer: [
         {
-          timeNumber: 10,
+          timeNumber: 30,
           unit: "วินาที",
           icon: Timer,
           isPress: false,

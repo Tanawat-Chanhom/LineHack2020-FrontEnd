@@ -14,7 +14,7 @@ export default class doQuiz extends Component {
     super(props);
     this.state = {
       canStart: false,
-      pageState: 1,
+      pageState: 0,
       errorMessage: "",
       alertBar: false,
       onProgress: false,
