@@ -24,6 +24,12 @@ export default class quizzes extends Component {
       quizzes: [],
       timer: [
         {
+          timeNumber: 10,
+          unit: "วินาที",
+          icon: Timer,
+          isPress: false,
+        },
+        {
           timeNumber: 3,
           unit: "นาที",
           icon: Timer,
@@ -110,6 +116,7 @@ export default class quizzes extends Component {
     });
     let quizId = 0;
     let Array = this.state.quizzes;
+
     Array.map((data) => {
       if (data.isPress === true) {
         quizId = data.id;
@@ -120,6 +127,14 @@ export default class quizzes extends Component {
       duration: this.state.timeNumber,
       unit: "minute",
     };
+
+    // if (this.state.isPress === true && this.state.unit !== "นาที") {
+    //   let body = {
+    //     duration: this.state.timeNumber,
+    //     unit: "second",
+    //   };
+    // }
+
     axios
       .put(ENV.SERVER + "/quiz/start/" + quizId, body)
       .then((response) => {
