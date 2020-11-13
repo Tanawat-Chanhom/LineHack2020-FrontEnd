@@ -22,72 +22,75 @@ export default class sentHomework extends Component {
     // this.file = null;
     this.state = {
       files: [],
-      imagesPreviewUrls: [],
-      // files: [],
+      // imagesPreviewUrls: [],
+      errorMessage: "",
+      alretState: false,
+      dialogBox: false,
+      dialogType: 0,
+      deleteImageName: "",
+      deleteKey: 0,
       pageState: 0,
-      // quizName: "",
-      // fullPoint: 0,
-      // currentQuestion: 0,
       onProgress: false,
+      description: "",
       oldHomework: [
-        {
-          homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 1 และ 2",
-          date: "2020-09-30",
-          homeworkDesc:
-            "อันนี้ส่งที่ห้องพักอาจารย์นะคะ รวมให้ครบก่อนแล้วค่อยมาส่ง ถ้าใครไม่ส่งคะแนนช่องนี้จะหาย ไปทั้งหมดสิบคะแนนนะคะ เพราะบทละ 5 คะแนนค่ะ",
-          exp: "ส่งพรุ่งนี้",
-          expired: true,
-          sent: true,
-          isPress: false,
-          files: [
-            "https://i.pinimg.com/originals/6f/a0/ee/6fa0eee440db3dbd4b31dd0e2f7fab7c.png",
-            "https://i.pinimg.com/originals/6f/a0/ee/6fa0eee440db3dbd4b31dd0e2f7fab7c.png",
-          ],
-        },
-        {
-          homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 7 และ 9",
-          date: "2020-09-30",
-          homeworkDesc:
-            "อันนี้ส่งที่ห้องพักอาจารย์นะคะ รวมให้ครบก่อนแล้วค่อยมาส่ง ถ้าใครไม่ส่งคะแนนช่องนี้จะหาย ไปทั้งหมดสิบคะแนนนะคะ เพราะบทละ 5 คะแนนค่ะ",
-          exp: "ส่งพรุ่งนี้",
-          expired: true,
-          sent: true,
-          isPress: false,
-        },
-        {
-          homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 3 และ 4",
-          date: "2020-09-30",
-          homeworkDesc:
-            "อันนี้ส่งที่ห้องพักอาจารย์นะคะ รวมให้ครบก่อนแล้วค่อยมาส่ง ถ้าใครไม่ส่งคะแนนช่องนี้จะหาย ไปทั้งหมดสิบคะแนนนะคะ เพราะบทละ 5 คะแนนค่ะ",
-          exp: "เหลืออีก 14 วัน",
-          expired: false,
-          sent: true,
-          isPress: false,
-        },
-        {
-          homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 8",
-          date: "2020-09-30",
-          homeworkDesc:
-            "อันนี้ส่งที่ห้องพักอาจารย์นะคะ รวมให้ครบก่อนแล้วค่อยมาส่ง ถ้าใครไม่ส่งคะแนนช่องนี้จะหาย ไปทั้งหมดสิบคะแนนนะคะ เพราะบทละ 5 คะแนนค่ะ",
-          exp: "เหลืออีก 14 วัน",
-          expired: false,
-          sent: true,
-          isPress: false,
-        },
-        {
-          homeworkName: "บันทึกการอ่าน",
-          date: "2020-09-30",
-          homeworkDesc:
-            "อันนี้ส่งที่ห้องพักอาจารย์นะคะ รวมให้ครบก่อนแล้วค่อยมาส่ง ถ้าใครไม่ส่งคะแนนช่องนี้จะหาย ไปทั้งหมดสิบคะแนนนะคะ เพราะบทละ 5 คะแนนค่ะ",
-          exp: "เหลืออีก 28 วัน",
-          expired: false,
-          sent: false,
-          isPress: false,
-          files: [
-            "https://i.pinimg.com/originals/6f/a0/ee/6fa0eee440db3dbd4b31dd0e2f7fab7c.png",
-            "https://i.pinimg.com/originals/6f/a0/ee/6fa0eee440db3dbd4b31dd0e2f7fab7c.png",
-          ],
-        },
+        // {
+        //   homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 1 และ 2",
+        //   date: "2020-09-30",
+        //   homeworkDesc:
+        //     "อันนี้ส่งที่ห้องพักอาจารย์นะคะ รวมให้ครบก่อนแล้วค่อยมาส่ง ถ้าใครไม่ส่งคะแนนช่องนี้จะหาย ไปทั้งหมดสิบคะแนนนะคะ เพราะบทละ 5 คะแนนค่ะ",
+        //   exp: "ส่งพรุ่งนี้",
+        //   expired: true,
+        //   sent: true,
+        //   isPress: false,
+        //   files: [
+        //     "https://i.pinimg.com/originals/6f/a0/ee/6fa0eee440db3dbd4b31dd0e2f7fab7c.png",
+        //     "https://i.pinimg.com/originals/6f/a0/ee/6fa0eee440db3dbd4b31dd0e2f7fab7c.png",
+        //   ],
+        // },
+        // {
+        //   homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 7 และ 9",
+        //   date: "2020-09-30",
+        //   homeworkDesc:
+        //     "อันนี้ส่งที่ห้องพักอาจารย์นะคะ รวมให้ครบก่อนแล้วค่อยมาส่ง ถ้าใครไม่ส่งคะแนนช่องนี้จะหาย ไปทั้งหมดสิบคะแนนนะคะ เพราะบทละ 5 คะแนนค่ะ",
+        //   exp: "ส่งพรุ่งนี้",
+        //   expired: true,
+        //   sent: true,
+        //   isPress: false,
+        // },
+        // {
+        //   homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 3 และ 4",
+        //   date: "2020-09-30",
+        //   homeworkDesc:
+        //     "อันนี้ส่งที่ห้องพักอาจารย์นะคะ รวมให้ครบก่อนแล้วค่อยมาส่ง ถ้าใครไม่ส่งคะแนนช่องนี้จะหาย ไปทั้งหมดสิบคะแนนนะคะ เพราะบทละ 5 คะแนนค่ะ",
+        //   exp: "เหลืออีก 14 วัน",
+        //   expired: false,
+        //   sent: true,
+        //   isPress: false,
+        // },
+        // {
+        //   homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 8",
+        //   date: "2020-09-30",
+        //   homeworkDesc:
+        //     "อันนี้ส่งที่ห้องพักอาจารย์นะคะ รวมให้ครบก่อนแล้วค่อยมาส่ง ถ้าใครไม่ส่งคะแนนช่องนี้จะหาย ไปทั้งหมดสิบคะแนนนะคะ เพราะบทละ 5 คะแนนค่ะ",
+        //   exp: "เหลืออีก 14 วัน",
+        //   expired: false,
+        //   sent: true,
+        //   isPress: false,
+        // },
+        // {
+        //   homeworkName: "บันทึกการอ่าน",
+        //   date: "2020-09-30",
+        //   homeworkDesc:
+        //     "อันนี้ส่งที่ห้องพักอาจารย์นะคะ รวมให้ครบก่อนแล้วค่อยมาส่ง ถ้าใครไม่ส่งคะแนนช่องนี้จะหาย ไปทั้งหมดสิบคะแนนนะคะ เพราะบทละ 5 คะแนนค่ะ",
+        //   exp: "เหลืออีก 28 วัน",
+        //   expired: false,
+        //   sent: false,
+        //   isPress: false,
+        //   files: [
+        //     "https://i.pinimg.com/originals/6f/a0/ee/6fa0eee440db3dbd4b31dd0e2f7fab7c.png",
+        //     "https://i.pinimg.com/originals/6f/a0/ee/6fa0eee440db3dbd4b31dd0e2f7fab7c.png",
+        //   ],
+        // },
       ],
       // newQuiz: [],
     };
@@ -107,6 +110,7 @@ export default class sentHomework extends Component {
       .then((response) => {
         console.log(response);
         if (response.data.status === 200) {
+          console.log("yeah")
           this.setState({
             onProgress: false,
             oldHomework: response.data.homework,
@@ -139,11 +143,23 @@ export default class sentHomework extends Component {
     files.forEach((file, i) => {
       let reader = new FileReader();
 
-      reader.onloadend = () => {
-        this.setState((prevState) => ({
-          files: [...prevState.files, file],
-          imagesPreviewUrls: [...prevState.imagesPreviewUrls, reader.result],
-        }));
+      reader.onloadend = (e) => {
+        // this.setState((prevState) => ({
+        //   files: {
+        //     files: [...prevState.files, file],
+        //     urls: [...prevState.imagesPreviewUrls, reader.result],
+        //   },
+        // }));
+        let body = {
+          file: files[0],
+          base64: e.target.result,
+        };
+        let updateArray = this.state.files;
+        updateArray.push(body);
+        this.setState({
+          files: updateArray,
+        });
+        console.log(this.state.files);
       };
 
       reader.readAsDataURL(file);
@@ -151,23 +167,75 @@ export default class sentHomework extends Component {
   };
 
   async _handleSubmit() {
-    console.log("handle uploading-", this.state.files);
-    // e.preventDefault();
-    // TODO: do something with -> this.state.file
+    this.setState({
+      onProgress: true,
+    });
+    let liffContext = liff.getContext();
+    console.log("handle uploading-", this.state.files.file);
     let ref = storage.ref();
+    let Urls = [];
     for (let i = 0; i < this.state.files.length; i++) {
       let image =
         "homework/" +
-        this.state.files[i].name +
+        this.state.files[i].file.name +
         "_" +
         new Date().getTime() +
         ".png";
-      await ref.child(image).put(this.state.files[i]);
+      await ref.child(image).put(this.state.files[i].file);
       console.log(i);
       console.log(new Date().getTime());
       await ref.child(image).getDownloadURL();
       console.log(await ref.child(image).getDownloadURL());
+      Urls.push(await ref.child(image).getDownloadURL());
     }
+    console.log(Urls);
+
+    // let data = this.state.sendData.split("-");
+    // let time = this.state.sendTime.split(":");
+    // console.log(data, time);
+
+    let body = {
+      groupId: liffContext.groupId,
+      // title: this.state.title,
+      // expire: new Date(
+      //   data[0],
+      //   data[1],
+      //   data[2],
+      //   time[0],
+      //   time[1],
+      //   0,
+      //   0
+      // ).getTime(),
+      description: this.state.description,
+      files: Urls,
+    };
+    console.log(body);
+    axios
+      .post(ENV.SERVER + "/homework/create", body)
+      .then((response) => {
+        console.log(response);
+        if (response.data.status === 201) {
+          this.setState({
+            onProgress: false,
+            pageState: 2,
+          });
+          liff.closeWindow();
+        } else {
+          this.setState({
+            alretState: true,
+            onProgress: false,
+            errorMessage: response.data.message || "Load homework fail!!",
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({
+          alretState: true,
+          onProgress: false,
+          errorMessage: error.message || "Server error",
+        });
+      });
   }
 
   // deleteHomework = (homeworkIndex) => {
@@ -182,6 +250,43 @@ export default class sentHomework extends Component {
   //     // );
   //   }
   // };
+
+  // componentDidMount() {
+  //   this.loadHomework();
+  // }
+
+  // loadHomework = () => {
+  //   this.setState({
+  //     onProgress: true,
+  //   });
+  //   let liffContext = liff.getContext();
+  //   axios
+  //     .get(ENV.SERVER + "/homework/all/" + liffContext.groupId)
+  //     .then((response) => {
+  //       console.log(response);
+  //       if (response.data.status === 200) {
+  //         this.setState({
+  //           onProgress: false,
+  //           oldHomework: response.data.homework,
+  //         });
+  //       } else {
+  //         this.setState({
+  //           alretState: true,
+  //           onProgress: false,
+  //           errorMessage: response.data.message || "Load homework fail!!",
+  //         });
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       this.setState({
+  //         alretState: true,
+  //         onProgress: false,
+  //         errorMessage: error.message || "Server error",
+  //       });
+  //     });
+  // };
+
 
   firstPage = (state) => (
     <div className={style.elementsContainer2}>
@@ -447,21 +552,27 @@ export default class sentHomework extends Component {
           <label>เพิ่มข้อความ</label>
           <div className={style.areaContainer}>
             <TextField fullWidth multiline rows={6} variant="outlined" />
-            {state.state.imagesPreviewUrls.map((data, key) => {
+            {this.state.files.map((data, key) => {
               return (
                 <div className={style.imguploadContainer}>
-                  <img key={key} src={data} className={style.imgupload} />
+                  <img
+                    key={key}
+                    src={data.base64}
+                    className={style.imgupload}
+                  />
                   <img
                     src={DeleteIcon}
                     alt="DeleteIcon"
                     className={style.imguploaddel}
                     onClick={() => {
-                      // this.setState({
-                      //   dialogBox: true,
-                      //   deleteHomeworkName: data.homeworkName,
-                      // });
+                      this.setState({
+                        dialogBox: true,
+                        deleteHomeworkName: data.homeworkName,
+                      });
+                      this.deleteImage(data.file.name);
                     }}
                   />
+                  {/* <label1>{state.state.files[key].name}</label1> */}
                 </div>
               );
             })}
