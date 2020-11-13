@@ -8,8 +8,9 @@ import DialogBox from "../../compoments/DialogBox/DialogBox";
 
 //Image
 // import TA from "../../static/image/TA-LOGO.png";
-import Edit from "../../static/image/edit@2x.png";
-import DeleteIcon from "../../static/image/Group 35@2x.png";
+import curtainRight from "../../static/image/Group 84.png";
+import curtainLeft from "../../static/image/Group 69.png";
+import stage from "../../static/image/Rectangle 231.png";
 
 export default class myScore extends Component {
   constructor(props) {
@@ -49,12 +50,11 @@ export default class myScore extends Component {
     };
   }
 
-
   firstPage = (state) => (
     <div className={style.elementsContainer2}>
       <div className={style.titleContainer}>
         {/* <img src={TA} alt="TA-LOGO" /> */}
-        <h1 className={style.titleText}>การบ้านทั้งหมดในขณะนี้</h1>
+        <h1 className={style.titleText}>ดูคะแนน</h1>
       </div>
       <div className={style.homeworkListContainer}>
         {state.state.oldHomework.length === 0 ? (
@@ -63,15 +63,14 @@ export default class myScore extends Component {
           </label>
         ) : (
           state.state.oldHomework.map((data, key) => {
-              return (
-                <div key={key} className={style.homeworkContainer}>
-                  <div className={style.homeworkBox}>
-                    <label>{data.homeworkName}</label>
-                  </div>
+            return (
+              <div key={key} className={style.homeworkContainer}>
+                <div className={style.homeworkBox}>
+                  <label>{data.homeworkName}</label>
                 </div>
-              );
-            } 
-          )
+              </div>
+            );
+          })
         )}
       </div>
       <div className={style.buttonContainer}>
@@ -89,120 +88,32 @@ export default class myScore extends Component {
     </div>
   );
 
-  secondPage = (state) => (
-    <div className={cx(style.elementsContainer, style.elementsContainer2)}>
-      <div className={style.inputContainer}>
-        <div className={style.textFieldContainer}>
-          <label>ระบุชื่อการบ้าน</label>
-          <TextField fullWidth variant="outlined" className={style.textFieldTitle}/>
-        </div>
-        <div
-          className={cx(style.textFieldContainer, style.textFieldContainer2)}
-        >
-          <label>วันที่ส่งการบ้าน</label>
-          <TextField type="date" fullWidth variant="outlined" />
-        </div>
-        <div
-          className={cx(style.textFieldContainer, style.textFieldContainer2)}
-        >
-          <label>ก่อนเวลา </label>
-          <div className={style.timeContainer}>
-            <TextField type="time" variant="outlined" />
-          </div>
-        </div>
-        <div className={cx(style.textFieldContainer, style.textAreaContainer)}>
-          <label>คำอธิบายเพิ่มเติม</label>
-          <div className={style.areaContainer}>
-            <TextField fullWidth multiline rows={6} variant="outlined" />
-            {state.state.imagesPreviewUrls.map((data, key) => {
-              return (
-                <div className={style.imguploadContainer}>
-                  <img key={key} src={data} className={style.imgupload} />
-                  <img
-                    src={DeleteIcon}
-                    alt="DeleteIcon"
-                    className={style.imguploaddel}
-                    onClick={() => {
-                      // this.setState({
-                      //   dialogBox: true,
-                      //   deleteHomeworkName: data.homeworkName,
-                      // });
-                    }}
-                  />
-                  {/* <label1>{state.state.files[key].name}</label1> */}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        <div className={style.uploadContainer}>
-          <input
-            // className={classes.input}
-            id="contained-button-file"
-            multiple
-            onChange={this._handleImageChange}
-            type="file"
-            accept="image/*"
-          />
-          <label htmlFor="contained-button-file" className={style.uploadText}>
-            <div onClick={""}>เพิ่มไฟล์แนบ</div>
-          </label>
-        </div>
+  secondPage = () => (
+    <div className={style.elementsContainer3}>
+      <div className={cx(style.titleContainer, style.scoreTitleText)}>
+        <h1 className={style.titleText2}>คะแนนสอบคณิตศาสตร์ครั้งที่ 1</h1>
       </div>
+      <div className={cx(style.circleBase, style.type1)}>
+        <label>20 คะแนน</label>
+        <label1 className={style.subTitleText}>จากคะแนนเต็ม 20 คะแนน</label1>
+      </div>
+      <img src={curtainRight} alt="" className={style.curtainLeft}/>
+      <img src={curtainLeft} alt="" className={style.curtainRight}/>
+      <img src={stage} alt="" className={style.stage}/>
 
       <div className={style.buttonContainer}>
         <MyButton
           label={"ย้อนกลับ"}
-          color={"#ffffff"}
-          backgroundColor={"#e5a52d"}
+          color={"#2c3e50"}
+          backgroundColor={"#ffffff"}
           onClick={() => {
-            this.setState({ pageState: 0 });
+            this.setState({
+              pageState: 0,
+            });
           }}
         ></MyButton>
-        <MyButton
-          label={"สั่งการบ้าน"}
-          color={"#ffffff"}
-          backgroundColor={"#16AF74"}
-          type="submit"
-          onClick={() => {
-            this.setState({ pageState: 0 });
-            this._handleSubmit();
-          }}
+      </div>
 
-          // onClick={this._handleSubmit}
-        ></MyButton>
-      </div>
-    </div>
-  );
-
-  thirdPage = (
-    <div className={cx(style.elementsContainer, style.elementsContainer2)}>
-      <div className={style.inputContainer}>
-        <div className={cx(style.textFieldContainer, style.textAreaContainer)}>
-          <label>เพิ่มข้อความ</label>
-          <div className={style.areaContainer}>
-            <TextField fullWidth multiline rows={6} variant="outlined" />
-          </div>
-        </div>
-      </div>
-      <div className={cx(style.buttonContainer, style.buttonContainer2)}>
-        <MyButton
-          label={"ยืนยันการส่งการบ้าน"}
-          color={"#ffffff"}
-          backgroundColor={"#16AF74"}
-          onClick={() => {
-            this.setState({ pageState: 0 });
-          }}
-        ></MyButton>
-        <MyButton
-          label={"ย้อนกลับ"}
-          color={"#ffffff"}
-          backgroundColor={"#e5a52d"}
-          onClick={() => {
-            this.setState({ pageState: 0 });
-          }}
-        ></MyButton>
-      </div>
     </div>
   );
 
@@ -214,8 +125,8 @@ export default class myScore extends Component {
       case 1:
         return this.secondPage(state);
 
-      case 2:
-        return this.thirdPage;
+      // case 2:
+      //   return this.thirdPage;
 
       default:
         break;
