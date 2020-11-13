@@ -9,17 +9,18 @@ import FinalPage from "../../compoments/FinalPage/FinalPage";
 import axios from "axios";
 import ENV from "../../util/env.json";
 import liff from "@line/liff";
+import Slider from "../../compoments/Slider/Slider";
 
 import HomeWorkIcon from "../../static/image/homework@2x.png";
 import Exam from "../../static/image/exam@2x.png";
 import saveIcon from "../../static/image/Group 83@2x.png";
-import SeeWork from "../../static/image/seeWork@2x.png";
+import WatchFile from "../../static/image/Icon ionic-md-eye@2x.png";
 
 export default class grading extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pageState: 0,
+      pageState: 3,
       alertBar: false,
       errorMessage: "",
       scoreNumber: 0,
@@ -29,10 +30,13 @@ export default class grading extends Component {
       sended: 1,
       onProgress: false,
       saveProgress: false,
+      watchFile: false,
+      onSlider: false,
+      imageSelect: [],
       gradOption: [
         {
           optionName: "การบ้าน",
-          isPress: false,
+          isPress: true,
           icon: HomeWorkIcon,
           helpText: "เป็นการให้คะแนนการบ้านที่สร้างไว้ในระบบ",
         },
@@ -64,7 +68,29 @@ export default class grading extends Component {
         },
       ],
       grading: [],
-      students: [],
+      students: [
+        {
+          name: "test",
+          lastName: "soft",
+          sid: 1,
+          score: 23,
+          isSend: true,
+          files: [
+            "https://i.pinimg.com/originals/6f/a0/ee/6fa0eee440db3dbd4b31dd0e2f7fab7c.png",
+            "https://i.pinimg.com/originals/6f/a0/ee/6fa0eee440db3dbd4b31dd0e2f7fab7c.png",
+          ],
+        },
+        {
+          name: "test",
+          lastName: "soft",
+          sid: 1,
+          score: 23,
+          isSend: true,
+          files: [
+            "https://i.pinimg.com/originals/6f/a0/ee/6fa0eee440db3dbd4b31dd0e2f7fab7c.png",
+          ],
+        },
+      ],
     };
   }
 
@@ -299,81 +325,48 @@ export default class grading extends Component {
       >
         {this.state.onProgress === false ? (
           <>
-            <table>
-              <thead>
-                <tr>
-                  <th className={style.removeBorder}>
+            <div
+              className={style.titleColumnContainer}
+              style={{ textAlign: "left" }}
+            >
+              <label>ยังไม่ได้ตรววจ</label>
+            </div>
+            {this.state.homeworks.map((data, workIndex) => {
+              if (data.isCheck !== true) {
+                return (
+                  <>
                     <div
-                      className={style.titleColumnContainer}
-                      style={{ textAlign: "left" }}
+                      className={style.workContainer}
+                      key={workIndex}
+                      style={{
+                        borderColor: data.isPress === true ? "#FDCD7E" : "",
+                      }}
+                      onClick={() => {
+                        let updateArray = this.state.homeworks;
+                        updateArray.map((_, index) => {
+                          updateArray[index].isPress =
+                            workIndex === index ? true : false;
+                          return null;
+                        });
+                        this.setState({
+                          homeworks: updateArray,
+                        });
+                      }}
                     >
-                      <label>ยังไม่ได้ตรววจ</label>
-                    </div>
-                  </th>
-                  <th className={style.removeBorder}>
-                    <div
-                      className={style.titleColumnContainer}
-                      style={{ borderBottom: "none" }}
-                    >
-                      <label style={{ whiteSpace: "nowrap" }}>
-                        ดูไฟล์การบ้าน
+                      <label
+                        style={{
+                          fontSize: 30,
+                          color: data.isPress === true ? "#FDCD7E" : "",
+                        }}
+                      >
+                        {data.workName}
                       </label>
                     </div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.homeworks.map((data, workIndex) => {
-                  if (data.isCheck !== true) {
-                    return (
-                      <tr>
-                        <td className={style.removeBorder}>
-                          <div
-                            className={style.workContainer}
-                            key={workIndex}
-                            style={{
-                              borderColor:
-                                data.isPress === true ? "#FDCD7E" : "",
-                            }}
-                            onClick={() => {
-                              let updateArray = this.state.homeworks;
-                              updateArray.map((_, index) => {
-                                updateArray[index].isPress =
-                                  workIndex === index ? true : false;
-                                return null;
-                              });
-                              this.setState({
-                                homeworks: updateArray,
-                              });
-                            }}
-                          >
-                            <label
-                              style={{
-                                fontSize: 30,
-                                color: data.isPress === true ? "#FDCD7E" : "",
-                              }}
-                            >
-                              {data.workName}
-                            </label>
-                          </div>
-                        </td>
-                        <td
-                          className={style.removeBorder}
-                          style={{ display: "flex", justifyContent: "center" }}
-                        >
-                          <div className={style.workContainer}>
-                            <div className={style.seeWorkIcon}>
-                              <img src={SeeWork} alt="SeeWork" />
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  }
-                  return null;
-                })}
-              </tbody>
-            </table>
+                  </>
+                );
+              }
+              return null;
+            })}
             <div className={style.workListContainer}></div>
             <div className={style.titleColumnContainer}>
               <label>ส่งแล้ว</label>
@@ -699,28 +692,47 @@ export default class grading extends Component {
                         {data.name + " " + data.lastname}
                       </td>
                       <td style={{ maxWidth: 50 }}>
-                        <div className={style.textFieldContainer2}>
-                          <TextField
-                            type="number"
-                            fullWidth
-                            name="numberformat"
-                            variant="outlined"
-                            value={data.score}
-                            onChange={(event) => {
-                              let updateArray = this.state.students;
-                              updateArray.map((X, index) => {
-                                updateArray[index].score =
-                                  studentIndex === index
-                                    ? Number(event.target.value) + ""
-                                    : X.score;
-                                return null;
-                              });
-                              this.setState({
-                                students: updateArray,
-                              });
-                            }}
-                          />
-                        </div>
+                        {this.state.watchFile === false ? (
+                          <div className={style.textFieldContainer2}>
+                            <TextField
+                              type="number"
+                              fullWidth
+                              name="numberformat"
+                              variant="outlined"
+                              inputProps={{
+                                min: 0,
+                                style: { textAlign: "center" },
+                              }}
+                              value={data.score}
+                              onChange={(event) => {
+                                let updateArray = this.state.students;
+                                updateArray.map((X, index) => {
+                                  updateArray[index].score =
+                                    studentIndex === index
+                                      ? Number(event.target.value) + ""
+                                      : X.score;
+                                  return null;
+                                });
+                                this.setState({
+                                  students: updateArray,
+                                });
+                              }}
+                            />
+                          </div>
+                        ) : (
+                          <div className={style.watchFileContainer}>
+                            <img
+                              src={WatchFile}
+                              alt="WatchFile"
+                              onClick={() => {
+                                this.setState({
+                                  onSlider: true,
+                                  imageSelect: data.files,
+                                });
+                              }}
+                            />
+                          </div>
+                        )}
                       </td>
                     </tr>
                   );
@@ -741,6 +753,31 @@ export default class grading extends Component {
                 backgroundColor={"#E5A52D"}
                 color={"#fff"}
               ></MyButton>
+              {this.state.watchFile === false ? (
+                <MyButton
+                  label={"ดูการบ้านที่ส่ง"}
+                  onClick={() => {
+                    this.setState({
+                      watchFile: true,
+                    });
+                  }}
+                  fontSize={31}
+                  backgroundColor={"#3C5575"}
+                  color={"#fff"}
+                ></MyButton>
+              ) : (
+                <MyButton
+                  label={"ดูคะแนน"}
+                  onClick={() => {
+                    this.setState({
+                      watchFile: false,
+                    });
+                  }}
+                  fontSize={31}
+                  backgroundColor={"#3D92A8"}
+                  color={"#fff"}
+                ></MyButton>
+              )}
             </>
           </div>
         </>
@@ -785,6 +822,18 @@ export default class grading extends Component {
             });
           }}
         ></AlertBar>
+        <Slider open={this.state.onSlider} images={this.state.imageSelect} />
+        <div
+          className={style.closeSlider}
+          style={{ display: this.state.onSlider === false ? "none" : "" }}
+          onClick={() => {
+            this.setState({
+              onSlider: false,
+            });
+          }}
+        >
+          <label>X</label>
+        </div>
         <div className={style.container}>{this.pageState(this)}</div>
       </>
     );
