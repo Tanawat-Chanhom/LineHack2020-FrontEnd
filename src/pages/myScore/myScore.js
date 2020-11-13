@@ -32,27 +32,9 @@ export default class myScore extends Component {
       deleteHomeworkName: "",
       deleteKey: 0,
       onProgress: false,
-      oldHomework: [
-        {
-          homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 1 และ 2",
-          exp: "ส่งพรุ่งนี้",
-          expired: true,
-          sent: true,
-        },
-        {
-          homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 3 และ 4",
-          exp: "เหลืออีก 14 วัน",
-          expired: false,
-          sent: true,
-        },
-        {
-          homeworkName: "บันทึกการอ่าน",
-          exp: "เหลืออีก 28 วัน",
-          expired: false,
-          sent: false,
-        },
-      ],
-      newHomework: [],
+      oldHomework: [],
+      title: "",
+      myScore: 0,
     };
   }
 
@@ -72,13 +54,12 @@ export default class myScore extends Component {
     axios
       .post(ENV.SERVER + "/grades/my_score", body)
       .then((response) => {
-        console.log(response);
+        console.log(response.data.myScore);
         if (response.data.status === 200) {
           this.setState({
             onProgress: false,
-            oldHomework: response.data.myscores,
+            oldHomework: response.data.myScore,
           });
-          console.log(response);
         } else {
           this.setState({
             alretState: true,
@@ -116,29 +97,15 @@ export default class myScore extends Component {
                     key={key}
                     className={style.homeworkContainer}
                     onClick={() => {
-                      let updateArray = this.state.oldHomework;
-                      updateArray.map((_, index) => {
-                        updateArray[index].idPress =
-                          key === index ? true : false;
-                      });
                       this.setState({
-                        oldHomework: updateArray,
+                        pageState: 1,
+                        title: data.title,
+                        myScore: data.score,
                       });
                     }}
                   >
-                    <div
-                      className={style.homeworkBox}
-                      style={{
-                        borderColor: data.idPress === true ? "#E5A52D" : "",
-                      }}
-                    >
-                      <label
-                        style={{
-                          color: data.idPress === true ? "#E5A52D" : "",
-                        }}
-                      >
-                        {data.homeworkName}
-                      </label>
+                    <div className={style.homeworkBox}>
+                      <label>{data.title}</label>
                     </div>
                   </div>
                 );
@@ -153,29 +120,19 @@ export default class myScore extends Component {
           </center>
         )}
       </div>
-      <div className={style.buttonContainer}>
-        <MyButton
-          label={"สั่งการบ้านเพิ่ม"}
-          color={"#ffffff"}
-          backgroundColor={"#e5a52d"}
-          onClick={() => {
-            this.setState({
-              pageState: 1,
-            });
-          }}
-        ></MyButton>
-      </div>
     </div>
   );
 
   secondPage = () => (
     <div className={style.elementsContainer3}>
       <div className={cx(style.titleContainer, style.scoreTitleText)}>
-        <h1 className={style.titleText2}>คะแนนสอบคณิตศาสตร์ครั้งที่ 1</h1>
+        <h1 className={style.titleText2}>{this.state.title}</h1>
       </div>
       <div className={cx(style.circleBase, style.type1)}>
-        <label>20 คะแนน</label>
-        <label1 className={style.subTitleText}>จากคะแนนเต็ม 20 คะแนน</label1>
+        <label style={{ marginRight: 5, color: "#FCC55D" }}>
+          {this.state.myScore}
+        </label>
+        <label>คะแนน</label>
       </div>
       <img src={curtainRight} alt="" className={style.curtainLeft} />
       <img src={curtainLeft} alt="" className={style.curtainRight} />
