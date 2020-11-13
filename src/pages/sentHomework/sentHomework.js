@@ -25,33 +25,48 @@ export default class sentHomework extends Component {
       oldHomework: [
         {
           homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 1 และ 2",
+          date:"2020-09-30",
+          homeworkDesc: "อันนี้ส่งที่ห้องพักอาจารย์นะคะ รวมให้ครบก่อนแล้วค่อยมาส่ง ถ้าใครไม่ส่งคะแนนช่องนี้จะหาย ไปทั้งหมดสิบคะแนนนะคะ เพราะบทละ 5 คะแนนค่ะ",
           exp: "ส่งพรุ่งนี้",
           expired: true,
           sent: true,
+          isPress: false,
         },
         {
           homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 7 และ 9",
+          date:"2020-09-30",
+          homeworkDesc: "อันนี้ส่งที่ห้องพักอาจารย์นะคะ รวมให้ครบก่อนแล้วค่อยมาส่ง ถ้าใครไม่ส่งคะแนนช่องนี้จะหาย ไปทั้งหมดสิบคะแนนนะคะ เพราะบทละ 5 คะแนนค่ะ",
           exp: "ส่งพรุ่งนี้",
           expired: true,
           sent: true,
+          isPress: false,
         },
         {
           homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 3 และ 4",
+          date:"2020-09-30",
+          homeworkDesc: "อันนี้ส่งที่ห้องพักอาจารย์นะคะ รวมให้ครบก่อนแล้วค่อยมาส่ง ถ้าใครไม่ส่งคะแนนช่องนี้จะหาย ไปทั้งหมดสิบคะแนนนะคะ เพราะบทละ 5 คะแนนค่ะ",
           exp: "เหลืออีก 14 วัน",
           expired: false,
           sent: true,
+          isPress: false,
         },
         {
           homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 8",
+          date:"2020-09-30",
+          homeworkDesc: "อันนี้ส่งที่ห้องพักอาจารย์นะคะ รวมให้ครบก่อนแล้วค่อยมาส่ง ถ้าใครไม่ส่งคะแนนช่องนี้จะหาย ไปทั้งหมดสิบคะแนนนะคะ เพราะบทละ 5 คะแนนค่ะ",
           exp: "เหลืออีก 14 วัน",
           expired: false,
           sent: true,
+          isPress: false,
         },
         {
           homeworkName: "บันทึกการอ่าน",
+          date:"2020-09-30",
+          homeworkDesc: "อันนี้ส่งที่ห้องพักอาจารย์นะคะ รวมให้ครบก่อนแล้วค่อยมาส่ง ถ้าใครไม่ส่งคะแนนช่องนี้จะหาย ไปทั้งหมดสิบคะแนนนะคะ เพราะบทละ 5 คะแนนค่ะ",
           exp: "เหลืออีก 28 วัน",
           expired: false,
           sent: false,
+          isPress: false,
         },
       ],
       // newQuiz: [],
@@ -120,7 +135,29 @@ export default class sentHomework extends Component {
                   if (data.sent === false && data.expired === false) {
                     return (
                       <div key={key} className={style.homeworkContainer}>
-                        <div className={style.homeworkBox}>
+                        <div
+                          className={style.homeworkBox}
+                          style={{
+                            backgroundColor:
+                              data.isPress === true ? "#E5A52D" : "",
+                          }}
+                          onClick={() => {
+                            let UpdateArray = this.state.oldHomework;
+                            UpdateArray.map((data, UpdateArrayIndex) => {
+                              UpdateArray[UpdateArrayIndex].isPress =
+                                UpdateArrayIndex === key ? true : false;
+                              console.log(
+                                UpdateArray[UpdateArrayIndex].isPress
+                              );
+                              return null;
+                            });
+                            this.setState({
+                              pageState: 1,
+                              // quizzes: UpdateArray,
+                              // canStart: true,
+                            });
+                          }}
+                        >
                           <label>{data.homeworkName}</label>
                           <label>{data.exp}</label>
                         </div>
@@ -145,6 +182,28 @@ export default class sentHomework extends Component {
                             style.homeworkBox,
                             style.homeworkBoxSent
                           )}
+                          style={{
+                            backgroundColor:
+                              data.isPress === true ? "#1fffa9" : "",
+                            borderColor: data.isPress === true ? "#ffffff" : "",
+                            color: data.isPress === true ? "#ffffff" : "",
+                          }}
+                          onClick={() => {
+                            let UpdateArray = this.state.oldHomework;
+                            UpdateArray.map((data, UpdateArrayIndex) => {
+                              UpdateArray[UpdateArrayIndex].isPress =
+                                UpdateArrayIndex === key ? true : false;
+                              console.log(
+                                UpdateArray[UpdateArrayIndex].isPress
+                              );
+                              return null;
+                            });
+                            this.setState({
+                              pageState: 1,
+                              // quizzes: UpdateArray,
+                              // canStart: true,
+                            });
+                          }}
                         >
                           <label>{data.homeworkName}</label>
                           <label>ส่งแล้ว</label>
@@ -165,7 +224,29 @@ export default class sentHomework extends Component {
                   if (data.expired === true) {
                     return (
                       <div key={key} className={style.homeworkContainer}>
-                        <div className={style.homeworkBox}>
+                        <div
+                          className={style.homeworkBox}
+                          style={{
+                            backgroundColor:
+                              data.isPress === true ? "#E5A52D" : "",
+                          }}
+                          onClick={() => {
+                            let UpdateArray = this.state.oldHomework;
+                            UpdateArray.map((data, UpdateArrayIndex) => {
+                              UpdateArray[UpdateArrayIndex].isPress =
+                                UpdateArrayIndex === key ? true : false;
+                              console.log(
+                                UpdateArray[UpdateArrayIndex].isPress
+                              );
+                              return null;
+                            });
+                            this.setState({
+                              pageState: 1,
+                              // quizzes: UpdateArray,
+                              // canStart: true,
+                            });
+                          }}
+                        >
                           <label>{data.homeworkName}</label>
                         </div>
                       </div>
@@ -177,7 +258,7 @@ export default class sentHomework extends Component {
           </div>
         )}
       </div>
-      <div className={style.buttonContainer}>
+      {/* <div className={style.buttonContainer}>
         <MyButton
           label={"สั่งการบ้านเพิ่ม"}
           color={"#ffffff"}
@@ -186,82 +267,85 @@ export default class sentHomework extends Component {
             this.setState({ pageState: 1 });
           }}
         ></MyButton>
-      </div>
+      </div> */}
     </div>
   );
 
-  secondPage = (
-    <div className={cx(style.elementsContainer, style.elementsContainer2)}>
-      <div className={style.inputContainer}>
-        <div className={style.textFieldContainer}>
-          <label>การบ้าน</label>
-          <TextField
-            disabled
-            fullWidth
-            variant="outlined"
-            value="แบบฝึกหัดหลังเรียน บทที่ 1 และ 2"
-          />
-        </div>
-        <div
-          className={cx(style.textFieldContainer, style.textFieldContainer2)}
-        >
-          <label>วันที่ส่งการบ้าน</label>
-          <TextField
-            type="date"
-            fullWidth
-            variant="outlined"
-            disabled
-            defaultValue="2020-09-30"
-          />
-        </div>
-        <div className={cx(style.textFieldContainer, style.textAreaContainer)} >
-          <label>คำอธิบายเพิ่มเติม</label>
-          <div className={cx(style.areaContainer,style.test)}>
-            <TextField
-              fullWidth
-              multiline
-              disabled
-              rows={6}
-              // fullWidth
-              variant="outlined"
-              value="อันนี้ส่งที่ห้องพักอาจารย์นะคะ รวมให้ครบก่อนแล้วค่อยมาส่ง ถ้าใครไม่ส่งคะแนนช่องนี้จะหาย ไปทั้งหมดสิบคะแนนนะคะ เพราะบทละ 5 คะแนนค่ะ"
-            />
+  secondPage = (state) =>
+    state.state.oldHomework.map((data, key) => {
+      if (data.isPress === true) {
+        return (
+          <div
+            className={cx(style.elementsContainer, style.elementsContainer2)}
+          >
+            <div className={style.inputContainer}>
+              <div className={style.textFieldContainer}>
+                <label>การบ้าน</label>
+                <TextField
+                  disabled
+                  fullWidth
+                  variant="outlined"
+                  value={data.homeworkName}
+                />
+              </div>
+              <div
+                className={cx(
+                  style.textFieldContainer,
+                  style.textFieldContainer2
+                )}
+              >
+                <label>วันที่ส่งการบ้าน</label>
+                <TextField
+                  type="date"
+                  fullWidth
+                  variant="outlined"
+                  disabled
+                  defaultValue={data.date}
+                />
+              </div>
+              <div
+                className={cx(
+                  style.textFieldContainer,
+                  style.textAreaContainer
+                )}
+              >
+                <label>คำอธิบายเพิ่มเติม</label>
+                <div className={cx(style.areaContainer, style.test)}>
+                  <TextField
+                    fullWidth
+                    multiline
+                    disabled
+                    rows={6}
+                    // fullWidth
+                    variant="outlined"
+                    value={data.homeworkDesc}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className={style.buttonContainer}>
+              <MyButton
+                label={"ย้อนกลับ"}
+                color={"#ffffff"}
+                backgroundColor={"#e5a52d"}
+                onClick={() => {
+                  this.setState({ pageState: 0 });
+                }}
+              ></MyButton>
+              <MyButton
+                label={"ส่งการบ้าน"}
+                color={"#ffffff"}
+                backgroundColor={"#16AF74"}
+                onClick={() => {
+                  this.setState({ pageState: 2 });
+                }}
+              ></MyButton>
+            </div>
           </div>
-        </div>
-        {/* <div className={style.uploadContainer}>
-          <input
-            // accept="image/*"
-            // className={classes.input}
-            id="contained-button-file"
-            multiple
-            type="file"
-          />
-          <label htmlFor="contained-button-file" className={style.uploadText}>
-            <div onClick={""}>เพิ่มไฟล์แนบ</div>
-          </label>
-        </div> */}
-      </div>
-
-      <div className={style.buttonContainer}>
-        <MyButton
-          label={"ย้อนกลับ"}
-          color={"#ffffff"}
-          backgroundColor={"#e5a52d"}
-          onClick={() => {
-            this.setState({ pageState: 0 });
-          }}
-        ></MyButton>
-        <MyButton
-          label={"ส่งการบ้าน"}
-          color={"#ffffff"}
-          backgroundColor={"#16AF74"}
-          onClick={() => {
-            this.setState({ pageState: 2 });
-          }}
-        ></MyButton>
-      </div>
-    </div>
-  );
+        );
+      }
+    });
 
   thirdPage = (state) => (
     <div className={cx(style.elementsContainer, style.elementsContainer2)}>
@@ -333,7 +417,7 @@ export default class sentHomework extends Component {
         return this.firstPage(state);
 
       case 1:
-        return this.secondPage;
+        return this.secondPage(state);
 
       case 2:
         return this.thirdPage(state);
