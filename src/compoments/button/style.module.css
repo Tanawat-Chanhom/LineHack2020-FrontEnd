@@ -27,4 +27,5 @@
 .imgContainer img {
   height: 50px;
   width: 50px;
+  margin-left: 5px;
 }

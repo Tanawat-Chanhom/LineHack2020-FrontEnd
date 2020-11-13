@@ -18,8 +18,18 @@ export default class Button extends Component {
           {this.props.label}
         </label>
         {this.props.icon !== undefined ? (
-          <div className={style.imgContainer}>
-            <img src={this.props.icon} alt="icon" />
+          <div
+            className={style.imgContainer}
+            style={{
+              width: this.props.iconSize,
+              height: this.props.iconSize,
+            }}
+          >
+            <img
+              src={this.props.icon}
+              alt="icon"
+              style={{ width: "100%", height: "100%" }}
+            />
           </div>
         ) : (
           <></>

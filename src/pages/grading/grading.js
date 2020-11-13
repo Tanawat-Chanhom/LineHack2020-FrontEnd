@@ -8,9 +8,12 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import FinalPage from "../../compoments/FinalPage/FinalPage";
 import axios from "axios";
 import ENV from "../../util/env.json";
+import liff from "@line/liff";
 
 import HomeWorkIcon from "../../static/image/homework@2x.png";
 import Exam from "../../static/image/exam@2x.png";
+import saveIcon from "../../static/image/Group 83@2x.png";
+import SeeWork from "../../static/image/seeWork@2x.png";
 
 export default class grading extends Component {
   constructor(props) {
@@ -20,9 +23,12 @@ export default class grading extends Component {
       alertBar: false,
       errorMessage: "",
       scoreNumber: 0,
-      scoreName: "",
+      maxScore: "",
+      gradTitle: "",
+      gradId: "",
       sended: 1,
       onProgress: false,
+      saveProgress: false,
       gradOption: [
         {
           optionName: "การบ้าน",
@@ -39,94 +45,136 @@ export default class grading extends Component {
       ],
       homeworks: [
         {
-          workName: "แบบฝึกหัดหลังเรียน บทที่ 1 และ 2",
+          workName: "แบบฝึกหัดหลังเรียน บทที่ 1",
           exp: "ส่งพรุ่งนี้้!",
           isPress: false,
           isCheck: false,
         },
         {
-          workName: "แบบฝึกหัดหลังเรียน บทที่ 3 และ 4",
+          workName: "แบบฝึกหัดหลังเรียน บทที่ 3",
           exp: "เหลืออีก 7 วัน",
           isPress: false,
           isCheck: false,
         },
         {
-          workName: "แบบฝึกหัดหลังเรียน บทที่ 4 และ 5",
+          workName: "แบบฝึกหัดหลังเรียน บทที่ 4",
           exp: "เหลืออีก 12 วัน",
           isPress: false,
           isCheck: true,
         },
       ],
-      students: [
-        {
-          firstName: "ธนพล",
-          lastName: "มาติกานนท์",
-          isSend: false,
-          studentNumber: "61070078",
-          score: 0,
-        },
-        {
-          firstName: "ธนพล",
-          lastName: "มาติกานนท์",
-          isSend: true,
-          studentNumber: "61070078",
-          score: 0,
-        },
-        {
-          firstName: "ธนพล",
-          lastName: "มาติกานนท์",
-          isSend: true,
-          studentNumber: "61070078",
-          score: 0,
-        },
-      ],
+      grading: [],
+      students: [],
     };
   }
 
   saveInformation = () => {
-    // setInterval(() => {
-    //   this.setState({
-    //     pageState: 4,
-    //     onProgress: false,
-    //   });
-    // }, 2000);
-    // let body = this.state.students;
-    // axios
-    //   .post(ENV.SERVER + "/", body)
-    //   .then((response) => {
-    //     console.log(response);
-    //     if (response.data.status === 200) {
-    //       this.setState({
-    //         onProgress: false,
-    //         pageState: 4,
-    //       });
-    //     } else {
-    //       this.setState({
-    //         alertBar: true,
-    //         onProgress: false,
-    //         errorMessage: response.data.message || "Save information fail!!",
-    //       });
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     this.setState({
-    //       alertBar: true,
-    //       onProgress: false,
-    //       errorMessage: error.message || "Server error!!",
-    //     });
-    //   });
+    this.setState({
+      saveProgress: true,
+    });
+    let body = {
+      members: this.state.students,
+    };
+    axios
+      .post(ENV.SERVER + "/grades/add/" + this.state.gradId, body)
+      .then((response) => {
+        console.log(response);
+        if (response.data.status === 200) {
+          this.setState({
+            saveProgress: false,
+          });
+        } else {
+          this.setState({
+            alertBar: true,
+            saveProgress: false,
+            errorMessage: response.data.message || "Save information fail!!",
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({
+          alertBar: true,
+          saveProgress: false,
+          errorMessage: error.message || "Server error!!",
+        });
+      });
   };
 
-  loadStudent = (loadType) => {
-    // if (loadType === 0) {
-
-    // } else {
-
-    // }
+  loadStudent = (loadType, id) => {
     this.setState({
-      onProgress: false,
+      onProgress: true,
     });
+    console.log(id);
+    if (loadType === 0) {
+      // tset
+    } else if (loadType === 1) {
+      axios
+        .get(ENV.SERVER + "/grades/detail/" + id)
+        .then((response) => {
+          console.log(response);
+          if (response.data.status === 200) {
+            this.setState({
+              onProgress: false,
+              students: response.data.grades.members,
+              gradId: response.data.grades.id,
+            });
+          } else {
+            this.setState({
+              alertBar: true,
+              onProgress: false,
+              errorMessage: response.data.message || "Save information fail!!",
+              pageState: 1,
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.setState({
+            alertBar: true,
+            onProgress: false,
+            errorMessage: error.message || "Server error!!",
+            pageState: 1,
+          });
+        });
+    } else if (loadType === 2) {
+      // create new grading
+      let liffContext = liff.getContext();
+      let { gradTitle, maxScore } = this.state;
+      let body = {
+        title: gradTitle,
+        maxScore: maxScore,
+        groupId: liffContext.groupId,
+      };
+      axios
+        .post(ENV.SERVER + "/grades/create/", body)
+        .then((response) => {
+          console.log(response);
+          if (response.data.status === 200) {
+            this.setState({
+              onProgress: false,
+              students: response.data.data.members,
+              gradId: response.data.data.id,
+            });
+          } else {
+            this.setState({
+              alertBar: true,
+              onProgress: false,
+              errorMessage: response.data.message || "Save information fail!!",
+              pageState: 1,
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.setState({
+            alertBar: true,
+            onProgress: false,
+            errorMessage: error.message || "Server error!!",
+            pageState: 1,
+          });
+        });
+    }
   };
 
   loadHomework = () => {
@@ -135,29 +183,39 @@ export default class grading extends Component {
     });
   };
 
-  firstPage = () => (
-    <div
-      className={style.elementContainer}
-      style={{ justifyContent: "center" }}
-    >
-      <div className={style.titleContainer}>
-        <label>- ท่านยังไม่ได้ทำใบคะแนนใดๆ -</label>
-      </div>
-      <div className={style.buttonContainer}>
-        <MyButton
-          label={"เริ่มทำใบคะแนน"}
-          fontSize={43}
-          onClick={() => {
-            this.setState({
-              pageState: 1,
-            });
-          }}
-        ></MyButton>
-      </div>
-    </div>
-  );
+  loadGrading = () => {
+    this.setState({
+      onProgress: true,
+    });
+    let liffContext = liff.getContext();
+    axios
+      .get(ENV.SERVER + "/grades/all/" + liffContext.groupId)
+      .then((response) => {
+        console.log(response);
+        if (response.data.status === 200) {
+          this.setState({
+            onProgress: false,
+            grading: response.data.grades,
+          });
+        } else {
+          this.setState({
+            alertBar: true,
+            onProgress: false,
+            errorMessage: response.data.message || "Save information fail!!",
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({
+          alertBar: true,
+          onProgress: false,
+          errorMessage: error.message || "Server error!!",
+        });
+      });
+  };
 
-  secondPage = () => (
+  firstPage = () => (
     <div className={style.elementContainer}>
       <div className={style.titleContainer}>
         <label>ท่านต้องการที่จะให้คะแนนของ..</label>
@@ -210,9 +268,13 @@ export default class grading extends Component {
               this.state.gradOption[1].isPress === true
             ) {
               this.setState({
-                pageState: 2,
+                pageState: 1,
               });
-              this.loadHomework();
+              if (this.state.gradOption[0].isPress === true) {
+                this.loadHomework();
+              } else {
+                this.loadGrading();
+              }
             } else {
               this.setState({
                 alertBar: true,
@@ -237,53 +299,82 @@ export default class grading extends Component {
       >
         {this.state.onProgress === false ? (
           <>
-            <div className={style.titleColumnContainer}>
-              <label>ยังไม่ได้ตรววจ</label>
-            </div>
-            <div className={style.workListContainer}>
-              {this.state.homeworks.map((data, workIndex) => {
-                if (data.isCheck !== true) {
-                  return (
+            <table>
+              <thead>
+                <tr>
+                  <th className={style.removeBorder}>
                     <div
-                      className={style.workContainer}
-                      key={workIndex}
-                      style={{
-                        borderColor: data.isPress === true ? "#FDCD7E" : "",
-                      }}
-                      onClick={() => {
-                        let updateArray = this.state.homeworks;
-                        updateArray.map((_, index) => {
-                          updateArray[index].isPress =
-                            workIndex === index ? true : false;
-                          return null;
-                        });
-                        this.setState({
-                          homeworks: updateArray,
-                        });
-                      }}
+                      className={style.titleColumnContainer}
+                      style={{ textAlign: "left" }}
                     >
-                      <label
-                        style={{
-                          fontSize: 30,
-                          color: data.isPress === true ? "#FDCD7E" : "",
-                        }}
-                      >
-                        {data.workName}
-                      </label>
-                      <small
-                        className={style.expText}
-                        style={{
-                          color: data.isPress === true ? "#FDCD7E" : "",
-                        }}
-                      >
-                        {data.exp}
-                      </small>
+                      <label>ยังไม่ได้ตรววจ</label>
                     </div>
-                  );
-                }
-                return null;
-              })}
-            </div>
+                  </th>
+                  <th className={style.removeBorder}>
+                    <div
+                      className={style.titleColumnContainer}
+                      style={{ borderBottom: "none" }}
+                    >
+                      <label style={{ whiteSpace: "nowrap" }}>
+                        ดูไฟล์การบ้าน
+                      </label>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.homeworks.map((data, workIndex) => {
+                  if (data.isCheck !== true) {
+                    return (
+                      <tr>
+                        <td className={style.removeBorder}>
+                          <div
+                            className={style.workContainer}
+                            key={workIndex}
+                            style={{
+                              borderColor:
+                                data.isPress === true ? "#FDCD7E" : "",
+                            }}
+                            onClick={() => {
+                              let updateArray = this.state.homeworks;
+                              updateArray.map((_, index) => {
+                                updateArray[index].isPress =
+                                  workIndex === index ? true : false;
+                                return null;
+                              });
+                              this.setState({
+                                homeworks: updateArray,
+                              });
+                            }}
+                          >
+                            <label
+                              style={{
+                                fontSize: 30,
+                                color: data.isPress === true ? "#FDCD7E" : "",
+                              }}
+                            >
+                              {data.workName}
+                            </label>
+                          </div>
+                        </td>
+                        <td
+                          className={style.removeBorder}
+                          style={{ display: "flex", justifyContent: "center" }}
+                        >
+                          <div className={style.workContainer}>
+                            <div className={style.seeWorkIcon}>
+                              <img src={SeeWork} alt="SeeWork" />
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  }
+                  return null;
+                })}
+              </tbody>
+            </table>
+            <div className={style.workListContainer}></div>
             <div className={style.titleColumnContainer}>
               <label>ส่งแล้ว</label>
             </div>
@@ -321,7 +412,7 @@ export default class grading extends Component {
             </div>
             <div className={style.buttonContainer} style={{ marginTop: 20 }}>
               <MyButton
-                label={"เริ่มให้คะแนน"}
+                label={"ให้คะแนนการบ้าน"}
                 fontSize={43}
                 onClick={() => {
                   let passState = 0;
@@ -333,7 +424,7 @@ export default class grading extends Component {
                     return null;
                   });
                   if (passState > 0) {
-                    this.loadStudent(0);
+                    // this.loadStudent(0);
                     this.setState({
                       pageState: 3,
                     });
@@ -361,6 +452,103 @@ export default class grading extends Component {
   gradOption2 = () => (
     <>
       <div className={style.titleContainer}>
+        <label>คะแนนอื่นๆ</label>
+      </div>
+      <div
+        style={{
+          width: "100%",
+        }}
+      >
+        {this.state.onProgress === false ? (
+          <>
+            <div className={style.titleColumnContainer}>
+              <label>ยังไม่ได้ตรววจ</label>
+            </div>
+            <div className={style.workListContainer}>
+              {this.state.grading.map((data, gradingIndex) => {
+                return (
+                  <div
+                    className={style.workContainer}
+                    key={gradingIndex}
+                    style={{
+                      borderColor: data.isPress === true ? "#FDCD7E" : "",
+                    }}
+                    onClick={() => {
+                      this.setState({
+                        pageState: 3,
+                      });
+                      this.loadStudent(1, data.id);
+                    }}
+                  >
+                    <label
+                      style={{
+                        fontSize: 30,
+                        color: data.isPress === true ? "#FDCD7E" : "",
+                      }}
+                    >
+                      {data.title}
+                    </label>
+                    <small
+                      className={style.expText}
+                      style={{
+                        color: data.isPress === true ? "#FDCD7E" : "",
+                      }}
+                    >
+                      {data.exp}
+                    </small>
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <center>
+            <CircularProgress
+              style={{ display: "inline-block", color: "#e5a52d", margin: 10 }}
+            ></CircularProgress>
+          </center>
+        )}
+        <div
+          className={style.buttonContainer}
+          style={{
+            marginBottom: 20,
+            marginLeft: -20,
+            position: "fixed",
+            bottom: "0%",
+            width: "100%",
+          }}
+        >
+          <MyButton
+            label={"เพิ่มใบคึะแนน"}
+            fontSize={43}
+            onClick={() => {
+              this.setState({
+                pageState: 4,
+              });
+            }}
+          ></MyButton>
+        </div>
+      </div>
+    </>
+  );
+
+  secondPage = () => (
+    <div
+      className={style.elementContainer}
+      style={{ justifyContent: "flex-start" }}
+    >
+      {this.state.gradOption[0].isPress === true
+        ? this.gradOption1()
+        : this.gradOption2()}
+    </div>
+  );
+
+  newGrading = () => (
+    <div
+      className={style.elementContainer}
+      style={{ justifyContent: "flex-start" }}
+    >
+      <div className={style.titleContainer}>
         <label>สร้างข้อมูลคะแนน</label>
       </div>
       <div
@@ -374,10 +562,10 @@ export default class grading extends Component {
           fullWidth
           variant="outlined"
           placeholder={"ex. คะแนนสอบ, คะแนนการบ้าน"}
-          value={this.state.scoreName}
+          value={this.state.gradTitle}
           onChange={(event) => {
             this.setState({
-              scoreName: event.target.value,
+              gradTitle: event.target.value,
             });
           }}
         />
@@ -394,44 +582,41 @@ export default class grading extends Component {
           variant="outlined"
           placeholder="20"
           type="number"
-          value={this.state.scoreNumber + ""}
+          value={this.state.maxScore + ""}
           onChange={(event) => {
             this.setState({
-              scoreNumber: Number(event.target.value),
+              maxScore: Number(event.target.value),
             });
           }}
         />
       </div>
       <div className={style.buttonContainer} style={{ marginTop: 20 }}>
-        <MyButton
-          label={"เริ่มให้คะแนน"}
-          fontSize={43}
-          onClick={() => {
-            if (this.state.scoreName !== "") {
-              this.loadStudent(1);
-              this.setState({
-                pageState: 3,
-              });
-            } else {
-              this.setState({
-                alertBar: true,
-                errorMessage: "Please enter score name!!",
-              });
-            }
-          }}
-        ></MyButton>
+        {this.state.onProgress === false ? (
+          <MyButton
+            label={"เริ่มให้คะแนน"}
+            fontSize={43}
+            onClick={() => {
+              if (this.state.scoreName !== "") {
+                this.loadStudent(2);
+                this.setState({
+                  pageState: 3,
+                });
+              } else {
+                this.setState({
+                  alertBar: true,
+                  errorMessage: "Please enter score name!!",
+                });
+              }
+            }}
+          ></MyButton>
+        ) : (
+          <center>
+            <CircularProgress
+              style={{ display: "inline-block", color: "#e5a52d", margin: 10 }}
+            ></CircularProgress>
+          </center>
+        )}
       </div>
-    </>
-  );
-
-  thridPage = () => (
-    <div
-      className={style.elementContainer}
-      style={{ justifyContent: "flex-start" }}
-    >
-      {this.state.gradOption[0].isPress === true
-        ? this.gradOption1()
-        : this.gradOption2()}
     </div>
   );
 
@@ -446,30 +631,51 @@ export default class grading extends Component {
     >
       {this.state.onProgress === false ? (
         <>
-          <div
-            className={style.studentHeader}
-            style={{
-              display: this.state.gradOption[0].isPress === true ? "" : "none",
-            }}
-          >
-            <div className={style.studentStatusContainer}>
+          <div className={style.studentHeader}>
+            <div
+              className={style.studentStatusContainer}
+              style={{
+                display:
+                  this.state.gradOption[0].isPress === true ? "" : "none",
+              }}
+            >
               <div className={style.studentStatus}>
                 <label style={{ color: "#ffffff" }}>นักเรียนทังหมด</label>
                 <label style={{ color: "#FCC55D" }}>37 คน</label>
               </div>
-              <div className={style.studentStatus}>
+              <div
+                className={style.studentStatus}
+                style={{
+                  display:
+                    this.state.gradOption[0].isPress === true ? "" : "none",
+                }}
+              >
                 <label style={{ color: "#ffffff" }}>นักเรียนกดส่ง</label>
                 <label style={{ color: "#FCC55D" }}>37 คน</label>
               </div>
             </div>
-            <div className={style.studentStatusContainer}>
-              <div className={style.studentStatus}>
-                <label style={{ color: "#ffffff" }}>ยืนยันการส่งแล้้ว</label>
-                <label style={{ color: "#1FFFA9" }}>
-                  {this.state.sended} คน
-                </label>
+            {this.state.saveProgress === false ? (
+              <div className={style.titleButton}>
+                <MyButton
+                  label={"บันทึกข้้อมูล"}
+                  fontSize={30}
+                  backgroundColor={"#16AF74"}
+                  icon={saveIcon}
+                  iconSize={27}
+                  onClick={() => {
+                    this.saveInformation();
+                  }}
+                ></MyButton>
               </div>
-            </div>
+            ) : (
+              <CircularProgress
+                style={{
+                  display: "inline-block",
+                  color: "#e5a52d",
+                  margin: 10,
+                }}
+              ></CircularProgress>
+            )}
           </div>
           <div className={style.studentTableContainer}>
             <table>
@@ -485,12 +691,12 @@ export default class grading extends Component {
                   return (
                     <tr className={style.studentRow} key={studentIndex}>
                       <td>
-                        <small>{data.studentNumber}</small>
+                        <small>{data.sid}</small>
                       </td>
                       <td
                         style={{ color: data.isSend === true ? "#1FFFA9" : "" }}
                       >
-                        {data.firstName + " " + data.lastName}
+                        {data.name + " " + data.lastname}
                       </td>
                       <td style={{ maxWidth: 50 }}>
                         <div className={style.textFieldContainer2}>
@@ -528,24 +734,12 @@ export default class grading extends Component {
                 label={"ย้อนกลับ"}
                 onClick={() => {
                   this.setState({
-                    pageState: this.state.pageState - 1,
+                    pageState: 1,
                   });
                 }}
                 fontSize={31}
                 backgroundColor={"#E5A52D"}
                 color={"#fff"}
-              ></MyButton>
-              <MyButton
-                label={"บันทึกข้้อมูล"}
-                fontSize={31}
-                backgroundColor={"#16AF74"}
-                color={"#fff"}
-                onClick={() => {
-                  this.setState({
-                    onProgress: true,
-                  });
-                  this.saveInformation();
-                }}
               ></MyButton>
             </>
           </div>
@@ -571,7 +765,7 @@ export default class grading extends Component {
       case 3:
         return this.fourthPage();
       case 4:
-        return <FinalPage label={"ให้คะแนนสำเร็จ"}></FinalPage>;
+        return this.newGrading();
       default:
         break;
     }

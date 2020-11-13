@@ -84,7 +84,6 @@
   font-size: 22px;
   color: #fcc55d;
   border-bottom: 2px solid #ffffff;
-  margin-top: 10px;
 }
 
 .workListContainer {
@@ -96,7 +95,7 @@
 .workContainer {
   border: 1px solid #ffffff;
   padding: 0px 10px;
-  margin: 14px 0px 0px 0px;
+  margin: 5px 0px;
   border-radius: 8px;
   background-color: #ffffff1f;
   display: flex;
@@ -211,4 +210,35 @@ tr th {
   height: 100%;
   justify-content: center;
   align-items: center;
+}
+
+.titleButton {
+  width: 50%;
+}
+
+.titleButton div {
+  width: unset;
+  margin: unset;
+}
+
+.seeWorkIcon {
+  width: 31px;
+  height: 31px;
+  margin: 10px;
+}
+
+.seeWorkIcon img {
+  width: 100%;
+  height: 100%;
+}
+
+.titleSpacil {
+  display: flex;
+  flex-direction: row;
+}
+
+.removeBorder {
+  border: none;
+  padding: 0px;
+  max-height: 60px;
 }

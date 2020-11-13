@@ -851,6 +851,7 @@ export default class createQuiz extends Component {
                   this.createQuestion();
                 }}
                 icon={AddIcon}
+                iconSize={34}
                 backgroundColor={"#ffffff"}
                 color={"#111111"}
               ></MyButton>
