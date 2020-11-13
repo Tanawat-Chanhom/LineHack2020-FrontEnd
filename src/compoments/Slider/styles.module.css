@@ -1,0 +1,27 @@
+.container {
+  position: fixed;
+  z-index: 99;
+  width: 100vw;
+  height: 100vh;
+  border: 1px solid #ffffff;
+  overflow-y: scroll;
+
+  animation-name: Slider;
+  animation-duration: 0.4s;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.42, 0, 0.21, 0.97);
+}
+.container img {
+  margin: 5px 0px;
+  height: auto;
+  width: 100%;
+}
+
+@keyframes Slider {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
