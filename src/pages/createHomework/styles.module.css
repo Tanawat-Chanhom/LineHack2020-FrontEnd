@@ -12,13 +12,13 @@
 /* secondPage styles */
 
 .elementsContainer2 {
-  /* padding: 40px 0px; */
+  padding: 40px 0px;
   width: 100%;
   max-width: 500px;
   /* height: 100%; */
   display: flex;
   flex-direction: column;
-  /* justify-content: space-evenly; */
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -32,13 +32,13 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 25%;
+  width: 100%;
 }
 
 .titleText {
   margin: 20px;
   color: #ffffff;
-  /* font-weight: bold; */
+  font-weight: 100;
   font-size: 40px;
 }
 
@@ -298,6 +298,6 @@ Textarea {
   border-top: 1px solid #ffffff;
   padding-top: 5%;
 }
-.textFieldTitle input{
+.textFieldTitle input {
   color: #e5a52d;
 }
