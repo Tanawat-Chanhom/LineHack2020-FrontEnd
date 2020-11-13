@@ -316,7 +316,6 @@ Textarea {
 }
 
 .imagesContainer {
-  border: 1px solid #ffffff;
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -324,7 +323,7 @@ Textarea {
 }
 
 .imagesContainer img {
-  width: 100%;
+  /* width: 100%;
   height: auto;
-  margin: 5px 0px;
+  margin: 5px 0px; */
 }

@@ -9,7 +9,7 @@ import axios from "axios";
 import ENV from "../../util/env.json";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import liff from "@line/liff";
-import FinalPage from "../../compoments/FinalPage/FinalPage";
+import AlertBar from "../../compoments/AlertBar/AlertBar";
 
 //Image
 // import TA from "../../static/image/TA-LOGO.png";
@@ -22,7 +22,8 @@ export default class sentHomework extends Component {
     // this.file = null;
     this.state = {
       files: [],
-      // imagesPreviewUrls: [],
+      hFiles: [],
+      completeUrl: [],
       errorMessage: "",
       alretState: false,
       dialogBox: false,
@@ -32,67 +33,11 @@ export default class sentHomework extends Component {
       pageState: 0,
       onProgress: false,
       description: "",
-      oldHomework: [
-        // {
-        //   homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 1 และ 2",
-        //   date: "2020-09-30",
-        //   homeworkDesc:
-        //     "อันนี้ส่งที่ห้องพักอาจารย์นะคะ รวมให้ครบก่อนแล้วค่อยมาส่ง ถ้าใครไม่ส่งคะแนนช่องนี้จะหาย ไปทั้งหมดสิบคะแนนนะคะ เพราะบทละ 5 คะแนนค่ะ",
-        //   exp: "ส่งพรุ่งนี้",
-        //   expired: true,
-        //   sent: true,
-        //   isPress: false,
-        //   files: [
-        //     "https://i.pinimg.com/originals/6f/a0/ee/6fa0eee440db3dbd4b31dd0e2f7fab7c.png",
-        //     "https://i.pinimg.com/originals/6f/a0/ee/6fa0eee440db3dbd4b31dd0e2f7fab7c.png",
-        //   ],
-        // },
-        // {
-        //   homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 7 และ 9",
-        //   date: "2020-09-30",
-        //   homeworkDesc:
-        //     "อันนี้ส่งที่ห้องพักอาจารย์นะคะ รวมให้ครบก่อนแล้วค่อยมาส่ง ถ้าใครไม่ส่งคะแนนช่องนี้จะหาย ไปทั้งหมดสิบคะแนนนะคะ เพราะบทละ 5 คะแนนค่ะ",
-        //   exp: "ส่งพรุ่งนี้",
-        //   expired: true,
-        //   sent: true,
-        //   isPress: false,
-        // },
-        // {
-        //   homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 3 และ 4",
-        //   date: "2020-09-30",
-        //   homeworkDesc:
-        //     "อันนี้ส่งที่ห้องพักอาจารย์นะคะ รวมให้ครบก่อนแล้วค่อยมาส่ง ถ้าใครไม่ส่งคะแนนช่องนี้จะหาย ไปทั้งหมดสิบคะแนนนะคะ เพราะบทละ 5 คะแนนค่ะ",
-        //   exp: "เหลืออีก 14 วัน",
-        //   expired: false,
-        //   sent: true,
-        //   isPress: false,
-        // },
-        // {
-        //   homeworkName: "แบบฝึกหัดหลังเรียน บทที่ 8",
-        //   date: "2020-09-30",
-        //   homeworkDesc:
-        //     "อันนี้ส่งที่ห้องพักอาจารย์นะคะ รวมให้ครบก่อนแล้วค่อยมาส่ง ถ้าใครไม่ส่งคะแนนช่องนี้จะหาย ไปทั้งหมดสิบคะแนนนะคะ เพราะบทละ 5 คะแนนค่ะ",
-        //   exp: "เหลืออีก 14 วัน",
-        //   expired: false,
-        //   sent: true,
-        //   isPress: false,
-        // },
-        // {
-        //   homeworkName: "บันทึกการอ่าน",
-        //   date: "2020-09-30",
-        //   homeworkDesc:
-        //     "อันนี้ส่งที่ห้องพักอาจารย์นะคะ รวมให้ครบก่อนแล้วค่อยมาส่ง ถ้าใครไม่ส่งคะแนนช่องนี้จะหาย ไปทั้งหมดสิบคะแนนนะคะ เพราะบทละ 5 คะแนนค่ะ",
-        //   exp: "เหลืออีก 28 วัน",
-        //   expired: false,
-        //   sent: false,
-        //   isPress: false,
-        //   files: [
-        //     "https://i.pinimg.com/originals/6f/a0/ee/6fa0eee440db3dbd4b31dd0e2f7fab7c.png",
-        //     "https://i.pinimg.com/originals/6f/a0/ee/6fa0eee440db3dbd4b31dd0e2f7fab7c.png",
-        //   ],
-        // },
-      ],
-      // newQuiz: [],
+      myDescription: "",
+      title: "",
+      expire: 0,
+      homeworkId: "",
+      oldHomework: [],
     };
   }
 
@@ -105,15 +50,18 @@ export default class sentHomework extends Component {
       onProgress: true,
     });
     let liffContext = liff.getContext();
+    let body = {
+      groupId: liffContext.groupId,
+      lineId: liffContext.userId,
+    };
     axios
-      .get(ENV.SERVER + "/homework/all/" + liffContext.groupId)
+      .post(ENV.SERVER + "/homework/my_homework/", body)
       .then((response) => {
         console.log(response);
         if (response.data.status === 200) {
-          console.log("yeah")
           this.setState({
             onProgress: false,
-            oldHomework: response.data.homework,
+            oldHomework: response.data.homeworks,
           });
         } else {
           this.setState({
@@ -144,22 +92,16 @@ export default class sentHomework extends Component {
       let reader = new FileReader();
 
       reader.onloadend = (e) => {
-        // this.setState((prevState) => ({
-        //   files: {
-        //     files: [...prevState.files, file],
-        //     urls: [...prevState.imagesPreviewUrls, reader.result],
-        //   },
-        // }));
         let body = {
-          file: files[0],
+          file: files[i],
           base64: e.target.result,
         };
         let updateArray = this.state.files;
+        console.log(updateArray);
         updateArray.push(body);
         this.setState({
           files: updateArray,
         });
-        console.log(this.state.files);
       };
 
       reader.readAsDataURL(file);
@@ -171,7 +113,7 @@ export default class sentHomework extends Component {
       onProgress: true,
     });
     let liffContext = liff.getContext();
-    console.log("handle uploading-", this.state.files.file);
+    console.log("handle uploading-", this.state.files);
     let ref = storage.ref();
     let Urls = [];
     for (let i = 0; i < this.state.files.length; i++) {
@@ -188,36 +130,21 @@ export default class sentHomework extends Component {
       console.log(await ref.child(image).getDownloadURL());
       Urls.push(await ref.child(image).getDownloadURL());
     }
-    console.log(Urls);
-
-    // let data = this.state.sendData.split("-");
-    // let time = this.state.sendTime.split(":");
-    // console.log(data, time);
+    console.log("Url", Urls);
 
     let body = {
-      groupId: liffContext.groupId,
-      // title: this.state.title,
-      // expire: new Date(
-      //   data[0],
-      //   data[1],
-      //   data[2],
-      //   time[0],
-      //   time[1],
-      //   0,
-      //   0
-      // ).getTime(),
-      description: this.state.description,
+      lineId: liffContext.userId,
+      description: this.state.myDescription,
       files: Urls,
     };
-    console.log(body);
     axios
-      .post(ENV.SERVER + "/homework/create", body)
+      .put(ENV.SERVER + "/homework/send/" + this.state.homeworkId, body)
       .then((response) => {
         console.log(response);
         if (response.data.status === 201) {
           this.setState({
             onProgress: false,
-            pageState: 2,
+            // pageState: 2,
           });
           liff.closeWindow();
         } else {
@@ -251,10 +178,6 @@ export default class sentHomework extends Component {
   //   }
   // };
 
-  // componentDidMount() {
-  //   this.loadHomework();
-  // }
-
   // loadHomework = () => {
   //   this.setState({
   //     onProgress: true,
@@ -287,20 +210,25 @@ export default class sentHomework extends Component {
   //     });
   // };
 
-
   firstPage = (state) => (
     <div className={style.elementsContainer2}>
       <div className={style.titleContainer}>
-        {/* <img src={TA} alt="TA-LOGO" /> */}
         <h1 className={style.titleText}>การบ้านทั้งหมดในขณะนี้</h1>
       </div>
       <div className={style.homeworkListContainer}>
         {this.state.onProgress === false ? (
           <>
             {state.state.oldHomework.length === 0 ? (
-              <label style={{ color: "gray" }}>
-                - ท่านยังไม่ได้สั่งการบ้านใดๆ -
-              </label>
+              <div style={{ width: "100%", textAlign: "center" }}>
+                <label
+                  style={{
+                    color: "gray",
+                    fontSize: 32,
+                  }}
+                >
+                  - ท่านยังไม่ได้สั่งการบ้านใดๆ -
+                </label>
+              </div>
             ) : (
               <div>
                 <div className={style.homeworkIndexContainer}>
@@ -309,7 +237,7 @@ export default class sentHomework extends Component {
                   </label>
                   <div className={style.homeworkIndexContainerSelect}>
                     {state.state.oldHomework.map((data, key) => {
-                      if (data.sent === false && data.expired === false) {
+                      if (Number(data.expire) > Number(new Date().getTime())) {
                         return (
                           <div key={key} className={style.homeworkContainer}>
                             <div
@@ -330,13 +258,11 @@ export default class sentHomework extends Component {
                                 });
                                 this.setState({
                                   pageState: 1,
-                                  // quizzes: UpdateArray,
-                                  // canStart: true,
+                                  homeworkId: data.id,
                                 });
                               }}
                             >
-                              <label>{data.homeworkName}</label>
-                              <label>{data.exp}</label>
+                              <label>{data.title}</label>
                             </div>
                           </div>
                         );
@@ -398,7 +324,7 @@ export default class sentHomework extends Component {
                   </label>
                   <div className={style.homeworkIndexContainerSelect}>
                     {state.state.oldHomework.map((data, key) => {
-                      if (data.expired === true) {
+                      if (Number(data.expire) < Number(new Date().getTime())) {
                         return (
                           <div key={key} className={style.homeworkContainer}>
                             <div
@@ -470,7 +396,7 @@ export default class sentHomework extends Component {
                   disabled
                   fullWidth
                   variant="outlined"
-                  value={data.homeworkName}
+                  value={data.title}
                 />
               </div>
               <div
@@ -481,11 +407,11 @@ export default class sentHomework extends Component {
               >
                 <label>วันที่ส่งการบ้าน</label>
                 <TextField
-                  type="date"
+                  type="text"
                   fullWidth
                   variant="outlined"
                   disabled
-                  defaultValue={data.date}
+                  defaultValue={new Date(data.expire).toDateString()}
                 />
               </div>
               <div
@@ -503,7 +429,7 @@ export default class sentHomework extends Component {
                     rows={6}
                     // fullWidth
                     variant="outlined"
-                    value={data.homeworkDesc}
+                    value={data.description}
                   />
                 </div>
               </div>
@@ -551,7 +477,18 @@ export default class sentHomework extends Component {
         <div className={cx(style.textFieldContainer, style.textAreaContainer)}>
           <label>เพิ่มข้อความ</label>
           <div className={style.areaContainer}>
-            <TextField fullWidth multiline rows={6} variant="outlined" />
+            <TextField
+              fullWidth
+              multiline
+              rows={6}
+              variant="outlined"
+              value={this.state.myDescription}
+              onChange={(event) => {
+                this.setState({
+                  myDescription: event.target.value,
+                });
+              }}
+            />
             {this.state.files.map((data, key) => {
               return (
                 <div className={style.imguploadContainer}>
@@ -564,15 +501,7 @@ export default class sentHomework extends Component {
                     src={DeleteIcon}
                     alt="DeleteIcon"
                     className={style.imguploaddel}
-                    onClick={() => {
-                      this.setState({
-                        dialogBox: true,
-                        deleteHomeworkName: data.homeworkName,
-                      });
-                      this.deleteImage(data.file.name);
-                    }}
                   />
-                  {/* <label1>{state.state.files[key].name}</label1> */}
                 </div>
               );
             })}
@@ -580,7 +509,6 @@ export default class sentHomework extends Component {
         </div>
         <div className={style.uploadContainer}>
           <input
-            // className={classes.input}
             id="contained-button-file"
             multiple
             onChange={this._handleImageChange}
@@ -593,22 +521,33 @@ export default class sentHomework extends Component {
         </div>
       </div>
       <div className={cx(style.buttonContainer, style.buttonContainer2)}>
-        <MyButton
-          label={"ยืนยันการส่งการบ้าน"}
-          color={"#ffffff"}
-          backgroundColor={"#16AF74"}
-          onClick={() => {
-            this.setState({ pageState: 0 });
-          }}
-        ></MyButton>
-        <MyButton
-          label={"ย้อนกลับ"}
-          color={"#ffffff"}
-          backgroundColor={"#e5a52d"}
-          onClick={() => {
-            this.setState({ pageState: 0 });
-          }}
-        ></MyButton>
+        {this.state.onProgress === false ? (
+          <>
+            <MyButton
+              label={"ยืนยันการส่งการบ้าน"}
+              color={"#ffffff"}
+              backgroundColor={"#16AF74"}
+              onClick={() => {
+                this._handleSubmit();
+                // this.setState({ pageState: 0 });
+              }}
+            ></MyButton>
+            <MyButton
+              label={"ย้อนกลับ"}
+              color={"#ffffff"}
+              backgroundColor={"#e5a52d"}
+              onClick={() => {
+                this.setState({ pageState: 0 });
+              }}
+            ></MyButton>
+          </>
+        ) : (
+          <center>
+            <CircularProgress
+              style={{ display: "inline-block", color: "#e5a52d", margin: 10 }}
+            ></CircularProgress>
+          </center>
+        )}
       </div>
     </div>
   );
@@ -630,6 +569,21 @@ export default class sentHomework extends Component {
   };
 
   render() {
-    return <div className={style.container}>{this.pageState(this)}</div>;
+    return (
+      <>
+        <AlertBar
+          open={this.state.alretState}
+          label={this.state.errorMessage}
+          backgroundColor={"#f44336"}
+          color={"#ffffff"}
+          onClose={() => {
+            this.setState({
+              alretState: false,
+            });
+          }}
+        />
+        <div className={style.container}>{this.pageState(this)}</div>
+      </>
+    );
   }
 }

@@ -3,7 +3,6 @@
   z-index: 99;
   width: 100vw;
   height: 100vh;
-  border: 1px solid #ffffff;
   overflow-y: scroll;
 
   animation-name: Slider;

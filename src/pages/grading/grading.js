@@ -239,7 +239,7 @@ export default class grading extends Component {
       .get(ENV.SERVER + "/homework/all/" + liffContext.groupId)
       .then((response) => {
         console.log(response);
-        if (response.data.status === 201) {
+        if (response.data.status === 200) {
           console.log(response);
           this.setState({
             onProgress: false,
