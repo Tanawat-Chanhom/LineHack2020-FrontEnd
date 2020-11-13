@@ -101,34 +101,57 @@ export default class grading extends Component {
     let body = {
       members: this.state.students,
     };
-    // if () {
-    //   axios
-    //   .post(ENV.SERVER + "/grades/add/" + this.state.gradId, body)
-    //   .then((response) => {
-    //     console.log(response);
-    //     if (response.data.status === 200) {
-    //       this.setState({
-    //         saveProgress: false,
-    //       });
-    //     } else {
-    //       this.setState({
-    //         alertBar: true,
-    //         saveProgress: false,
-    //         errorMessage: response.data.message || "Save information fail!!",
-    //       });
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     this.setState({
-    //       alertBar: true,
-    //       saveProgress: false,
-    //       errorMessage: error.message || "Server error!!",
-    //     });
-    //   });
-    // } else {
-
-    // }
+    if (this.state.gradOption[1].isPress) {
+      axios
+        .post(ENV.SERVER + "/grades/add/" + this.state.gradId, body)
+        .then((response) => {
+          console.log(response);
+          if (response.data.status === 200) {
+            this.setState({
+              saveProgress: false,
+            });
+          } else {
+            this.setState({
+              alertBar: true,
+              saveProgress: false,
+              errorMessage: response.data.message || "Save information fail!!",
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.setState({
+            alertBar: true,
+            saveProgress: false,
+            errorMessage: error.message || "Server error!!",
+          });
+        });
+    } else {
+      axios
+        .post(ENV.SERVER + "/homework/score/" + this.state.gradId, body)
+        .then((response) => {
+          console.log(response);
+          if (response.data.status === 200) {
+            this.setState({
+              saveProgress: false,
+            });
+          } else {
+            this.setState({
+              alertBar: true,
+              saveProgress: false,
+              errorMessage: response.data.message || "Save information fail!!",
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.setState({
+            alertBar: true,
+            saveProgress: false,
+            errorMessage: error.message || "Server error!!",
+          });
+        });
+    }
   };
 
   loadStudent = (loadType, id) => {
