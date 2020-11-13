@@ -1,0 +1,304 @@
+.container {
+    position: static;
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    min-height: 100vh;
+    overflow: scroll;
+    background-color: #2c3e50;
+    padding: 0px 20px;
+  }
+  
+  /* secondPage styles */
+  
+  .elementsContainer2 {
+    /* padding: 40px 0px; */
+    width: 100%;
+    max-width: 500px;
+    /* height: 100%; */
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-evenly; */
+    align-items: center;
+  }
+  
+  img {
+    position: relative;
+    width: 213px;
+    height: 213px;
+  }
+  
+  .titleContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 25%;
+  }
+  
+  .titleText {
+    margin: 20px;
+    color: #ffffff;
+    /* font-weight: bold; */
+    font-size: 40px;
+  }
+  
+  /* firstPage styles */
+  
+  .title {
+    width: 100%;
+    text-align: center;
+    margin: 20px 0px;
+  }
+  
+  .title label {
+    /* font-weight: bold; */
+    font-size: 20px;
+    color: #ffffff;
+    margin: 20px 0px;
+  }
+  
+  .elementsContainer {
+    justify-content: flex-start;
+  }
+  
+  .inputContainer {
+    width: 100%;
+    margin: 10px 0px;
+  }
+  
+  /* Text Field */
+  
+  .textFieldContainer {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: space-evenly;
+    /* align-items: center; */
+    margin: 20px 0px;
+    /* background-color: red; */
+  }
+  
+  .textFieldContainer label {
+    width: 40%;
+    white-space: nowrap;
+    margin: 5px 10px;
+    color: #e5a52d;
+    /* font-weight: bolder; */
+    font-size: 47px;
+  }
+  
+  .textFieldContainer input {
+    border: 1px solid #ffffff;
+    border-radius: 1em;
+    color: white;
+  }
+  
+  .textFieldContainer2 input {
+    border: 1px solid #ffffff;
+    color: #2c3e50;
+    background-color: #a6a6a6;
+  }
+  
+  .textFieldContainer fieldset {
+    border: 0;
+  }
+  
+  /* Button Field */
+  
+  .buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    width: 100%;
+  }
+  .buttonContainer2 {
+    flex-direction: column;
+  }
+  
+  .buttonContainer button {
+    /* margin: 5px; */
+    border-radius: 1em;
+    width: 100%;
+  }
+  
+  .buttonContainer button:nth-child(1) {
+    background-color: #e5a52d;
+    /* font-weight: bold; */
+    font-size: 20px;
+  }
+  
+  .buttonContainer button:nth-child(2) {
+    background-color: #ecf0f1;
+    color: #2c3e50;
+    font-weight: bold;
+    font-size: 23px;
+  }
+  
+  .timeContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  /* .textBetweenInput{
+     display: flex;
+     flex-direction: row;
+     justify-content: center;
+     align-items: center;
+     margin: 20px 0px;
+     background-color: red;
+  } */
+  
+  .textAreaContainer {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .textAreaContainer label {
+    width: 40%;
+    white-space: nowrap;
+    margin: 5px 10px;
+    color: #e5a52d;
+    /* font-weight: bolder; */
+    font-size: 47px;
+  }
+  
+  .textAreaContainer input {
+    border: 1px solid #ffffff;
+    border-radius: 1em;
+    color: #ffffff !important;
+  }
+  
+  .textAreaContainer fieldset {
+    border: 1;
+    border-color: #ffffff;
+    border-radius: 1em;
+  }
+  .textAreaContainer div {
+    border: 1;
+    border-color: #ffffff;
+    border-radius: 1em;
+  }
+  .areaContainer {
+    border: 1px solid #ffffff;
+    border-color: #ffffff;
+    border-radius: 1em;
+  }
+  
+  Textarea {
+    color: #ffffff !important;
+    border: 1px solid #ffffff;
+  }
+  
+  .homeworkContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .homeworkContainer label {
+    font-size: 30px;
+    color: #e5a52d;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    margin: 0px 5px;
+  }
+  .homeworkContainer img {
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+  }
+  
+  .uploadContainer {
+    display: flex;
+    margin: 8px 0px;
+  }
+  .uploadContainer input {
+    display: none;
+  }
+  .uploadText {
+    font-size: 30px;
+    background-color: #5d6870;
+    border: 1px solid #5d6870;
+    color: #ffffff;
+    border-radius: 0.5em;
+    padding: 4%;
+  }
+  
+  .homeworkBox {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ffffff;
+    border-radius: 15px;
+    padding: 10px;
+    margin: 6px 0px;
+    width: 100%;
+  }
+  
+  .homeworkBox label {
+    font-size: 30px;
+    color: #ffffff;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+  
+  .homeworkBox img {
+    width: 29px;
+    height: 26px;
+  }
+  
+  .dialogContainer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    font-size: 37px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .imgupload {
+    width: 100%;
+    height: 30%;
+  }
+  .imguploadContainer {
+    position: relative;
+    /* display: flex;
+    flex-direction: row; */
+    padding-left: 10px;
+    padding-bottom: 20px;
+    width: 40%;
+    /* justify-content: space-between; */
+  }
+  .imguploaddel {
+    position: absolute;
+    /* right: -5px; */
+    right: -10px;
+    top: -10px;
+    z-index: 1;
+    width: 25%;
+    height: 25%;
+  }
+  
+  .homeworkIndexContainer {
+    margin-bottom: 5%;
+  }
+  .homeworkIndexContainerText {
+    font-size: 32px;
+    color: #e5a52d;
+  }
+  .homeworkIndexContainerSelect {
+    border-top: 1px solid #ffffff;
+    padding-top: 5%;
+  }
+  .textFieldTitle input{
+    color: #e5a52d;
+  }
+  

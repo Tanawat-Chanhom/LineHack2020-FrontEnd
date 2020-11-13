@@ -5,16 +5,17 @@ import cx from "classnames";
 import MyButton from "../../compoments/button/Button";
 import AlertBar from "../../compoments/AlertBar/AlertBar";
 import DialogBox from "../../compoments/DialogBox/DialogBox";
-
+import firebase from "../../util/firebaseConfig"
 //Image
 // import TA from "../../static/image/TA-LOGO.png";
 import Edit from "../../static/image/edit@2x.png";
 import DeleteIcon from "../../static/image/Group 35@2x.png";
-
+const storage = firebase.storage();
 export default class createHomework extends Component {
   constructor(props) {
     super(props);
     // this.file = null;
+    
     this.state = {
       files: [],
       imagesPreviewUrls: [],
@@ -70,10 +71,19 @@ export default class createHomework extends Component {
     });
   };
 
-  _handleSubmit() {
+  async _handleSubmit() {
     console.log("handle uploading-", this.state.files);
     // e.preventDefault();
     // TODO: do something with -> this.state.file
+    let ref = storage.ref();
+    for(let i = 0;i<this.state.files.length;i++){
+      let image = "homework/"+this.state.files[i].name+"_"+new Date().getTime()+".png"
+      await ref.child(image).put(this.state.files[i])
+      console.log(i)
+      console.log(new Date().getTime())
+      await ref.child(image).getDownloadURL()
+      console.log(await ref.child(image).getDownloadURL())
+    }
   }
 
   deleteHomework = (homeworkIndex) => {
