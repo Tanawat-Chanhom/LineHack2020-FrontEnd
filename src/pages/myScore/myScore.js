@@ -79,15 +79,17 @@ export default class myScore extends Component {
   firstPage = () => (
     <div className={style.elementsContainer2}>
       <div className={style.titleContainer}>
-        <h1 className={style.titleText}>ดูคะแนน</h1>
+        <h1 className={style.titleText2}>ดูคะแนน</h1>
       </div>
       <div className={style.homeworkListContainer}>
         {this.state.onProgress === false ? (
           <>
             {this.state.oldHomework.length === 0 ? (
-              <label style={{ color: "gray" }}>
-                - ท่านยังไม่ได้สั่งการบ้านใดๆ -
-              </label>
+              <div style={{ width: "100%", textAlign: "center" }}>
+                <label style={{ color: "gray", fontSize: 32 }}>
+                  - ท่านยังไม่ได้สั่งการบ้านใดๆ -
+                </label>
+              </div>
             ) : (
               this.state.oldHomework.map((data, key) => {
                 return (
