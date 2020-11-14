@@ -129,10 +129,16 @@ export default class myScore extends Component {
         <h1 className={style.titleText2}>{this.state.title}</h1>
       </div>
       <div className={cx(style.circleBase, style.type1)}>
-        <label style={{ marginRight: 5, color: "#FCC55D" }}>
-          {this.state.myScore}
-        </label>
-        <label>คะแนน</label>
+        {this.state.myScore !== null ? (
+          <>
+            <label style={{ marginRight: 5, color: "#FCC55D" }}>
+              {this.state.myScore}
+            </label>
+            <label>คะแนน</label>
+          </>
+        ) : (
+          <label>ยังไม่ตรวจ</label>
+        )}
       </div>
       <img src={curtainRight} alt="" className={style.curtainLeft} />
       <img src={curtainLeft} alt="" className={style.curtainRight} />
